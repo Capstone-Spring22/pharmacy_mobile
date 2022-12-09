@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:pharmacy_mobile/constrains/theme.dart';
-import 'package:pharmacy_mobile/screens/home/home.dart';
+import 'package:pharmacy_mobile/screens/nav_hub/nav_bar_hub.dart';
 import 'package:pharmacy_mobile/screens/signin/signin.dart';
 import 'package:pharmacy_mobile/screens/signup/signup.dart';
 
@@ -47,6 +47,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           themeMode: ThemeMode.system,
           theme: themeLight,
+
           // darkTheme: themeDark,
           defaultTransition: Transition.cupertino,
           title: 'Pharmacy App',
@@ -62,8 +63,8 @@ class MyApp extends StatelessWidget {
               page: () => const SignUpScreen(),
             ),
             GetPage(
-              name: '/home',
-              page: () => const HomeScreen(),
+              name: '/navhub',
+              page: () => const NavBarHub(),
             ),
           ],
         );

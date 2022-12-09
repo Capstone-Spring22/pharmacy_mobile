@@ -30,7 +30,7 @@ class _SignInScreenState extends State<SignInScreen> {
         midText: "Sign in",
         rightWidget: TextButton(
           child: const Text("Skip"),
-          onPressed: () => Get.offAllNamed("/home"),
+          onPressed: () => Get.offAllNamed("/navhub"),
         ),
       ),
       body: SingleChildScrollView(

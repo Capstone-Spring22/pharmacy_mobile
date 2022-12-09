@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:pharmacy_mobile/screens/home/home.dart';
 
 import '../../widgets/button.dart';
 
@@ -71,7 +70,7 @@ class IntroWidget extends StatelessWidget {
                 ),
               ),
               TextButton(
-                onPressed: () => Get.offAllNamed("/home"),
+                onPressed: () => Get.offAllNamed("/navhub"),
                 child: const Text("Skip for now"),
               )
             ],

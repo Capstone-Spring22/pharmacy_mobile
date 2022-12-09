@@ -1,34 +1,33 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-final themeLight = ThemeData.light().copyWith(
+final themeLight = ThemeData(
   brightness: Brightness.light,
   primaryColor: Colors.lightBlue[800],
   scaffoldBackgroundColor: Colors.white,
   // Define the default font family.
-  // fontFamily: 'Ubuntu',
+  fontFamily: 'Nexa',
   // Define the default `TextTheme`. Use this to specify the default
   // text styling for headlines, titles, bodies of text, and more.
   textTheme: TextTheme(
-    displayLarge: GoogleFonts.ubuntu(
+    displayLarge: const TextStyle(
       fontSize: 72.0,
       fontWeight: FontWeight.bold,
     ),
-    titleLarge: GoogleFonts.ubuntu(
+    titleLarge: const TextStyle(
       fontSize: 36.0,
       fontStyle: FontStyle.italic,
     ),
-    bodyMedium: GoogleFonts.ubuntu(
+    bodyMedium: const TextStyle(
       fontSize: 14.0,
       color: Colors.black,
     ),
-    bodySmall:
-        GoogleFonts.ubuntu(fontSize: 14.0, color: Colors.grey.withOpacity(.75)),
-    headlineMedium: GoogleFonts.ubuntu(
+    bodySmall: TextStyle(fontSize: 14.0, color: Colors.grey.withOpacity(.75)),
+    headlineMedium: TextStyle(
         fontSize: 38.0,
         color: Colors.black.withOpacity(0.65),
         fontWeight: FontWeight.bold),
-    labelLarge: GoogleFonts.ubuntu(
+    labelLarge: const TextStyle(
       fontSize: 18.0,
       color: Colors.black,
     ),
@@ -37,7 +36,7 @@ final themeLight = ThemeData.light().copyWith(
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
       textStyle: MaterialStateProperty.resolveWith((states) {
-        return GoogleFonts.ubuntu(
+        return const TextStyle(
           fontSize: 15.0,
           color: Colors.black,
         );
@@ -58,33 +57,33 @@ final themeLight = ThemeData.light().copyWith(
   ),
 );
 
-final themeDark = ThemeData.dark().copyWith(
+final themeDark = ThemeData(
   // Define the default brightness and colors.
   brightness: Brightness.dark,
   scaffoldBackgroundColor: Colors.black,
   // backgroundColor: Colors.red,
   // Define the default font family.
-  // fontFamily: 'Ubuntu',
+  fontFamily: 'Nexa',
   // Define the default `TextTheme`. Use this to specify the default
   // text styling for headlines, titles, bodies of text, and more.
   textTheme: TextTheme(
-    displayLarge: GoogleFonts.ubuntu(
+    displayLarge: const TextStyle(
       fontSize: 72.0,
       fontWeight: FontWeight.bold,
     ),
-    titleLarge: GoogleFonts.ubuntu(
+    titleLarge: const TextStyle(
       fontSize: 36.0,
       fontStyle: FontStyle.italic,
     ),
-    bodyMedium: GoogleFonts.ubuntu(
+    bodyMedium: const TextStyle(
       fontSize: 14.0,
       color: Colors.white,
     ),
-    headlineMedium: GoogleFonts.ubuntu(
+    headlineMedium: TextStyle(
         fontSize: 38.0,
         color: Colors.white.withOpacity(0.65),
         fontWeight: FontWeight.bold),
-    labelLarge: GoogleFonts.ubuntu(
+    labelLarge: const TextStyle(
       fontSize: 18.0,
       color: Colors.white,
     ),
@@ -92,7 +91,7 @@ final themeDark = ThemeData.dark().copyWith(
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
       textStyle: MaterialStateProperty.resolveWith((states) {
-        return GoogleFonts.ubuntu(
+        return const TextStyle(
           fontSize: 15.0,
           color: Colors.white,
         );

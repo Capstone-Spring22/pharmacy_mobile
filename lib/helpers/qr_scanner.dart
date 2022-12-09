@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -14,6 +15,8 @@ class _QrScannerWidgetState extends State<QrScannerWidget> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Barcode? result;
   QRViewController? controller;
+  Barcode? preResult;
+  bool first = true;
 
   @override
   void reassemble() {
@@ -28,9 +31,22 @@ class _QrScannerWidgetState extends State<QrScannerWidget> {
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        result = scanData;
-      });
+      if (first) {
+        first = false;
+        setState(() {
+          result = scanData;
+        });
+      } else {
+        if (scanData.code != result!.code) {
+          print('difference');
+          print("${scanData.code} - ${result!.code}");
+          setState(() {
+            result = scanData;
+          });
+        } else {
+          print('same');
+        }
+      }
     });
   }
 
@@ -42,27 +58,74 @@ class _QrScannerWidgetState extends State<QrScannerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            flex: 5,
-            child: QRView(
-              key: qrKey,
-              onQRViewCreated: _onQRViewCreated,
-            ),
+    return Column(
+      children: <Widget>[
+        Expanded(
+          flex: 5,
+          child: QRView(
+            key: qrKey,
+            onQRViewCreated: _onQRViewCreated,
           ),
-          Expanded(
-            flex: 1,
-            child: Center(
-              child: (result != null)
-                  ? Text(
-                      'Barcode Type: ${(result!.format)}   Data: ${result!.code}')
-                  : const Text('Scan a code'),
-            ),
-          )
-        ],
-      ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Center(
+            child: (result != null)
+                ? FutureBuilder(
+                    builder: (context, snapshot) {
+                      print(result!.code!);
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator.adaptive();
+                      } else {
+                        if (snapshot.data == 1) {
+                          return const Text("Product not found!!!");
+                        } else if (snapshot.data == null) {
+                          return const Text("Error Null!!!");
+                        } else {
+                          var name = snapshot.data["product"]["product_name"];
+                          try {
+                            name = name as String;
+                            if (name.isEmpty) {
+                              name = "Product name not available";
+                            }
+                          } catch (e) {
+                            print(e);
+                            name = "Product name not available";
+                          }
+                          return ListTile(
+                            leading: Image.network(
+                                snapshot.data["product"]["image_front_url"]),
+                            title: Text(name),
+                            trailing: IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.add_shopping_cart_rounded),
+                            ),
+                          );
+                        }
+                      }
+                    },
+                    future: barcodeLookup(result!.code!),
+                  )
+                : const Text('Scan a code'),
+          ),
+        )
+      ],
     );
+  }
+
+  Future barcodeLookup(String id) async {
+    final String api =
+        "https://world.openfoodfacts.org/api/v0/product/$id.json";
+
+    print(api);
+    var response = await Dio().get(api);
+    if (response.statusCode == 200) {
+      if (response.data["status_verbose"] == "product found") {
+        return response.data;
+      } else {
+        return 1;
+      }
+    }
+    return null;
   }
 }

@@ -43,7 +43,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         midText: "Sign up",
         rightWidget: TextButton(
           child: const Text("Skip"),
-          onPressed: () => Get.offAllNamed("/home"),
+          onPressed: () => Get.offAllNamed("/navhub"),
         ),
       ),
       backgroundColor: context.theme.scaffoldBackgroundColor,
