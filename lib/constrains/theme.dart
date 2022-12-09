@@ -20,7 +20,10 @@ final themeLight = ThemeData.light().copyWith(
     ),
     bodyMedium: GoogleFonts.ubuntu(
       fontSize: 14.0,
+      color: Colors.black,
     ),
+    bodySmall:
+        GoogleFonts.ubuntu(fontSize: 14.0, color: Colors.grey.withOpacity(.75)),
     headlineMedium: GoogleFonts.ubuntu(
         fontSize: 38.0,
         color: Colors.black.withOpacity(0.65),
@@ -30,8 +33,15 @@ final themeLight = ThemeData.light().copyWith(
       color: Colors.black,
     ),
   ),
+
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
+      textStyle: MaterialStateProperty.resolveWith((states) {
+        return GoogleFonts.ubuntu(
+          fontSize: 15.0,
+          color: Colors.black,
+        );
+      }),
       backgroundColor: MaterialStateProperty.resolveWith((states) {
         // If the button is pressed, return green, otherwise blue
         if (states.contains(MaterialState.pressed)) {
@@ -68,7 +78,7 @@ final themeDark = ThemeData.dark().copyWith(
     ),
     bodyMedium: GoogleFonts.ubuntu(
       fontSize: 14.0,
-      color: Colors.black,
+      color: Colors.white,
     ),
     headlineMedium: GoogleFonts.ubuntu(
         fontSize: 38.0,
@@ -81,6 +91,12 @@ final themeDark = ThemeData.dark().copyWith(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
+      textStyle: MaterialStateProperty.resolveWith((states) {
+        return GoogleFonts.ubuntu(
+          fontSize: 15.0,
+          color: Colors.white,
+        );
+      }),
       backgroundColor: MaterialStateProperty.resolveWith((states) {
         // If the button is pressed, return green, otherwise blue
         if (states.contains(MaterialState.pressed)) {

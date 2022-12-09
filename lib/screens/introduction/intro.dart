@@ -2,11 +2,37 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:pharmacy_mobile/screens/home/home.dart';
 
 import '../../widgets/button.dart';
 
 class IntroductionScreen extends StatelessWidget {
   const IntroductionScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // return isFirst() ? const IntroWidget() : const HomeScreen();
+    return const IntroWidget();
+  }
+
+  bool isFirst() {
+    bool result = false;
+    try {
+      final box = GetStorage();
+      result = box.read("isFirst");
+      print(result);
+    } catch (e) {
+      print(e);
+    }
+    return result;
+  }
+}
+
+class IntroWidget extends StatelessWidget {
+  const IntroWidget({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +70,10 @@ class IntroductionScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              TextButton(onPressed: () {}, child: const Text("Skip for now"))
+              TextButton(
+                onPressed: () => Get.offAllNamed("/home"),
+                child: const Text("Skip for now"),
+              )
             ],
           ),
         ),

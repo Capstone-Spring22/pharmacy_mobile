@@ -47,7 +47,7 @@ class _PasswordInputState extends State<PasswordInput> {
                 labelStyle: TextStyle(color: primaryColor),
                 filled: true,
                 fillColor: accentColor,
-                hintStyle: TextStyle(color: Colors.grey.withOpacity(.75)),
+                hintStyle: context.textTheme.bodySmall,
                 contentPadding:
                     const EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
                 border: OutlineInputBorder(
@@ -126,13 +126,13 @@ class TextInput extends StatelessWidget {
             label: Text(text),
             labelStyle: TextStyle(color: primaryColor),
             filled: true,
-            fillColor: accentColor,
-            hintStyle: TextStyle(color: Colors.grey.withOpacity(.75)),
+            fillColor: Colors.transparent,
+            hintStyle: context.textTheme.bodySmall,
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: primaryColor, width: 1.0),
-              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+            border: const OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.white, width: 1.0),
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
             ),
             focusedBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: secondaryColor, width: 1.0),

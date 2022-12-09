@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:pharmacy_mobile/widgets/appbar.dart';
 import 'package:pharmacy_mobile/widgets/button.dart';
 import 'package:pharmacy_mobile/widgets/textInput.dart';
 
@@ -18,40 +19,26 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PharmacyAppBar(
+        leftWidget: IconButton(
+          onPressed: () => Get.back(),
+          icon: const Icon(
+            CupertinoIcons.back,
+            color: Colors.black,
+          ),
+        ),
+        midText: "Sign in",
+        rightWidget: TextButton(
+          child: const Text("Skip"),
+          onPressed: () => Get.offAllNamed("/home"),
+        ),
+      ),
       body: SingleChildScrollView(
         child: SizedBox(
           height: Get.height * 0.95,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              SizedBox(
-                height: 30.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: IconButton(
-                      onPressed: () => Get.back(),
-                      icon: const Icon(CupertinoIcons.back),
-                    ),
-                  ),
-                  Text(
-                    "Sign In",
-                    style: context.textTheme.headlineMedium,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: IconButton(
-                      onPressed: () => Get.changeThemeMode(
-                          Get.isDarkMode ? ThemeMode.light : ThemeMode.dark),
-                      icon: Icon(
-                          Get.isDarkMode ? Icons.light_mode : Icons.dark_mode),
-                    ),
-                  )
-                ],
-              ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 40.w),
                 child: Column(
@@ -88,7 +75,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     style: context.textTheme.labelLarge,
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () => Get.offNamed("/signup"),
                     child: Text(
                       "Sign up",
                       style: context.textTheme.labelLarge!.copyWith(
