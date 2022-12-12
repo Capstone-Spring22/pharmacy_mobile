@@ -4,7 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:pharmacy_mobile/constrains/text.dart';
 import 'package:pharmacy_mobile/constrains/theme.dart';
+import 'package:pharmacy_mobile/controllers/app_controller.dart';
 import 'package:pharmacy_mobile/screens/nav_hub/nav_bar_hub.dart';
 import 'package:pharmacy_mobile/screens/signin/signin.dart';
 import 'package:pharmacy_mobile/screens/signup/signup.dart';
@@ -13,13 +15,23 @@ import 'screens/introduction/intro.dart';
 
 void main() async {
   await GetStorage.init();
+
+  //set device status and navigation bar color
   setStatusBarColor();
+
+  //init app controller
+  initController();
+
   runApp(
     DevicePreview(
       enabled: false,
       builder: (context) => const MyApp(), // Wrap your app
     ),
   );
+}
+
+void initController() {
+  Get.put(AppController());
 }
 
 void setStatusBarColor() {
@@ -47,7 +59,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           themeMode: ThemeMode.system,
           theme: themeLight,
-
+          translations: ApplicationText(), locale: const Locale('en', 'US'),
           // darkTheme: themeDark,
           defaultTransition: Transition.cupertino,
           title: 'Pharmacy App',

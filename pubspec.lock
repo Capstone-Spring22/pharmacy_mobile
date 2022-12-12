@@ -129,6 +129,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
+  cnav:
+    dependency: "direct main"
+    description:
+      name: cnav
+      sha256: af19a0b89381fbfc891e1c5c21680f215a1817a8b08e675b9cdb9a4b0d37e776
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.3"
   collection:
     dependency: transitive
     description:
@@ -201,6 +209,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  draggable_home:
+    dependency: "direct main"
+    description:
+      name: draggable_home
+      sha256: "4fa3c71f7784bb9a0ab722bb6245e071c261dcf2a3e1e004ee681bda60cfbbbb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.4"
   equatable:
     dependency: "direct main"
     description:
@@ -291,6 +307,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.6.0"
+  flutter_scroll_to_top:
+    dependency: "direct main"
+    description:
+      name: flutter_scroll_to_top
+      sha256: "85ebcbb9deda26eb1c98645c441d921cc25808cbaab3f5487badb91f155db106"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -301,6 +325,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_zoom_drawer:
+    dependency: "direct main"
+    description:
+      name: flutter_zoom_drawer
+      sha256: "93c4f2cfe1edfe2f9e48b94a7f9538520d2f2593e202b8e89c394b7d27137a8e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.3"
   font_awesome_flutter:
     dependency: "direct main"
     description:
@@ -397,6 +429,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  loading_animation_widget:
+    dependency: "direct main"
+    description:
+      name: loading_animation_widget
+      sha256: "2ee53df6440ae5876d6f855d64158aa9ce6361c0f5d6f26fa6a855c047979a90"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0+3"
   lottie:
     dependency: "direct main"
     description:
@@ -517,14 +557,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.11.1"
-  persistent_bottom_nav_bar:
+  persistent_bottom_nav_bar_v2:
     dependency: "direct main"
     description:
-      name: persistent_bottom_nav_bar
-      sha256: e2e031e3366fde01511e372a9a19d720a9b252bb456e5c8d77a30d7a4a2ddfb0
+      name: persistent_bottom_nav_bar_v2
+      sha256: "2c1f787b7b6b1dfdbb7ef06c11653410caa0e90e66efe774e4153bd7cde8cb9c"
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.2"
+    version: "4.2.6"
   platform:
     dependency: transitive
     description:

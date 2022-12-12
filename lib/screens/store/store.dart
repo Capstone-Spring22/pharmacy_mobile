@@ -5,8 +5,13 @@ class StoreScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Store"),
+    return const Scaffold(
+      body: SizedBox(
+        width: double.infinity,
+        child: Center(
+          child: Text("Store"),
+        ),
+      ),
     );
   }
 }

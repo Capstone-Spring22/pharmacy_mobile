@@ -1,12 +1,11 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 final themeLight = ThemeData(
   brightness: Brightness.light,
   primaryColor: Colors.lightBlue[800],
   scaffoldBackgroundColor: Colors.white,
   // Define the default font family.
-  fontFamily: 'Nexa',
+
   // Define the default `TextTheme`. Use this to specify the default
   // text styling for headlines, titles, bodies of text, and more.
   textTheme: TextTheme(
