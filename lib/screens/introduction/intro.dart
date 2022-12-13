@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:pharmacy_mobile/screens/home/home.dart';
+import 'package:pharmacy_mobile/screens/nav_hub/nav_bar_hub.dart';
 
 import '../../widgets/button.dart';
 
@@ -11,12 +13,12 @@ class IntroductionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return isFirst() ? const IntroWidget() : const HomeScreen();
-    return const IntroWidget();
+    return isFirst() ? const IntroWidget() : const NavBarHub();
+    // return const IntroWidget();
   }
 
   bool isFirst() {
-    bool result = false;
+    bool result = true;
     try {
       final box = GetStorage();
       result = box.read("isFirst");

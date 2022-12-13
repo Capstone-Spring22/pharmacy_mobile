@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_zoom_drawer/config.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/controllers/app_controller.dart';
@@ -19,19 +20,47 @@ class NavBarHub extends GetView<AppController> {
       extendBody: true,
       bottomNavigationBar: const NavHomeItem(),
       body: GetX<AppController>(
+        // builder: (_) => ZoomDrawer(
+        //   controller: _.cartDrawerController,
+        //   menuScreen: const DrawerMenu(),
+        //   mainScreen: ColoredBox(
+        //     color: Colors.white,
+        //     child: ZoomDrawer(
+        //       controller: _.menuDrawerController,
+        //       menuScreen: const DrawerMenu(),
+        //       mainScreen: ColoredBox(
+        //         color: Colors.white,
+        //         child: AnimatedSwitcher(
+        //           duration: const Duration(milliseconds: 300),
+        //           child: _switchWidget(controller.pageIndex.value),
+        //         ),
+        //       ),
+        //       borderRadius: 24.0,
+        //       showShadow: true,
+        //       angle: -12.0,
+        //       drawerShadowsBackgroundColor: Colors.grey,
+        //       slideWidth: MediaQuery.of(context).size.width * 0.65,
+        //     ),
+        //   ),
+        //   borderRadius: 24.0,
+        //   showShadow: true,
+        //   angle: -12.0,
+        //   isRtl: true,
+        //   drawerShadowsBackgroundColor: Colors.grey,
+        //   slideWidth: MediaQuery.of(context).size.width * 0.65,
+        // ),
         builder: (_) => ZoomDrawer(
-          controller: _.zoomDrawerController,
+          controller: _.cartDrawerController,
           menuScreen: const DrawerMenu(),
-          mainScreen: ColoredBox(
-            color: Colors.white,
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
-              child: _switchWidget(controller.pageIndex.value),
-            ),
+          mainScreen: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            child: _switchWidget(controller.pageIndex.value),
           ),
           borderRadius: 24.0,
           showShadow: true,
           angle: -12.0,
+          style: DrawerStyle.defaultStyle,
+          isRtl: true,
           drawerShadowsBackgroundColor: Colors.grey,
           slideWidth: MediaQuery.of(context).size.width * 0.65,
         ),

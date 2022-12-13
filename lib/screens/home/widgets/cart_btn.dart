@@ -1,6 +1,8 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:get/get.dart';
+import 'package:pharmacy_mobile/controllers/app_controller.dart';
 
-class CartButton extends StatelessWidget {
+class CartButton extends GetView<AppController> {
   const CartButton({
     super.key,
   });
@@ -13,7 +15,7 @@ class CartButton extends StatelessWidget {
         color: Colors.white,
         shape: NeumorphicShape.flat,
       ),
-      onPressed: () {},
+      onPressed: () => controller.toggleSideDrawer(),
       child: const Icon(
         Icons.shopping_bag_outlined,
         color: Colors.black,
@@ -22,7 +24,7 @@ class CartButton extends StatelessWidget {
   }
 }
 
-class CartButtonNoNeu extends StatelessWidget {
+class CartButtonNoNeu extends GetView<AppController> {
   const CartButtonNoNeu({
     super.key,
   });
@@ -30,7 +32,7 @@ class CartButtonNoNeu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () {},
+      onPressed: () => controller.toggleSideDrawer(),
       icon: const Icon(
         Icons.shopping_bag_outlined,
         color: Colors.black,

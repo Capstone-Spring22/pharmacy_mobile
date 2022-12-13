@@ -4,14 +4,20 @@ import 'package:get/get.dart';
 class AppController extends GetxController {
   static AppController instance = Get.find();
 
-  final zoomDrawerController = ZoomDrawerController();
+  final menuDrawerController = ZoomDrawerController();
+  final cartDrawerController = ZoomDrawerController();
 
   RxInt pageIndex = 0.obs;
 
   setPage(int i) => pageIndex.value = i;
 
   void toggleDrawer() {
-    zoomDrawerController.toggle?.call();
+    menuDrawerController.toggle?.call();
+    update();
+  }
+
+  void toggleSideDrawer() {
+    cartDrawerController.toggle?.call();
     update();
   }
 }
