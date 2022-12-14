@@ -43,6 +43,9 @@ class RoundedSearchInput extends GetView<AppController> {
               ? IconButton(
                   onPressed: () => controller.searchCtl.value.text = "",
                   icon: const Icon(Icons.clear),
+                  color: controller.searchCtl.value.text.isEmpty
+                      ? Colors.grey[500]!
+                      : Colors.red,
                 )
               : null,
           filled: true,

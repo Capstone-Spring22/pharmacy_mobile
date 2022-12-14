@@ -5,7 +5,10 @@ import 'package:pharmacy_mobile/controllers/app_controller.dart';
 class DrawerButton extends GetView<AppController> {
   const DrawerButton({
     super.key,
+    this.fn,
   });
+
+  final VoidCallback? fn;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +18,7 @@ class DrawerButton extends GetView<AppController> {
         color: Colors.white,
         shape: NeumorphicShape.flat,
       ),
-      onPressed: () => controller.toggleMenuDrawer(),
+      onPressed: fn ?? () => controller.toggleMenuDrawer(),
       child: const Icon(
         Icons.menu,
         color: Colors.black,

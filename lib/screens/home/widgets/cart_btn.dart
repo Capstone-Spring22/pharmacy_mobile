@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:pharmacy_mobile/controllers/app_controller.dart';
 
 class CartButton extends GetView<AppController> {
-  const CartButton({
-    super.key,
-  });
+  const CartButton({super.key, this.fn});
+
+  final VoidCallback? fn;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class CartButton extends GetView<AppController> {
         color: Colors.white,
         shape: NeumorphicShape.flat,
       ),
-      onPressed: () => controller.toggleCartDrawer(),
+      onPressed: fn ?? () => controller.toggleCartDrawer(),
       child: const Icon(
         Icons.shopping_bag_outlined,
         color: Colors.black,

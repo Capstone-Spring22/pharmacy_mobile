@@ -3,13 +3,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:pharmacy_mobile/controllers/app_controller.dart';
 import 'package:pharmacy_mobile/screens/drawer/cart_drawer.dart';
 import 'package:pharmacy_mobile/screens/drawer/menu_drawer.dart';
 import 'package:pharmacy_mobile/screens/home/widgets/cart_btn.dart';
+import 'package:pharmacy_mobile/screens/home/widgets/drawer_btn.dart';
 import 'package:pharmacy_mobile/widgets/appbar.dart';
 import 'package:pharmacy_mobile/widgets/back_button.dart';
 
-class ProductDetailScreen extends StatelessWidget {
+class ProductDetailScreen extends GetView<AppController> {
   const ProductDetailScreen(
       {super.key, required this.title, required this.img});
 
@@ -18,17 +20,25 @@ class ProductDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    GlobalKey<ScaffoldState> drawerKey = GlobalKey();
     return Scaffold(
       // appBar: AppBar(
       //   title: Text(title,maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(),),
       //   centerTitle: true,
       // ),
+      key: drawerKey,
       drawer: const MenuDrawer(),
       endDrawer: const CartDrawer(),
       appBar: PharmacyAppBar(
-        leftWidget: const PharmacyBackButton(),
-        midText: title,
-        rightWidget: const CartButton(),
+        leftWidget: Row(
+          children: [
+            const PharmacyBackButton(),
+            DrawerButton(fn: () => drawerKey.currentState!.openDrawer()),
+          ],
+        ),
+        midText: "Better Healthy",
+        rightWidget:
+            CartButton(fn: () => drawerKey.currentState!.openEndDrawer()),
         titleStyle: context.textTheme.headlineMedium!.copyWith(fontSize: 30.h),
       ),
       body: Column(
