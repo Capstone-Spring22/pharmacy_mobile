@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 class ProductTile extends StatelessWidget {
-  const ProductTile({super.key});
+  const ProductTile({super.key, required this.fn});
+
+  final VoidCallback fn;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class ProductTile extends StatelessWidget {
         color: Colors.white,
         lightSource: LightSource.top,
       ),
-      onPressed: () {},
+      onPressed: fn,
       child: Column(
         children: [
           CachedNetworkImage(
@@ -35,5 +37,30 @@ class ProductTile extends StatelessWidget {
         ],
       ),
     );
+    //   return Neumorphic(
+    //     padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+    //     style: const NeumorphicStyle(
+    //       color: Colors.white,
+    //       lightSource: LightSource.top,
+    //     ),
+    //     child: Column(
+    //       children: [
+    //         CachedNetworkImage(
+    //           filterQuality: FilterQuality.low,
+    //           maxHeightDiskCache: 512,
+    //           imageUrl: img,
+    //           progressIndicatorBuilder: (context, url, downloadProgress) =>
+    //               CircularProgressIndicator(value: downloadProgress.progress),
+    //           errorWidget: (context, url, error) => const Icon(Icons.error),
+    //         ),
+    //         AutoSizeText(
+    //           name,
+    //           maxLines: 2,
+    //           overflow: TextOverflow.ellipsis,
+    //           style: context.textTheme.displayMedium,
+    //         ),
+    //       ],
+    //     ),
+    //   );
   }
 }

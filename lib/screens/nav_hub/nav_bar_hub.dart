@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_zoom_drawer/config.dart';
-import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/controllers/app_controller.dart';
 import 'package:pharmacy_mobile/screens/camera/camera.dart';
 import 'package:pharmacy_mobile/screens/chat/chat.dart';
-import 'package:pharmacy_mobile/screens/drawer/drawer.dart';
+import 'package:pharmacy_mobile/screens/drawer/cart_drawer.dart';
+import 'package:pharmacy_mobile/screens/drawer/menu_drawer.dart';
 import 'package:pharmacy_mobile/screens/home/home.dart';
 import 'package:pharmacy_mobile/screens/nav_hub/nav_items/nav_home.dart';
 import 'package:pharmacy_mobile/screens/store/store.dart';
@@ -17,53 +16,18 @@ class NavBarHub extends GetView<AppController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: controller.drawerKey,
       extendBody: true,
       bottomNavigationBar: const NavHomeItem(),
+      drawer: const MenuDrawer(),
+      endDrawer: const CartDrawer(),
       body: GetX<AppController>(
-        // builder: (_) => ZoomDrawer(
-        //   controller: _.cartDrawerController,
-        //   menuScreen: const DrawerMenu(),
-        //   mainScreen: ColoredBox(
-        //     color: Colors.white,
-        //     child: ZoomDrawer(
-        //       controller: _.menuDrawerController,
-        //       menuScreen: const DrawerMenu(),
-        //       mainScreen: ColoredBox(
-        //         color: Colors.white,
-        //         child: AnimatedSwitcher(
-        //           duration: const Duration(milliseconds: 300),
-        //           child: _switchWidget(controller.pageIndex.value),
-        //         ),
-        //       ),
-        //       borderRadius: 24.0,
-        //       showShadow: true,
-        //       angle: -12.0,
-        //       drawerShadowsBackgroundColor: Colors.grey,
-        //       slideWidth: MediaQuery.of(context).size.width * 0.65,
-        //     ),
-        //   ),
-        //   borderRadius: 24.0,
-        //   showShadow: true,
-        //   angle: -12.0,
-        //   isRtl: true,
-        //   drawerShadowsBackgroundColor: Colors.grey,
-        //   slideWidth: MediaQuery.of(context).size.width * 0.65,
-        // ),
-        builder: (_) => ZoomDrawer(
-          controller: _.cartDrawerController,
-          menuScreen: const DrawerMenu(),
-          mainScreen: AnimatedSwitcher(
+        builder: (_) {
+          return AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),
             child: _switchWidget(controller.pageIndex.value),
-          ),
-          borderRadius: 24.0,
-          showShadow: true,
-          angle: -12.0,
-          style: DrawerStyle.defaultStyle,
-          isRtl: true,
-          drawerShadowsBackgroundColor: Colors.grey,
-          slideWidth: MediaQuery.of(context).size.width * 0.65,
-        ),
+          );
+        },
       ),
     );
   }

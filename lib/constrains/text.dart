@@ -10,7 +10,10 @@ class ApplicationText extends Translations {
           'drug_btn': 'Claim and prescription',
           'prescription_btn': 'Send my Prescription',
           'contact_btn': 'Pharmacist assitant',
-          'scroll_down': 'Scroll down to open Scanner/Camera'
+          'scroll_down': 'Pull down to open Scanner/Camera',
+          'welcome_morning': 'Good Morning',
+          'welcome_noon': 'Good Afternoon',
+          'welcome_night': 'Good Evening',
         },
         'vn_VN': {
           'title': 'Better Healthy',

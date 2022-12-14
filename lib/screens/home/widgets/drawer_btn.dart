@@ -15,7 +15,7 @@ class DrawerButton extends GetView<AppController> {
         color: Colors.white,
         shape: NeumorphicShape.flat,
       ),
-      onPressed: () => controller.toggleDrawer(),
+      onPressed: () => controller.toggleMenuDrawer(),
       child: const Icon(
         Icons.menu,
         color: Colors.black,
@@ -32,7 +32,7 @@ class DrawerButtonNoNeu extends GetView<AppController> {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-        onPressed: () => controller.toggleDrawer(),
+        onPressed: () => controller.toggleMenuDrawer(),
         icon: const Icon(
           Icons.menu,
           color: Colors.black,

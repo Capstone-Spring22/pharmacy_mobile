@@ -9,9 +9,11 @@ import 'package:pharmacy_mobile/screens/home/widgets/cart_btn.dart';
 import 'package:pharmacy_mobile/screens/home/widgets/drawer_btn.dart';
 import 'package:pharmacy_mobile/screens/home/widgets/option_row.dart';
 import 'package:pharmacy_mobile/screens/home/widgets/scroll_to_top.dart';
-import 'package:pharmacy_mobile/screens/home/widgets/search.dart';
 import 'package:pharmacy_mobile/widgets/appbar.dart';
 import 'package:pharmacy_mobile/widgets/list_item_blr.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
+
+import '../search/search_page.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -52,6 +54,7 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget headerWidget(BuildContext context) {
+    String welcomeText = setWelcomeText();
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -64,23 +67,29 @@ class HomeScreen extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
-          child: AutoSizeText(
-            "welcome_text".tr,
-            style: TextStyle(
-              fontSize: 24.h,
-              color: Colors.black.withOpacity(.8),
-              fontWeight: FontWeight.w900,
-            ),
-            textAlign: TextAlign.center,
+          // child: AutoSizeText(
+          //   "welcome_text".tr,
+          //   style: TextStyle(
+          //     fontSize: 24.h,
+          //     color: Colors.black.withOpacity(.8),
+          //     fontWeight: FontWeight.w900,
+          //   ),
+          //   textAlign: TextAlign.center,
+          // ),
+          child: AnimatedTextKit(
+            totalRepeatCount: 1,
+            animatedTexts: [
+              TypewriterAnimatedText(
+                "$welcomeText, User",
+                textStyle:
+                    context.textTheme.displaySmall!.copyWith(fontSize: 24),
+              )
+            ],
           ),
         ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: RoundedSearchInput(
-            hintText: "search_home".tr,
-            textController: TextEditingController(),
-          ),
-        ),
+        //Search Box
+        const SearchScreen(),
+        //
         const Padding(
           padding: EdgeInsets.symmetric(vertical: 15),
           child: OptionButtonRow(),
@@ -100,5 +109,16 @@ class HomeScreen extends StatelessWidget {
         )
       ],
     );
+  }
+
+  String setWelcomeText() {
+    final time = DateTime.now();
+    if (time.hour >= 5 && time.hour <= 11) {
+      return "welcome_morning".tr;
+    } else if (time.hour > 11 && time.hour <= 16) {
+      return "welcome_noon".tr;
+    } else {
+      return "welcome_night".tr;
+    }
   }
 }

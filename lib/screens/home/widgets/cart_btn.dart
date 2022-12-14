@@ -15,7 +15,7 @@ class CartButton extends GetView<AppController> {
         color: Colors.white,
         shape: NeumorphicShape.flat,
       ),
-      onPressed: () => controller.toggleSideDrawer(),
+      onPressed: () => controller.toggleCartDrawer(),
       child: const Icon(
         Icons.shopping_bag_outlined,
         color: Colors.black,
@@ -32,7 +32,7 @@ class CartButtonNoNeu extends GetView<AppController> {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () => controller.toggleSideDrawer(),
+      onPressed: () => controller.toggleCartDrawer(),
       icon: const Icon(
         Icons.shopping_bag_outlined,
         color: Colors.black,

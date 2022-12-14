@@ -1,14 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pharmacy_mobile/controllers/app_controller.dart';
 
-class RoundedSearchInput extends StatelessWidget {
+class RoundedSearchInput extends GetView<AppController> {
   final TextEditingController textController;
   final String hintText;
+  final Color color;
+  final bool enable;
   const RoundedSearchInput(
-      {required this.textController, required this.hintText, Key? key})
+      {required this.textController,
+      required this.hintText,
+      Key? key,
+      required this.color,
+      required this.enable})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    FocusNode fcNode = FocusNode();
+    if (enable) {
+      fcNode.requestFocus();
+    }
     return Container(
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
@@ -18,17 +30,23 @@ class RoundedSearchInput extends StatelessWidget {
             color: Colors.grey.withOpacity(.1)),
       ]),
       child: TextField(
-        controller: textController,
-        onChanged: (value) {
-          //TODO: search home screen
-        },
+        focusNode: fcNode,
+        enabled: enable,
+        controller: controller.searchCtl.value,
+        onChanged: (value) {},
         decoration: InputDecoration(
           prefixIcon: Icon(
             Icons.search,
             color: Colors.grey[500]!,
           ),
+          suffixIcon: enable
+              ? IconButton(
+                  onPressed: () => controller.searchCtl.value.text = "",
+                  icon: const Icon(Icons.clear),
+                )
+              : null,
           filled: true,
-          fillColor: Colors.transparent,
+          fillColor: color,
           hintText: hintText,
           hintStyle:
               const TextStyle(color: Colors.grey, fontWeight: FontWeight.w300),
