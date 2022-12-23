@@ -56,9 +56,15 @@ class _QrScannerWidgetState extends State<QrScannerWidget> {
       children: <Widget>[
         Expanded(
           flex: 1,
-          child: QRView(
-            key: qrKey,
-            onQRViewCreated: _onQRViewCreated,
+          child: Padding(
+            padding: const EdgeInsets.all(25),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(25),
+              child: QRView(
+                key: qrKey,
+                onQRViewCreated: _onQRViewCreated,
+              ),
+            ),
           ),
         ),
         Expanded(

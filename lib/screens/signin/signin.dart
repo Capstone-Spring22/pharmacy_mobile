@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:pharmacy_mobile/widgets/appbar.dart';
 import 'package:pharmacy_mobile/widgets/button.dart';
 import 'package:pharmacy_mobile/widgets/textInput.dart';
@@ -18,19 +19,24 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool result = true;
+    try {
+      final box = GetStorage();
+      result = box.read("isFirst");
+    } catch (e) {
+      print(e);
+    }
+
     return Scaffold(
       appBar: PharmacyAppBar(
         leftWidget: IconButton(
           onPressed: () => Get.back(),
-          icon: const Icon(
-            CupertinoIcons.back,
-            color: Colors.black,
-          ),
+          icon: const Icon(CupertinoIcons.back),
         ),
         midText: "Sign in",
         rightWidget: TextButton(
           child: const Text("Skip"),
-          onPressed: () => Get.offAllNamed("/navhub"),
+          onPressed: () => result ? Get.offAllNamed("/navhub") : Get.back(),
         ),
       ),
       body: SingleChildScrollView(

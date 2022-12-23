@@ -7,7 +7,9 @@ import 'package:get_storage/get_storage.dart';
 import 'package:pharmacy_mobile/constrains/text.dart';
 import 'package:pharmacy_mobile/constrains/theme.dart';
 import 'package:pharmacy_mobile/controllers/app_controller.dart';
+import 'package:pharmacy_mobile/controllers/cart_controller.dart';
 import 'package:pharmacy_mobile/screens/nav_hub/nav_bar_hub.dart';
+import 'package:pharmacy_mobile/screens/setting/setting.dart';
 import 'package:pharmacy_mobile/screens/signin/signin.dart';
 import 'package:pharmacy_mobile/screens/signup/signup.dart';
 
@@ -17,7 +19,7 @@ void main() async {
   await GetStorage.init();
 
   //set device status and navigation bar color
-  setStatusBarColor();
+  // setStatusBarColor();
 
   //init app controller
   initController();
@@ -32,6 +34,7 @@ void main() async {
 
 void initController() {
   Get.put(AppController());
+  Get.put(CartController());
 }
 
 void setStatusBarColor() {
@@ -58,7 +61,7 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           themeMode: ThemeMode.system,
-          theme: themeLight,
+          theme: themeLight, darkTheme: themeDark,
           translations: ApplicationText(), locale: const Locale('en', 'US'),
           // darkTheme: themeDark,
           defaultTransition: Transition.cupertino,
@@ -77,6 +80,10 @@ class MyApp extends StatelessWidget {
             GetPage(
               name: '/navhub',
               page: () => const NavBarHub(),
+            ),
+            GetPage(
+              name: '/setting',
+              page: () => const SettingPage(),
             ),
           ],
         );

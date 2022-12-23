@@ -10,15 +10,14 @@ class CartButton extends GetView<AppController> {
   @override
   Widget build(BuildContext context) {
     return NeumorphicButton(
-      style: const NeumorphicStyle(
-        boxShape: NeumorphicBoxShape.circle(),
-        color: Colors.white,
+      style: NeumorphicStyle(
+        boxShape: const NeumorphicBoxShape.circle(),
+        color: context.theme.canvasColor,
         shape: NeumorphicShape.flat,
       ),
       onPressed: fn ?? () => controller.toggleCartDrawer(),
       child: const Icon(
         Icons.shopping_bag_outlined,
-        color: Colors.black,
       ),
     );
   }
@@ -35,7 +34,6 @@ class CartButtonNoNeu extends GetView<AppController> {
       onPressed: () => controller.toggleCartDrawer(),
       icon: const Icon(
         Icons.shopping_bag_outlined,
-        color: Colors.black,
       ),
     );
   }

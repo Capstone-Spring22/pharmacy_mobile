@@ -16,26 +16,8 @@ class SearchScreen extends GetView<AppController> {
 
   @override
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //   drawer: const MenuDrawer(),
-    //   endDrawer: const CartDrawer(),
-    //   appBar: PharmacyAppBar(
-    //     leftWidget: const PharmacyBackButton(),
-    //     midText: "Search",
-    //     rightWidget: const CartButton(),
-    //     titleStyle: context.textTheme.headlineMedium!.copyWith(fontSize: 30.h),
-    //   ),
-    //   body: Padding(
-    //     padding: EdgeInsets.symmetric(horizontal: 20.w),
-    //     child: RoundedSearchInput(
-    //       enable: true,
-    //       hintText: "search_home".tr,
-    //       textController: TextEditingController(),
-    //       color: Colors.transparent,
-    //     ),
-    //   ),
-    // );
     return OpenContainer(
+      closedColor: context.theme.canvasColor,
       closedElevation: 0,
       closedBuilder: (context, action) {
         return Padding(

@@ -1,6 +1,8 @@
+import 'package:animations/animations.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:pharmacy_mobile/screens/setting/setting.dart';
 import 'package:pharmacy_mobile/widgets/button.dart';
 
 class MenuDrawer extends StatelessWidget {
@@ -12,13 +14,7 @@ class MenuDrawer extends StatelessWidget {
       child: Drawer(
         backgroundColor: Colors.transparent,
         child: Container(
-          decoration: const BoxDecoration(
-            color: Color(0xFFFAFCFF),
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(40),
-              bottomRight: Radius.circular(40),
-            ),
-          ),
+          color: context.theme.canvasColor,
           child: ListView(
             children: <Widget>[
               Container(
@@ -62,50 +58,29 @@ class MenuDrawer extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 12),
-                    Builder(builder: (context) {
-                      String selectedValue = "drug";
-                      return StatefulBuilder(
-                        builder: (context, setState) {
-                          return DropdownButton(
-                            isExpanded: true,
-                            hint: const Text("Category"),
-                            value: selectedValue,
-                            items: const [
-                              DropdownMenuItem(
-                                value: 'drug',
-                                child: Text("Drug"),
-                              ),
-                              DropdownMenuItem(
-                                value: 'shower',
-                                child: Text("Shower"),
-                              ),
-                              DropdownMenuItem(
-                                value: 'kids',
-                                child: Text("Kids"),
-                              ),
-                            ],
-                            onChanged: (value) {
-                              setState(
-                                () {
-                                  print(value);
-                                  selectedValue = value!;
-                                },
-                              );
-                            },
-                          );
-                        },
-                      );
-                    }),
                     const Divider(color: Colors.white70),
                     MenuItem(
                       text: 'Notifications',
                       icon: Icons.notifications_outlined,
-                      onClicked: () => selectedItem(context, 5),
+                      onClicked: () {},
                     ),
-                    MenuItem(
-                      text: 'Settings',
-                      icon: Icons.settings,
-                      onClicked: () => selectedItem(context, 6),
+                    // MenuItem(
+                    //   text: 'Settings',
+                    //   icon: Icons.settings,
+                    //   onClicked: () => Get.toNamed('/setting'),
+                    // ),
+                    OpenContainer(
+                      closedBuilder: (context, action) {
+                        return const MenuItem(
+                          text: 'Settings',
+                          icon: Icons.settings,
+                        );
+                      },
+                      closedElevation: 0,
+                      closedColor: Colors.transparent,
+                      openBuilder: (context, action) {
+                        return const SettingPage();
+                      },
                     ),
                   ],
                 ),
@@ -115,22 +90,6 @@ class MenuDrawer extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void selectedItem(BuildContext context, int index) {
-    Navigator.of(context).pop();
-    switch (index) {
-      case 0:
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => const Scaffold(), // Page 1
-        ));
-        break;
-      case 1:
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => const Scaffold(), // Page 2
-        ));
-        break;
-    }
   }
 }
 
@@ -148,13 +107,9 @@ class MenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const color = Colors.black;
-    const hoverColor = Colors.white70;
-
     return ListTile(
-      leading: Icon(icon, color: color),
+      leading: Icon(icon),
       title: Text(text, style: context.textTheme.bodyLarge),
-      hoverColor: hoverColor,
       onTap: onClicked,
     );
   }

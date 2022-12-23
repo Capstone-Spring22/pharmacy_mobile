@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/controllers/app_controller.dart';
+import 'package:pharmacy_mobile/models/product.dart';
 import 'package:pharmacy_mobile/screens/drawer/cart_drawer.dart';
 import 'package:pharmacy_mobile/screens/drawer/menu_drawer.dart';
 import 'package:pharmacy_mobile/screens/home/widgets/cart_btn.dart';
@@ -13,10 +14,11 @@ import 'package:pharmacy_mobile/widgets/back_button.dart';
 
 class ProductDetailScreen extends GetView<AppController> {
   const ProductDetailScreen(
-      {super.key, required this.title, required this.img});
+    this.product, {
+    super.key,
+  });
 
-  final String title;
-  final String img;
+  final PharmacyProduct product;
 
   @override
   Widget build(BuildContext context) {
@@ -45,13 +47,13 @@ class ProductDetailScreen extends GetView<AppController> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           CachedNetworkImage(
-            imageUrl: img,
+            imageUrl: product.img,
             width: double.infinity,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: AutoSizeText(
-              title,
+              product.name,
               maxLines: 3,
               style: context.textTheme.labelLarge!.copyWith(fontSize: 24),
             ),

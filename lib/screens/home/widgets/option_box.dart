@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class OptionBox extends StatelessWidget {
   const OptionBox(
@@ -17,8 +18,8 @@ class OptionBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return NeumorphicButton(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-      style: const NeumorphicStyle(
-        color: Colors.white,
+      style: NeumorphicStyle(
+        color: context.theme.canvasColor,
         lightSource: LightSource.top,
       ),
       onPressed: () {},
@@ -41,7 +42,7 @@ class OptionBox extends StatelessWidget {
             AutoSizeText(
               text,
               maxLines: 2,
-              style: const TextStyle(fontWeight: FontWeight.w200),
+              style: const TextStyle(fontWeight: FontWeight.w300),
             )
           ],
         ),

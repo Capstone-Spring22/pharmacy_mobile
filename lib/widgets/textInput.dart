@@ -44,27 +44,25 @@ class _PasswordInputState extends State<PasswordInput> {
               obscureText: !pwdVisibility,
               decoration: InputDecoration(
                 label: Text(widget.text),
-                labelStyle: TextStyle(color: primaryColor),
                 filled: true,
-                fillColor: accentColor,
                 hintStyle: context.textTheme.bodySmall,
                 contentPadding:
                     const EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(color: primaryColor, width: 1.0),
-                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                border: const OutlineInputBorder(
+                  borderSide: BorderSide(width: 1.0),
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
                 ),
                 focusedBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: secondaryColor, width: 1.0),
+                  borderSide: BorderSide(width: 1.0),
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
                 ),
                 errorBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: errorColor, width: 1.0),
+                  borderSide: BorderSide(width: 1.0),
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
                 ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: primaryColor, width: 1.0),
-                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(width: 1.0),
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
                 ),
                 suffixIcon: InkWell(
                   onTap: () => setState(
@@ -124,27 +122,25 @@ class TextInput extends StatelessWidget {
           style: context.textTheme.bodyMedium,
           decoration: InputDecoration(
             label: Text(text),
-            labelStyle: TextStyle(color: primaryColor),
             filled: true,
-            fillColor: Colors.transparent,
             hintStyle: context.textTheme.bodySmall,
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
             border: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.white, width: 1.0),
+              // borderSide: BorderSide(color: Colors.white, width: 1.0),
               borderRadius: BorderRadius.all(Radius.circular(10.0)),
             ),
             focusedBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: secondaryColor, width: 1.0),
+              // borderSide: BorderSide(color: secondaryColor, width: 1.0),
               borderRadius: BorderRadius.all(Radius.circular(10.0)),
             ),
             errorBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: errorColor, width: 1.0),
+              // borderSide: BorderSide(color: errorColor, width: 1.0),
               borderRadius: BorderRadius.all(Radius.circular(10.0)),
             ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: primaryColor, width: 1.0),
-              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+            enabledBorder: const OutlineInputBorder(
+              // borderSide: BorderSide(color: primaryColor, width: 1.0),
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
             ),
           ),
         ),

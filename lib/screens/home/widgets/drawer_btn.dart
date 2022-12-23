@@ -13,15 +13,14 @@ class DrawerButton extends GetView<AppController> {
   @override
   Widget build(BuildContext context) {
     return NeumorphicButton(
-      style: const NeumorphicStyle(
-        boxShape: NeumorphicBoxShape.circle(),
-        color: Colors.white,
+      style: NeumorphicStyle(
+        boxShape: const NeumorphicBoxShape.circle(),
+        color: context.theme.canvasColor,
         shape: NeumorphicShape.flat,
       ),
       onPressed: fn ?? () => controller.toggleMenuDrawer(),
       child: const Icon(
         Icons.menu,
-        color: Colors.black,
       ),
     );
   }
@@ -38,7 +37,7 @@ class DrawerButtonNoNeu extends GetView<AppController> {
         onPressed: () => controller.toggleMenuDrawer(),
         icon: const Icon(
           Icons.menu,
-          color: Colors.black,
+          // color: Colors.black,
         ));
   }
 }

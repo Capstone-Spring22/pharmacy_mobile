@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pharmacy_mobile/screens/cart/cart.dart';
 
 class CartDrawer extends StatelessWidget {
   const CartDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.blue,
+    return Drawer(
+      width: Get.width * 0.8,
+      child: const CartScreen(),
     );
   }
 }

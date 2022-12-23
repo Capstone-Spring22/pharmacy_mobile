@@ -23,7 +23,9 @@ class _GenderSelectState extends State<GenderSelect> {
             height: 100.w,
             width: 100.w,
             decoration: BoxDecoration(
-              color: widget.isMale ? Colors.transparent : Colors.grey[200],
+              color: widget.isMale
+                  ? Colors.transparent
+                  : context.theme.canvasColor,
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
                 color: widget.isMale ? Colors.blue : Colors.transparent,
@@ -35,12 +37,15 @@ class _GenderSelectState extends State<GenderSelect> {
                 Icon(
                   Icons.male,
                   size: 50.w,
-                  color: widget.isMale ? Colors.blue : Colors.black,
+                  color:
+                      widget.isMale ? Colors.blue : context.theme.disabledColor,
                 ),
                 Text(
                   "Male",
                   style: context.textTheme.labelLarge!.copyWith(
-                    color: widget.isMale ? Colors.blue : Colors.black,
+                    color: widget.isMale
+                        ? Colors.blue
+                        : context.theme.disabledColor,
                   ),
                 )
               ],
@@ -53,7 +58,9 @@ class _GenderSelectState extends State<GenderSelect> {
             height: 100.w,
             width: 100.w,
             decoration: BoxDecoration(
-              color: widget.isMale ? Colors.grey[200] : Colors.transparent,
+              color: widget.isMale
+                  ? context.theme.canvasColor
+                  : Colors.transparent,
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
                   color: widget.isMale ? Colors.transparent : Colors.pink),
@@ -64,12 +71,15 @@ class _GenderSelectState extends State<GenderSelect> {
                 Icon(
                   Icons.female,
                   size: 50.w,
-                  color: widget.isMale ? Colors.black : Colors.pink,
+                  color:
+                      widget.isMale ? context.theme.disabledColor : Colors.pink,
                 ),
                 Text(
                   "Female",
                   style: context.textTheme.labelLarge!.copyWith(
-                    color: widget.isMale ? Colors.black : Colors.pink,
+                    color: widget.isMale
+                        ? context.theme.disabledColor
+                        : Colors.pink,
                   ),
                 )
               ],

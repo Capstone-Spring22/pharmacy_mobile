@@ -4,7 +4,7 @@ class ApplicationText extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
         'en_US': {
-          'title': 'Better Healthy',
+          'title': 'Better Health',
           'welcome_text': 'Place your order select pharmacy recive it',
           'search_home': 'Type here to search',
           'drug_btn': 'Claim and prescription',
@@ -14,9 +14,10 @@ class ApplicationText extends Translations {
           'welcome_morning': 'Good Morning',
           'welcome_noon': 'Good Afternoon',
           'welcome_night': 'Good Evening',
+          'items': 'Items',
         },
         'vn_VN': {
-          'title': 'Better Healthy',
+          'title': 'Better Health',
         }
       };
 }
