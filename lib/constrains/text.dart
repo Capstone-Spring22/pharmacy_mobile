@@ -4,6 +4,7 @@ class ApplicationText extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
         'en_US': {
+          'intro_text': 'Welcome to Better Health',
           'title': 'Better Health',
           'welcome_text': 'Place your order select pharmacy recive it',
           'search_home': 'Type here to search',

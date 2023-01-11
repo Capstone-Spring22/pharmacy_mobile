@@ -61,9 +61,10 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           themeMode: ThemeMode.system,
-          theme: themeLight, darkTheme: themeDark,
-          translations: ApplicationText(), locale: const Locale('en', 'US'),
-          // darkTheme: themeDark,
+          theme: themeLight,
+          darkTheme: themeDark,
+          translations: ApplicationText(),
+          locale: const Locale('en', 'US'),
           defaultTransition: Transition.cupertino,
           title: 'Pharmacy App',
           initialRoute: '/intro',

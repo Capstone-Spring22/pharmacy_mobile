@@ -4,7 +4,11 @@ final themeLight = ThemeData(
   brightness: Brightness.light,
   // scaffoldBackgroundColor: Colors.white,
   useMaterial3: true,
-
+  // elevatedButtonTheme: ElevatedButtonThemeData(
+  //   style: ButtonStyle(
+  //     backgroundColor: MaterialStateProperty.all(Colors.blue),
+  //   ),
+  // )
   // textTheme: TextTheme(
   //   displayLarge: const TextStyle(
   //     fontSize: 72.0,

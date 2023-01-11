@@ -42,7 +42,7 @@ class IntroWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               AutoSizeText(
-                "Welcome to Pharmacy",
+                "intro_text".tr,
                 textAlign: TextAlign.center,
                 style: context.textTheme.headlineMedium,
               ),
