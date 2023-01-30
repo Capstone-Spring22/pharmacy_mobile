@@ -16,6 +16,8 @@ class ApplicationText extends Translations {
           'welcome_noon': 'Good Afternoon',
           'welcome_night': 'Good Evening',
           'items': 'Items',
+          'cart_title': 'Cart',
+          'checkout': 'Checkout',
         },
         'vn_VN': {
           'title': 'Better Health',

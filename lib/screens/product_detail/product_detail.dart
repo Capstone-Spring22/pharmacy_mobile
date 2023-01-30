@@ -24,10 +24,6 @@ class ProductDetailScreen extends GetView<AppController> {
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> drawerKey = GlobalKey();
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(title,maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(),),
-      //   centerTitle: true,
-      // ),
       key: drawerKey,
       drawer: const MenuDrawer(),
       endDrawer: const CartDrawer(),
@@ -38,7 +34,7 @@ class ProductDetailScreen extends GetView<AppController> {
             DrawerButton(fn: () => drawerKey.currentState!.openDrawer()),
           ],
         ),
-        midText: "Better Healthy",
+        midText: "title".tr,
         rightWidget:
             CartButton(fn: () => drawerKey.currentState!.openEndDrawer()),
         titleStyle: context.textTheme.headlineMedium!.copyWith(fontSize: 30.h),
@@ -57,7 +53,8 @@ class ProductDetailScreen extends GetView<AppController> {
               maxLines: 3,
               style: context.textTheme.labelLarge!.copyWith(fontSize: 24),
             ),
-          )
+          ),
+          FilledButton(onPressed: () {}, child: const Text("Add to Cart"))
         ],
       ),
     );

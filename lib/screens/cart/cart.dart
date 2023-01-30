@@ -8,29 +8,40 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      appBar: AppBar(
-        elevation: 0,
-        title: AutoSizeText(
-          textAlign: TextAlign.center,
-          "Cart",
-          maxLines: 1,
-          style: context.textTheme.headlineMedium,
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: Column(
-          children: [
-            AutoSizeText(
-              "${"items".tr}:",
-              style: context.textTheme.headlineSmall,
+    return Material(
+      type: MaterialType.transparency,
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          title: Hero(
+            tag: "cart_title".tr,
+            child: AutoSizeText(
+              textAlign: TextAlign.center,
+              "cart_title".tr,
+              maxLines: 1,
+              style: context.textTheme.headlineMedium,
             ),
-            const Expanded(child: CartItemListView()),
-          ],
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Column(
+            children: [
+              const Expanded(child: CartItemListView()),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                child: SizedBox(
+                  width: Get.width * 0.5,
+                  child: FilledButton(
+                    onPressed: () => Get.toNamed("/checkout"),
+                    child: const Text("Checkout"),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -50,13 +61,19 @@ class CartItemListView extends StatelessWidget {
           itemBuilder: (context, index) {
             return Column(
               children: [
-                Image.network(
-                  controller.listCart[index].product.img,
+                Hero(
+                  tag: controller.listCart[index].product.img,
+                  child: Image.network(
+                    controller.listCart[index].product.img,
+                  ),
                 ),
-                AutoSizeText(
-                  controller.listCart[index].product.name.toString(),
-                  maxLines: 2,
-                  style: context.textTheme.headlineSmall,
+                Hero(
+                  tag: controller.listCart[index].product.name.toString(),
+                  child: AutoSizeText(
+                    controller.listCart[index].product.name.toString(),
+                    maxLines: 2,
+                    style: context.textTheme.headlineSmall,
+                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -67,7 +84,8 @@ class CartItemListView extends StatelessWidget {
                       duration: const Duration(milliseconds: 300),
                       child: AutoSizeText(
                         "${controller.listCart[index].price.toString()} VND",
-                        style: context.textTheme.headlineSmall,
+                        style: context.theme.primaryTextTheme.bodyLarge!
+                            .copyWith(color: Colors.black),
                       ),
                     ),
                     Row(
@@ -82,10 +100,6 @@ class CartItemListView extends StatelessWidget {
                               color: Colors.transparent,
                               border:
                                   Border.all(width: 2, color: Colors.white)),
-                          // child: Text(
-                          //   controller.listCart[index].quantity.toString(),
-                          //   maxLines: 1,
-                          // ),
                           child: AnimatedSwitcher(
                             key: UniqueKey(),
                             switchInCurve: Curves.easeIn,

@@ -10,83 +10,80 @@ class MenuDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Drawer(
+    return Drawer(
+      child: Scaffold(
         backgroundColor: Colors.transparent,
-        child: Container(
-          color: context.theme.canvasColor,
-          child: ListView(
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.all(15.0),
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      radius: 80.w,
-                      child: Icon(
-                        Icons.account_circle,
-                        size: 100.w,
+        body: ListView(
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    radius: 80.w,
+                    child: Icon(
+                      Icons.account_circle,
+                      size: 100.w,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Hero(
+                            tag: 'signupBtn',
+                            child: PharmacyButton(
+                              onPressed: () => Get.toNamed("/signup"),
+                              text: "Sign up",
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Hero(
-                              tag: 'signupBtn',
-                              child: PharmacyButton(
-                                onPressed: () => Get.toNamed("/signup"),
-                                text: "Sign up",
-                              ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Hero(
+                            tag: 'signinBtn',
+                            child: PharmacyButton(
+                              onPressed: () => Get.toNamed("/signin"),
+                              text: "Sign In",
                             ),
                           ),
                         ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Hero(
-                              tag: 'signinBtn',
-                              child: PharmacyButton(
-                                onPressed: () => Get.toNamed("/signin"),
-                                text: "Sign In",
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    const Divider(color: Colors.white70),
-                    MenuItem(
-                      text: 'Notifications',
-                      icon: Icons.notifications_outlined,
-                      onClicked: () {},
-                    ),
-                    // MenuItem(
-                    //   text: 'Settings',
-                    //   icon: Icons.settings,
-                    //   onClicked: () => Get.toNamed('/setting'),
-                    // ),
-                    OpenContainer(
-                      closedBuilder: (context, action) {
-                        return const MenuItem(
-                          text: 'Settings',
-                          icon: Icons.settings,
-                        );
-                      },
-                      closedElevation: 0,
-                      closedColor: Colors.transparent,
-                      openBuilder: (context, action) {
-                        return const SettingPage();
-                      },
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  const Divider(color: Colors.white70),
+                  MenuItem(
+                    text: 'Notifications',
+                    icon: Icons.notifications_outlined,
+                    onClicked: () {},
+                  ),
+                  // MenuItem(
+                  //   text: 'Settings',
+                  //   icon: Icons.settings,
+                  //   onClicked: () => Get.toNamed('/setting'),
+                  // ),
+                  OpenContainer(
+                    closedBuilder: (context, action) {
+                      return const MenuItem(
+                        text: 'Settings',
+                        icon: Icons.settings,
+                      );
+                    },
+                    closedElevation: 0,
+                    closedColor: Colors.transparent,
+                    openBuilder: (context, action) {
+                      return const SettingPage();
+                    },
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

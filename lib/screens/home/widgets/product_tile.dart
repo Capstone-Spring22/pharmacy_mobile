@@ -89,61 +89,79 @@ class _BuyButtonState extends State<BuyButton> {
             child: Text(
               "${formatter.format(widget.product.price).toString()} VND",
               textAlign: TextAlign.center,
-              style: context.textTheme.labelLarge,
+              style: context.textTheme.labelLarge!.copyWith(color: Colors.blue),
             ),
           ),
-          Expanded(
-            child: NeumorphicButton(
-              padding: EdgeInsets.zero,
-              provideHapticFeedback: true,
-              style: const NeumorphicStyle(
-                color: Colors.blue,
-                shape: NeumorphicShape.flat,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  IconButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
-                      setState(() => quan > 1 ? --quan : quan = 1);
-                    },
-                    icon: const Icon(
-                      Icons.remove,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const Icon(
-                    Icons.shopping_cart_checkout_sharp,
-                    color: Colors.white,
-                  ),
-                  AnimatedSwitcher(
-                    switchInCurve: Curves.easeIn,
-                    duration: const Duration(milliseconds: 300),
-                    child: quan > 1 ? buyMoreChild : buyOneChild,
-                  ),
-                  IconButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
-                      setState(() => ++quan);
-                    },
-                    icon: const Icon(
-                      Icons.add,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-              onPressed: () {
-                final cart = CartItem(
-                    product: widget.product,
-                    quantity: quan,
-                    price: widget.product.price * quan);
+          // Expanded(
+          //   child: NeumorphicButton(
+          //     padding: EdgeInsets.zero,
+          //     provideHapticFeedback: true,
+          //     style: const NeumorphicStyle(
+          //       color: Colors.white,
+          //       lightSource: LightSource.top,
+          //       shape: NeumorphicShape.flat,
+          //     ),
+          //     // child: Row(
+          //     //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //     //   children: [
+          //     //     IconButton(
+          //     //       padding: EdgeInsets.zero,
+          //     //       onPressed: () {
+          //     //         setState(() => quan > 1 ? --quan : quan = 1);
+          //     //       },
+          //     //       icon: const Icon(
+          //     //         Icons.remove,
+          //     //         color: Colors.white,
+          //     //       ),
+          //     //     ),
+          //     //     const Icon(
+          //     //       Icons.shopping_cart_checkout_sharp,
+          //     //       color: Colors.white,
+          //     //     ),
+          //     //     AnimatedSwitcher(
+          //     //       switchInCurve: Curves.easeIn,
+          //     //       duration: const Duration(milliseconds: 300),
+          //     //       child: quan > 1 ? buyMoreChild : buyOneChild,
+          //     //     ),
+          //     //     IconButton(
+          //     //       padding: EdgeInsets.zero,
+          //     //       onPressed: () {
+          //     //         setState(() => ++quan);
+          //     //       },
+          //     //       icon: const Icon(
+          //     //         Icons.add,
+          //     //         color: Colors.white,
+          //     //       ),
+          //     //     ),
+          //     //   ],
+          //     // ),
+          //     child: SizedBox(width: Get.width * 0.1, child: const Text("Buy")),
+          //     onPressed: () {
+          //       final cart = CartItem(
+          //           product: widget.product,
+          //           quantity: quan,
+          //           price: widget.product.price * quan);
 
-                cartController.addToCart(cart);
-              },
+          //       cartController.addToCart(cart);
+          //     },
+          //   ),
+          // )
+          Expanded(
+            child: SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                onPressed: () {
+                  final cart = CartItem(
+                      product: widget.product,
+                      quantity: quan,
+                      price: widget.product.price * quan);
+
+                  cartController.addToCart(cart);
+                },
+                child: const Text("Add to Cart"),
+              ),
             ),
-          )
+          ),
         ],
       ),
     );

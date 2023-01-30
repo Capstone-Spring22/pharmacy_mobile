@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class PharmacyButton extends StatelessWidget {
   const PharmacyButton(
@@ -9,11 +8,10 @@ class PharmacyButton extends StatelessWidget {
   final VoidCallback onPressed;
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return FilledButton(
       onPressed: onPressed,
       child: AutoSizeText(
         text,
-        style: context.textTheme.labelLarge,
       ),
     );
   }

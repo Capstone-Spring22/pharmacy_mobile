@@ -43,18 +43,20 @@ class ListItemBuilder extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       childAspectRatio: 0.8,
       children: listProducts
-          .map((e) => OpenContainer(
-                closedElevation: 0,
-                tappable: false,
-                closedBuilder: (context, action) => Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: ProductTile(
-                    fn: () => action(),
-                    product: e,
-                  ),
+          .map(
+            (e) => OpenContainer(
+              closedElevation: 0,
+              tappable: false,
+              closedBuilder: (context, action) => Padding(
+                padding: const EdgeInsets.all(20),
+                child: ProductTile(
+                  fn: () => action(),
+                  product: e,
                 ),
-                openBuilder: (context, action) => ProductDetailScreen(e),
-              ))
+              ),
+              openBuilder: (context, action) => ProductDetailScreen(e),
+            ),
+          )
           .toList(),
     );
   }

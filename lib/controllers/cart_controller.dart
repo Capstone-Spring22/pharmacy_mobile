@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/models/cart.dart';
 
@@ -7,23 +9,22 @@ class CartController extends GetxController {
   RxList<CartItem> listCart = <CartItem>[].obs;
 
   void addToCart(CartItem item) {
-    listCart.add(item);
+    var f = checkExist(item);
+    f ? increaseQuan(item) : listCart.add(item);
+    log(f.toString());
     recalcPrice(item.product.id);
   }
 
-  void removeCart(CartItem item) {
-    listCart.remove(item);
-    recalcPrice(item.product.id);
-  }
+  void removeCart(CartItem item) => listCart.remove(item);
 
   void increaseQuan(CartItem item) =>
-      updateQuantity(item.product.id, item.quantity + 1);
+      updateQuantity(item.product.id, itemQuantity(item.product.id) + 1);
 
   void decreaseQuan(CartItem item) {
-    if (item.quantity == 1) {
+    if (itemQuantity(item.product.id) == 1) {
       removeCart(item);
     } else {
-      updateQuantity(item.product.id, item.quantity - 1);
+      updateQuantity(item.product.id, itemQuantity(item.product.id) - 1);
     }
   }
 
@@ -39,6 +40,12 @@ class CartController extends GetxController {
     } else {
       return listCart[index!];
     }
+  }
+
+  bool checkExist(CartItem item) {
+    var res = listCart
+        .firstWhereOrNull((element) => element.product.id == item.product.id);
+    return res != null;
   }
 
   void updateQuantity(String id, num newQuantity) {

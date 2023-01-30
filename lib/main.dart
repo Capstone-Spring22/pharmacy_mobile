@@ -8,6 +8,7 @@ import 'package:pharmacy_mobile/constrains/text.dart';
 import 'package:pharmacy_mobile/constrains/theme.dart';
 import 'package:pharmacy_mobile/controllers/app_controller.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
+import 'package:pharmacy_mobile/screens/checkout/checkout.dart';
 import 'package:pharmacy_mobile/screens/nav_hub/nav_bar_hub.dart';
 import 'package:pharmacy_mobile/screens/setting/setting.dart';
 import 'package:pharmacy_mobile/screens/signin/signin.dart';
@@ -77,6 +78,10 @@ class MyApp extends StatelessWidget {
             GetPage(
               name: '/signup',
               page: () => const SignUpScreen(),
+            ),
+            GetPage(
+              name: '/checkout',
+              page: () => const CheckoutScreen(),
             ),
             GetPage(
               name: '/navhub',

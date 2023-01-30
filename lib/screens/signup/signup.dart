@@ -129,12 +129,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       TextButton(
                         onPressed: () => Get.offNamed("/signin"),
-                        child: Text(
-                          "Sign in",
-                          style: context.textTheme.labelLarge!.copyWith(
-                            color: const Color(0xFFFEC107),
-                          ),
-                        ),
+                        child: const Text("Sign in"),
                       )
                     ],
                   )
