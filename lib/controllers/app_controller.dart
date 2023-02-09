@@ -19,7 +19,6 @@ class AppController extends GetxController {
   RxBool isDarkMode = false.obs;
 
   void toggleTheme() {
-    print("Theme: $isDarkMode");
     final box = GetStorage();
     box.write('theme', isDarkMode.value);
     Get.changeTheme(isDarkMode.value ? themeLight : themeDark);

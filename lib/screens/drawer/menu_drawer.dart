@@ -1,9 +1,12 @@
 import 'package:animations/animations.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:pharmacy_mobile/controllers/user_controller.dart';
 import 'package:pharmacy_mobile/screens/setting/setting.dart';
-import 'package:pharmacy_mobile/widgets/button.dart';
+
+import 'widgets/auth_button_row.dart';
 
 class MenuDrawer extends StatelessWidget {
   const MenuDrawer({super.key});
@@ -13,77 +16,55 @@ class MenuDrawer extends StatelessWidget {
     return Drawer(
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: ListView(
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.all(15.0),
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    radius: 80.w,
-                    child: Icon(
-                      Icons.account_circle,
-                      size: 100.w,
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Hero(
-                            tag: 'signupBtn',
-                            child: PharmacyButton(
-                              onPressed: () => Get.toNamed("/signup"),
-                              text: "Sign up",
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Hero(
-                            tag: 'signinBtn',
-                            child: PharmacyButton(
-                              onPressed: () => Get.toNamed("/signin"),
-                              text: "Sign In",
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  const Divider(color: Colors.white70),
-                  MenuItem(
-                    text: 'Notifications',
-                    icon: Icons.notifications_outlined,
-                    onClicked: () {},
-                  ),
-                  // MenuItem(
-                  //   text: 'Settings',
-                  //   icon: Icons.settings,
-                  //   onClicked: () => Get.toNamed('/setting'),
-                  // ),
-                  OpenContainer(
-                    closedBuilder: (context, action) {
-                      return const MenuItem(
-                        text: 'Settings',
-                        icon: Icons.settings,
-                      );
-                    },
-                    closedElevation: 0,
-                    closedColor: Colors.transparent,
-                    openBuilder: (context, action) {
-                      return const SettingPage();
-                    },
-                  ),
-                ],
+        body: Container(
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
+            children: [
+              CircleAvatar(
+                radius: 80.w,
+                child: Icon(
+                  Icons.account_circle,
+                  size: 100.w,
+                ),
               ),
-            ),
-          ],
+              GetX<UserController>(
+                builder: (controller) => controller.isLoggedIn.value
+                    ? Text(controller
+                        .formatPhoneNumber(controller.user.value.phone!))
+                    : const AuthButtonRow(),
+              ),
+              const SizedBox(height: 12),
+              const Divider(color: Colors.white70),
+              MenuItem(
+                text: 'Notifications',
+                icon: Icons.notifications_outlined,
+                onClicked: () {},
+              ),
+              OpenContainer(
+                closedBuilder: (context, action) {
+                  return const MenuItem(
+                    text: 'Settings',
+                    icon: Icons.settings,
+                  );
+                },
+                closedElevation: 0,
+                closedColor: Colors.transparent,
+                openBuilder: (context, action) {
+                  return const SettingPage();
+                },
+              ),
+              const Spacer(),
+              GetX<UserController>(
+                builder: (controller) => controller.isLoggedIn.value
+                    ? MenuItem(
+                        text: "Logout",
+                        icon: Icons.logout_outlined,
+                        onClicked: () => FirebaseAuth.instance.signOut(),
+                      )
+                    : Container(),
+              ),
+            ],
+          ),
         ),
       ),
     );

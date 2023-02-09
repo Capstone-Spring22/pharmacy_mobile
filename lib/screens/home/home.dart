@@ -4,6 +4,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:pharmacy_mobile/controllers/cart_controller.dart';
 import 'package:pharmacy_mobile/helpers/qr_scanner.dart';
 import 'package:pharmacy_mobile/screens/home/widgets/cart_btn.dart';
 import 'package:pharmacy_mobile/screens/home/widgets/drawer_btn.dart';
@@ -32,10 +33,16 @@ class HomeScreen extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 5),
             child: DrawerButtonNoNeu(),
           ),
-          actions: const [
+          actions: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5),
-              child: CartButtonNoNeu(),
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              child: GetX<CartController>(builder: (cartCtrl) {
+                return Badge(
+                  isLabelVisible: cartCtrl.listCart.isNotEmpty,
+                  label: Text(cartCtrl.listCart.length.toString()),
+                  child: const CartButtonNoNeu(),
+                );
+              }),
             )
           ],
           // appBarColor: const Color(0xFFFAFCFF),

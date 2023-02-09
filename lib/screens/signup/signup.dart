@@ -6,7 +6,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:pharmacy_mobile/screens/signup/widgets/gender.dart';
 import 'package:pharmacy_mobile/widgets/appbar.dart';
 import 'package:pharmacy_mobile/widgets/scroll_behavior.dart';
-import 'package:pharmacy_mobile/widgets/textInput.dart';
 
 import '../../widgets/button.dart';
 
@@ -66,36 +65,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 040.w),
                     child: Form(
                       child: Column(
-                        children: [
-                          TextInput(
-                            inputController: t1,
-                            text: "Name",
-                            kbType: TextInputType.name,
-                          ),
-                          TextInput(
-                            inputController: t1,
-                            text: "Phone Number",
-                            kbType: TextInputType.phone,
-                          ),
-                          TextInput(
-                            inputController: t1,
-                            text: "Address",
-                            kbType: TextInputType.streetAddress,
-                          ),
-                          TextInput(
-                            inputController: t1,
-                            text: "Age",
-                            kbType: TextInputType.phone,
-                          ),
-                          PasswordInput(
-                            textEditingController: t2,
-                            text: "Password",
-                          ),
-                          PasswordInput(
-                            textEditingController: t2,
-                            text: "Confirm Password",
-                          ),
-                        ],
+                        children: const [],
                       ),
                     ),
                   ),

@@ -44,7 +44,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.pharmacy_mobile"
+        applicationId "com.valkdokk.pharmacy_customer"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion 21
@@ -68,4 +68,10 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    // Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:31.2.0')
+
+    // Add the dependency for the Firebase Authentication library
+    // When NOT using the BoM, you must specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
 }

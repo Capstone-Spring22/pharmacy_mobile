@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "24071304025",
+    "project_id": "better-health-3e75a",
+    "storage_bucket": "better-health-3e75a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24071304025:android:f0474108ed7df5946e1248",
+        "android_client_info": {
+          "package_name": "com.valkdokk.pharmacy_customer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "24071304025-82jq4sok2jpgjicgd9eimdeso59idkf5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAltysx_MWwv_JO89BOAvR-lgvVcJ7nPwk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "24071304025-82jq4sok2jpgjicgd9eimdeso59idkf5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "24071304025-fdsc3oks4pi33i548o50k2nkp70as76l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.pharmacyMobile"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

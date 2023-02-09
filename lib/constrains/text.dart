@@ -18,6 +18,7 @@ class ApplicationText extends Translations {
           'items': 'Items',
           'cart_title': 'Cart',
           'checkout': 'Checkout',
+          'currency_symbol': '₫'
         },
         'vn_VN': {
           'title': 'Better Health',
