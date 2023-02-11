@@ -41,7 +41,7 @@ class ListItemBuilder extends StatelessWidget {
       crossAxisCount: 2,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      childAspectRatio: 0.8,
+      childAspectRatio: .8,
       children: listProducts
           .map(
             (e) => OpenContainer(
