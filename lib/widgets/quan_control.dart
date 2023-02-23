@@ -47,7 +47,7 @@ class QuantityControl extends GetView<CartController> {
             );
             Get.back();
           },
-          onCancel: () => Get.back(),
+          onCancel: () {},
         );
       },
       child: Row(

@@ -1,9 +1,12 @@
 import 'package:animations/animations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/controllers/user_controller.dart';
+import 'package:pharmacy_mobile/debug/screen.dart';
+import 'package:pharmacy_mobile/screens/alarm/alarm.dart';
 import 'package:pharmacy_mobile/screens/setting/setting.dart';
 
 import 'widgets/auth_button_row.dart';
@@ -43,6 +46,19 @@ class MenuDrawer extends StatelessWidget {
               OpenContainer(
                 closedBuilder: (context, action) {
                   return const MenuItem(
+                    text: 'Medication Remider',
+                    icon: Icons.alarm,
+                  );
+                },
+                closedElevation: 0,
+                closedColor: Colors.transparent,
+                openBuilder: (context, action) {
+                  return const AlarmScreen();
+                },
+              ),
+              OpenContainer(
+                closedBuilder: (context, action) {
+                  return const MenuItem(
                     text: 'Settings',
                     icon: Icons.settings,
                   );
@@ -53,6 +69,20 @@ class MenuDrawer extends StatelessWidget {
                   return const SettingPage();
                 },
               ),
+              if (kDebugMode)
+                OpenContainer(
+                  closedBuilder: (context, action) {
+                    return const MenuItem(
+                      text: 'Debug Screen',
+                      icon: Icons.bug_report_sharp,
+                    );
+                  },
+                  closedElevation: 0,
+                  closedColor: Colors.transparent,
+                  openBuilder: (context, action) {
+                    return const DebugScreen();
+                  },
+                ),
               const Spacer(),
               GetX<UserController>(
                 builder: (controller) => controller.isLoggedIn.value

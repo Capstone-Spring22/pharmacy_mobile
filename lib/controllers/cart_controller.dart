@@ -53,6 +53,14 @@ class CartController extends GetxController {
     }).printError();
   }
 
+  num getTotal() {
+    num total = 0;
+    for (var element in listCart) {
+      total += element.price;
+    }
+    return total;
+  }
+
   void addToCart(CartItem item) {
     var f = checkExist(item);
     f ? increaseQuan(item) : listCart.add(item);

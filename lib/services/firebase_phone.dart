@@ -2,7 +2,6 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'dart:math';
@@ -16,10 +15,12 @@ class PhoneAuth {
     verificationCompleted(AuthCredential credential) async {
       var res = await _auth.signInWithCredential(credential);
       if (res.user != null) {
-        String token = await res.user!.getIdToken();
-        await Clipboard.setData(ClipboardData(text: token));
-        ScaffoldMessenger.of(Get.context!).showSnackBar(
-            const SnackBar(content: Text("Token copied to clipboard")));
+        // String token = await res.user!.getIdToken();
+        // await Clipboard.setData(ClipboardData(text: token));
+        // ScaffoldMessenger.of(Get.context!).showSnackBar(
+        //     const SnackBar(content: Text("Token copied to clipboard")));
+
+        Get.back();
       }
     }
 
@@ -74,4 +75,6 @@ class PhoneAuth {
   void setPhoneNumber(String phoneNumber) {
     _phoneNumber = phoneNumber;
   }
+
+  String getPhoneNumber() => _phoneNumber;
 }

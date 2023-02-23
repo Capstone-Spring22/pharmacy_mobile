@@ -1,9 +1,11 @@
 import 'package:intl/intl.dart';
 import 'package:pharmacy_mobile/controllers/app_controller.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
+import 'package:pharmacy_mobile/controllers/notification_controller.dart';
 
 AppController appController = AppController.instance;
 CartController cartController = CartController.instance;
+NotificationController notiController = NotificationController.instance;
 
 String convertCurrency(num number) {
   var formatter = NumberFormat.currency(

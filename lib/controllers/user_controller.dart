@@ -21,12 +21,16 @@ class UserController extends GetxController {
   // _setInitialScreen(User? user) => isLoggedIn.value = user != null;
   _setUser(User? firebaseUser) async {
     isLoggedIn.value = firebaseUser != null;
-    if (firebaseUser != null) {
-      var firebaseToken = await firebaseUser.getIdToken();
-      Map<String, dynamic> decodedToken = JwtDecoder.decode(firebaseToken);
-      user = PharmacyUser(
-              phone: num.parse(e164ToReadable(decodedToken['phone_number'])))
-          .obs;
+    try {
+      if (firebaseUser != null) {
+        var firebaseToken = await firebaseUser.getIdToken();
+        Map<String, dynamic> decodedToken = JwtDecoder.decode(firebaseToken);
+        user = PharmacyUser(
+                phone: num.parse(e164ToReadable(decodedToken['phone_number'])))
+            .obs;
+      }
+    } catch (e) {
+      Get.log(e.toString());
     }
   }
 

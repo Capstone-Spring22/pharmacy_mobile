@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/app_controller.dart';
 import 'package:pharmacy_mobile/screens/camera/camera.dart';
 import 'package:pharmacy_mobile/screens/chat/chat.dart';
@@ -15,6 +16,7 @@ class NavBarHub extends GetView<AppController> {
 
   @override
   Widget build(BuildContext context) {
+    notiController.requestAppPermissions();
     return Scaffold(
       key: controller.drawerKey,
       extendBody: true,

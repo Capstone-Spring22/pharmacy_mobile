@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/screens/nav_hub/nav_bar_hub.dart';
 
 import '../../widgets/button.dart';
@@ -21,9 +22,7 @@ class IntroductionScreen extends StatelessWidget {
     try {
       final box = GetStorage();
       result = box.read("isFirst");
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
     return result;
   }
 }
@@ -35,6 +34,7 @@ class IntroWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    notiController.requestAppPermissions();
     return Scaffold(
       body: SafeArea(
         child: Center(

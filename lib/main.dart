@@ -1,16 +1,21 @@
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:pharmacy_mobile/constrains/text.dart';
 import 'package:pharmacy_mobile/controllers/app_controller.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
+import 'package:pharmacy_mobile/controllers/notification_controller.dart';
 import 'package:pharmacy_mobile/debug/screen.dart';
 import 'package:pharmacy_mobile/firebase_options.dart';
+import 'package:pharmacy_mobile/screens/address/address.dart';
+import 'package:pharmacy_mobile/screens/alarm/alarm_picker.dart';
 import 'package:pharmacy_mobile/screens/checkout/checkout.dart';
 import 'package:pharmacy_mobile/screens/nav_hub/nav_bar_hub.dart';
 import 'package:pharmacy_mobile/screens/setting/setting.dart';
@@ -27,9 +32,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await GetStorage.init();
-
-  //set device status and navigation bar color
-  // setStatusBarColor();
+  await AndroidAlarmManager.initialize();
+  await dotenv.load(fileName: "dotenv");
 
   //init app controller
   initController();
@@ -46,9 +50,10 @@ void initController() {
   Get.put(AppController());
   Get.put(UserController());
   Get.put(CartController());
+  Get.put(NotificationController());
 
   //TODO: remove debug controller
-  Get.put(MyController());
+  // Get.put(MyController());
 }
 
 void setStatusBarColor() {
@@ -78,7 +83,9 @@ class MyApp extends StatelessWidget {
           // theme: themeLight,
           // darkTheme: themeDark,
           theme: FlexThemeData.light(
-              useMaterial3: true, scheme: FlexScheme.blumineBlue),
+            useMaterial3: true,
+            scheme: FlexScheme.aquaBlue,
+          ),
           translations: ApplicationText(),
           locale: const Locale('en', 'US'),
           defaultTransition: Transition.cupertino,
@@ -89,11 +96,21 @@ class MyApp extends StatelessWidget {
             GetPage(name: '/intro', page: () => const IntroductionScreen()),
             GetPage(
               name: '/signin',
-              page: () => const SignInScreen(),
+              page: () {
+                Get.put(SignupController());
+                return const SignInScreen();
+              },
             ),
             GetPage(
               name: '/signup',
               page: () => const SignUpScreen(),
+            ),
+            GetPage(
+              name: '/address',
+              page: () {
+                Get.put(AddressController());
+                return const AddressSelectionScreen();
+              },
             ),
             GetPage(
               name: '/checkout',
@@ -110,6 +127,10 @@ class MyApp extends StatelessWidget {
             GetPage(
               name: '/demo',
               page: () => const DebugScreen(),
+            ),
+            GetPage(
+              name: '/reminder_picker',
+              page: () => const AlarmPicker(),
             ),
           ],
         );
