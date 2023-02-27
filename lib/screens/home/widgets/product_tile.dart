@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/constrains/theme.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
@@ -70,16 +71,17 @@ class _ProductTileState extends State<ProductTile>
         onPressed: widget.fn,
         child: Column(
           children: [
-            CachedNetworkImage(
-              filterQuality: FilterQuality.low,
-              maxHeightDiskCache: 512,
-              imageUrl: widget.product.img,
-              progressIndicatorBuilder: (context, url, downloadProgress) =>
-                  CircularProgressIndicator(value: downloadProgress.progress),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-            ),
+            if (widget.product.imageModel == null)
+              Lottie.asset('assets/lottie/capsule_loading.json'),
+            if (widget.product.imageModel != null)
+              CachedNetworkImage(
+                imageUrl: widget.product.imageModel!.imageURL!,
+                placeholder: (context, url) =>
+                    Lottie.asset('assets/lottie/capsule_loading.json'),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              ),
             Text(
-              widget.product.name,
+              widget.product.name!,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: tileTitle,
@@ -119,7 +121,7 @@ class _BuyButtonState extends State<BuyButton> {
       child: Column(
         children: [
           Text(
-            convertCurrency(widget.product.price),
+            convertCurrency(num.parse(widget.product.price.toString())),
             textAlign: TextAlign.center,
             style: tilePrice.copyWith(color: Colors.blue),
           ),
@@ -142,7 +144,8 @@ class _BuyButtonState extends State<BuyButton> {
                               onPressed: () => controller.addToCart(CartItem(
                                 product: widget.product,
                                 quantity: 1,
-                                price: widget.product.price,
+                                price:
+                                    num.parse(widget.product.price.toString()),
                               )),
                               child: const Text("Add to Cart"),
                             ),

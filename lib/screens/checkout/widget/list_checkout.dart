@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
 import 'package:pharmacy_mobile/screens/checkout/checkout.dart';
@@ -35,11 +37,29 @@ class ListCheckout extends StatelessWidget {
                                 return ClipRRect(
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(50)),
-                                  child: Image.network(
-                                    item.product.img,
-                                    width: Get.width * 0.25,
-                                    height: Get.width * 0.25,
-                                  ),
+                                  // child: Image.network(
+                                  //   item.product.img,
+                                  //   width: Get.width * 0.25,
+                                  //   height: Get.width * 0.25,
+                                  // ),
+
+                                  child: item.product.imageModel == null
+                                      ? Lottie.asset(
+                                          'assets/lottie/capsule_loading.json',
+                                          width: Get.width * 0.25,
+                                          height: Get.width * 0.25,
+                                        )
+                                      : CachedNetworkImage(
+                                          width: Get.width * 0.25,
+                                          height: Get.width * 0.25,
+                                          imageUrl: item
+                                              .product.imageModel!.imageURL!,
+                                          placeholder: (context, url) =>
+                                              Lottie.asset(
+                                                  'assets/lottie/capsule_loading.json'),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(Icons.error),
+                                        ),
                                 );
                               },
                               itemCount: ctl.listCart.length,
@@ -54,9 +74,20 @@ class ListCheckout extends StatelessWidget {
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 10),
                                 child: ListTile(
-                                  leading: Image.network(item.product.img),
+                                  leading: item.product.imageModel == null
+                                      ? Lottie.asset(
+                                          'assets/lottie/capsule_loading.json')
+                                      : CachedNetworkImage(
+                                          imageUrl: item
+                                              .product.imageModel!.imageURL!,
+                                          placeholder: (context, url) =>
+                                              Lottie.asset(
+                                                  'assets/lottie/capsule_loading.json'),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(Icons.error),
+                                        ),
                                   title: Text(
-                                    item.product.name,
+                                    item.product.name!,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),

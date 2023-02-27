@@ -1,6 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
 import 'package:pharmacy_mobile/widgets/quan_control.dart';
@@ -18,9 +20,17 @@ class CartItemListView extends StatelessWidget {
           itemBuilder: (context, index) {
             return Column(
               children: [
-                Image.network(
-                  controller.listCart[index].product.img,
-                ),
+                if (controller.listCart[index].product.imageModel == null)
+                  Lottie.asset('assets/lottie/capsule_loading.json'),
+                if (controller.listCart[index].product.imageModel != null)
+                  CachedNetworkImage(
+                    imageUrl: controller
+                        .listCart[index].product.imageModel!.imageURL!,
+                    placeholder: (context, url) =>
+                        Lottie.asset('assets/lottie/capsule_loading.json'),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                  ),
                 AutoSizeText(
                   controller.listCart[index].product.name.toString(),
                   maxLines: 2,

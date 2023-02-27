@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
+import 'package:pharmacy_mobile/screens/address/address.dart';
 import 'package:pharmacy_mobile/screens/checkout/widget/list_checkout.dart';
 import 'package:pharmacy_mobile/widgets/input.dart';
 
@@ -94,8 +95,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   );
                 }
               },
-              child:
-                  Text("Total ${convertCurrency(cartController.getTotal())}"),
+              child: cartController.listCart.isEmpty
+                  ? const Text("Empty Cart")
+                  : Text("Total ${convertCurrency(cartController.getTotal())}"),
             ),
           )
         ],
@@ -182,6 +184,7 @@ class _UserCheckoutInfoState extends State<UserCheckoutInfo>
     begin: const Offset(1.0, 0.0),
     end: Offset.zero,
   );
+  late Animation<Offset> _animation1, _animation2, _animation3;
 
   @override
   void initState() {
@@ -190,6 +193,17 @@ class _UserCheckoutInfoState extends State<UserCheckoutInfo>
       duration: _duration,
       vsync: this,
     );
+
+    _animation1 = Tween<Offset>(begin: const Offset(1.5, 0.0), end: Offset.zero)
+        .animate(CurvedAnimation(
+            parent: _animationController, curve: const Interval(0.0, 0.5)));
+    _animation2 = Tween<Offset>(begin: const Offset(1.5, 0.0), end: Offset.zero)
+        .animate(CurvedAnimation(
+            parent: _animationController, curve: const Interval(0.3, 0.8)));
+    _animation3 = Tween<Offset>(begin: const Offset(1.5, 0.0), end: Offset.zero)
+        .animate(CurvedAnimation(
+            parent: _animationController, curve: const Interval(0.6, 1.0)));
+
     _animationController.forward();
   }
 
@@ -210,7 +224,7 @@ class _UserCheckoutInfoState extends State<UserCheckoutInfo>
             height: Get.height * .05,
           ),
           SlideTransition(
-            position: _animationController.drive(_offsetTween),
+            position: _animation1,
             child: Row(
               children: [
                 Icon(
@@ -227,7 +241,7 @@ class _UserCheckoutInfoState extends State<UserCheckoutInfo>
             ),
           ),
           SlideTransition(
-            position: _animationController.drive(_offsetTween),
+            position: _animation2,
             child: Row(
               children: [
                 Icon(
@@ -237,10 +251,23 @@ class _UserCheckoutInfoState extends State<UserCheckoutInfo>
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      Get.toNamed('/address');
+                      // Get.toNamed('/address');
+                      Get.put(AddressController());
+                      showModalBottomSheet(
+                        useSafeArea: true,
+                        enableDrag: true,
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(25.0))),
+                        context: context,
+                        builder: (context) {
+                          return const AddressSelectionScreen();
+                        },
+                      );
                     },
                     child: Input(
                       enabled: false,
+                      centerText: true,
                       inputController: checkoutCtrl.address,
                       title: "Address",
                       inputType: TextInputType.streetAddress,
@@ -251,7 +278,7 @@ class _UserCheckoutInfoState extends State<UserCheckoutInfo>
             ),
           ),
           SlideTransition(
-            position: _animationController.drive(_offsetTween),
+            position: _animation3,
             child: Row(
               children: [
                 Icon(

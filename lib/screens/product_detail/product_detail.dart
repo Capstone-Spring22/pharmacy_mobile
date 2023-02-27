@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/constrains/theme.dart';
 import 'package:pharmacy_mobile/controllers/app_controller.dart';
@@ -49,14 +50,17 @@ class ProductDetailScreen extends GetView<AppController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CachedNetworkImage(
-                imageUrl: product.img,
-                width: double.infinity,
-              ),
+              if (product.imageModel == null)
+                Lottie.asset('assets/lottie/capsule_loading.json'),
+              if (product.imageModel != null)
+                CachedNetworkImage(
+                  imageUrl: product.imageModel!.imageURL!,
+                  width: double.infinity,
+                ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: AutoSizeText(
-                  product.name,
+                  product.name!,
                   maxLines: 3,
                   style: context.textTheme.labelLarge!.copyWith(fontSize: 24),
                 ),
@@ -68,7 +72,7 @@ class ProductDetailScreen extends GetView<AppController> {
                   children: [
                     Expanded(
                       child: Text(
-                        convertCurrency(product.price),
+                        convertCurrency(num.parse(product.price.toString())),
                         textAlign: TextAlign.center,
                         style: detailPrice.copyWith(color: Colors.blue),
                       ),
@@ -96,7 +100,7 @@ class ProductDetailScreen extends GetView<AppController> {
                               onPressed: () => controller.addToCart(CartItem(
                                 product: product,
                                 quantity: 1,
-                                price: product.price,
+                                price: num.parse(product.price.toString()),
                               )),
                               child: const Text("Add to Cart"),
                             ),
@@ -150,7 +154,7 @@ class QuantityControlDetail extends GetView<CartController> {
           ),
           onConfirm: () {
             controller.updateQuantity(
-              product.id,
+              product.id!,
               num.parse(txt.text),
             );
             Get.back();

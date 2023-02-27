@@ -1,109 +1,151 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
+class PharmacyProduct {
+  String? id;
+  String? name;
+  String? nameWithUnit;
+  String? totalUnitOnly;
+  String? subCategoryId;
+  String? manufacturerId;
+  bool? isPrescription;
+  bool? isBatches;
+  String? unitId;
+  num? unitLevel;
+  num? quantitative;
+  num? sellQuantity;
+  num? price;
+  num? priceAfterDiscount;
+  bool? isSell;
+  String? barCode;
+  ImageModel? imageModel;
+  DiscountModel? discountModel;
 
-import 'package:equatable/equatable.dart';
+  PharmacyProduct(
+      {this.id,
+      this.name,
+      this.nameWithUnit,
+      this.totalUnitOnly,
+      this.subCategoryId,
+      this.manufacturerId,
+      this.isPrescription,
+      this.isBatches,
+      this.unitId,
+      this.unitLevel,
+      this.quantitative,
+      this.sellQuantity,
+      this.price,
+      this.priceAfterDiscount,
+      this.isSell,
+      this.barCode,
+      this.imageModel,
+      this.discountModel});
 
-class PharmacyProduct extends Equatable {
-  final String id;
-  final String name;
-  final String img;
-  final num price;
-  const PharmacyProduct({
-    required this.id,
-    required this.name,
-    required this.img,
-    required this.price,
-  });
-
-  PharmacyProduct copyWith({
-    String? id,
-    String? name,
-    String? img,
-    num? price,
-  }) {
-    return PharmacyProduct(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      img: img ?? this.img,
-      price: price ?? this.price,
-    );
+  PharmacyProduct.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    nameWithUnit = json['nameWithUnit'];
+    totalUnitOnly = json['totalUnitOnly'];
+    subCategoryId = json['subCategoryId'];
+    manufacturerId = json['manufacturerId'];
+    isPrescription = json['isPrescription'];
+    isBatches = json['isBatches'];
+    unitId = json['unitId'];
+    unitLevel = json['unitLevel'];
+    quantitative = json['quantitative'];
+    sellQuantity = json['sellQuantity'];
+    price = json['price'];
+    priceAfterDiscount = json['priceAfterDiscount'];
+    isSell = json['isSell'];
+    barCode = json['barCode'];
+    imageModel = json['imageModel'] != null
+        ? ImageModel.fromJson(json['imageModel'])
+        : null;
+    discountModel = json['discountModel'] != null
+        ? DiscountModel.fromJson(json['discountModel'])
+        : null;
   }
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'name': name,
-      'img': img,
-      'price': price,
-    };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['nameWithUnit'] = nameWithUnit;
+    data['totalUnitOnly'] = totalUnitOnly;
+    data['subCategoryId'] = subCategoryId;
+    data['manufacturerId'] = manufacturerId;
+    data['isPrescription'] = isPrescription;
+    data['isBatches'] = isBatches;
+    data['unitId'] = unitId;
+    data['unitLevel'] = unitLevel;
+    data['quantitative'] = quantitative;
+    data['sellQuantity'] = sellQuantity;
+    data['price'] = price;
+    data['priceAfterDiscount'] = priceAfterDiscount;
+    data['isSell'] = isSell;
+    data['barCode'] = barCode;
+    if (imageModel != null) {
+      data['imageModel'] = imageModel!.toJson();
+    }
+    if (discountModel != null) {
+      data['discountModel'] = discountModel!.toJson();
+    }
+    return data;
   }
-
-  factory PharmacyProduct.fromMap(Map<String, dynamic> map) {
-    return PharmacyProduct(
-      id: map['id'] as String,
-      name: map['name'] as String,
-      img: map['img'] as String,
-      price: map['price'] as num,
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory PharmacyProduct.fromJson(String source) =>
-      PharmacyProduct.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'Product(id: $id, name: $name, img: $img, price: $price)';
+    return 'PharmacyProduct(id: $id, name: $name, nameWithUnit: $nameWithUnit, totalUnitOnly: $totalUnitOnly, subCategoryId: $subCategoryId, manufacturerId: $manufacturerId, isPrescription: $isPrescription, isBatches: $isBatches, unitId: $unitId, unitLevel: $unitLevel, quantitative: $quantitative, sellQuantity: $sellQuantity, price: $price, priceAfterDiscount: $priceAfterDiscount, isSell: $isSell, barCode: $barCode, imageModel: $imageModel, discountModel: $discountModel)';
   }
-
-  @override
-  bool operator ==(covariant PharmacyProduct other) {
-    if (identical(this, other)) return true;
-
-    return other.id == id &&
-        other.name == name &&
-        other.img == img &&
-        other.price == price;
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^ name.hashCode ^ img.hashCode ^ price.hashCode;
-  }
-
-  @override
-  List<Object> get props => [id, name, img, price];
 }
 
-List<PharmacyProduct> listProducts = [
-  PharmacyProduct(
-    id: "01",
-    name:
-        "Bột nước mát Datino giúp thanh nhiệt, giải độc, mát gan hộp 10 gói x 8g",
-    img:
-        "https://cdn.tgdd.vn/Products/Images/7027/286705/bot-nuoc-mat-datino-thanh-nhiet-giai-doc-mat-gan-hop-10-goi-x-8g-mac-dinh-2.jpg",
-    price: 42000,
-  ),
-  PharmacyProduct(
-    id: "02",
-    name: "Bao cao su Dolphi classic vừa khít, thoải mái 52mm hộp 3 cái",
-    img:
-        "https://cdn.tgdd.vn/Products/Images/2519/260137/dolphi-classic-size-52mm-hop-3-cai-1.jpg",
-    price: 18500,
-  ),
-  PharmacyProduct(
-    id: "03",
-    name: "Hauora Velvet Power hỗ trợ tăng cường sinh lý nam hộp 8 viên",
-    img:
-        "https://cdn.tgdd.vn/Products/Images/7013/246530/haurora-velvet-power-hop-8vien-mac-dinh-2.jpg",
-    price: 285000,
-  ),
-  PharmacyProduct(
-    id: "04",
-    name: "Mặt nạ Dermal collagen dưa leo dưỡng ẩm, da mịn màng miếng 23g",
-    img:
-        "https://cdn.tgdd.vn/Products/Images/6653/199841/mat-na-cap-am-lam-diu-phuc-hoi-da-dermal-dua-leo-mac-dinh-2.jpg",
-    price: 7600,
-  ),
-];
+class ImageModel {
+  String? id;
+  String? imageURL;
+
+  ImageModel({this.id, this.imageURL});
+
+  ImageModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    imageURL = json['imageURL'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['imageURL'] = imageURL;
+    return data;
+  }
+
+  @override
+  String toString() => 'ImageModel(id: $id, imageURL: $imageURL)';
+}
+
+class DiscountModel {
+  String? title;
+  String? reason;
+  num? discountPercent;
+  num? discountMoney;
+
+  DiscountModel(
+      {this.title, this.reason, this.discountPercent, this.discountMoney});
+
+  DiscountModel.fromJson(Map<String, dynamic> json) {
+    title = json['title'];
+    reason = json['reason'];
+    discountPercent = json['discountPercent'];
+    discountMoney = json['discountMoney'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['title'] = title;
+    data['reason'] = reason;
+    data['discountPercent'] = discountPercent;
+    data['discountMoney'] = discountMoney;
+    return data;
+  }
+
+  @override
+  String toString() {
+    return 'DiscountModel(title: $title, reason: $reason, discountPercent: $discountPercent, discountMoney: $discountMoney)';
+  }
+}

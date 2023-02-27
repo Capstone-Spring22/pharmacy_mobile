@@ -42,7 +42,7 @@ class QuantityControl extends GetView<CartController> {
           ),
           onConfirm: () {
             controller.updateQuantity(
-              product.id,
+              product.id!,
               num.parse(txt.text),
             );
             Get.back();
