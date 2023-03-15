@@ -33,7 +33,9 @@ class ListCheckout extends StatelessWidget {
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
-                                var item = ctl.listCart[index];
+                                // var item = ctl.listCart[index];
+                                final item = productController
+                                    .getProductById(ctl.listCart[index].pid);
                                 return ClipRRect(
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(50)),
@@ -43,7 +45,7 @@ class ListCheckout extends StatelessWidget {
                                   //   height: Get.width * 0.25,
                                   // ),
 
-                                  child: item.product.imageModel == null
+                                  child: item.imageModel == null
                                       ? Lottie.asset(
                                           'assets/lottie/capsule_loading.json',
                                           width: Get.width * 0.25,
@@ -52,8 +54,7 @@ class ListCheckout extends StatelessWidget {
                                       : CachedNetworkImage(
                                           width: Get.width * 0.25,
                                           height: Get.width * 0.25,
-                                          imageUrl: item
-                                              .product.imageModel!.imageURL!,
+                                          imageUrl: item.imageModel!.imageURL!,
                                           placeholder: (context, url) =>
                                               Lottie.asset(
                                                   'assets/lottie/capsule_loading.json'),
@@ -69,17 +70,17 @@ class ListCheckout extends StatelessWidget {
                             key: UniqueKey(),
                             scrollDirection: Axis.vertical,
                             itemBuilder: (context, index) {
-                              var item = ctl.listCart[index];
+                              final item = productController
+                                  .getProductById(ctl.listCart[index].pid);
                               return Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 10),
                                 child: ListTile(
-                                  leading: item.product.imageModel == null
+                                  leading: item.imageModel == null
                                       ? Lottie.asset(
                                           'assets/lottie/capsule_loading.json')
                                       : CachedNetworkImage(
-                                          imageUrl: item
-                                              .product.imageModel!.imageURL!,
+                                          imageUrl: item.imageModel!.imageURL!,
                                           placeholder: (context, url) =>
                                               Lottie.asset(
                                                   'assets/lottie/capsule_loading.json'),
@@ -87,7 +88,7 @@ class ListCheckout extends StatelessWidget {
                                               const Icon(Icons.error),
                                         ),
                                   title: Text(
-                                    item.product.name!,
+                                    item.name!,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -95,8 +96,10 @@ class ListCheckout extends StatelessWidget {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Text("Quantity: ${item.quantity}"),
-                                      Text(convertCurrency(item.price)),
+                                      Text(
+                                          "Quantity: ${ctl.listCart[index].quantity}"),
+                                      Text(convertCurrency(
+                                          item.priceAfterDiscount!)),
                                     ],
                                   ),
                                 ),

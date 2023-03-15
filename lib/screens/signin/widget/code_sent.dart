@@ -5,12 +5,11 @@ import 'package:lottie/lottie.dart';
 import '../../../services/firebase_phone.dart';
 
 class CodeSent extends StatelessWidget {
-  const CodeSent({super.key});
-
+  const CodeSent(this.phoneAuth, {super.key});
+  final PhoneAuth phoneAuth;
   @override
   Widget build(BuildContext context) {
     TextEditingController otpCtl = TextEditingController();
-    final PhoneAuth phoneAuth = PhoneAuth();
 
     return SizedBox(
       height: Get.height,

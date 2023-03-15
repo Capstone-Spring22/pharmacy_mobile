@@ -5,6 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/constrains/theme.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
+import 'package:pharmacy_mobile/helpers/loading.dart';
 import 'package:pharmacy_mobile/models/cart.dart';
 import 'package:pharmacy_mobile/models/product.dart';
 import 'package:pharmacy_mobile/widgets/quan_control.dart';
@@ -71,8 +72,7 @@ class _ProductTileState extends State<ProductTile>
         onPressed: widget.fn,
         child: Column(
           children: [
-            if (widget.product.imageModel == null)
-              Lottie.asset('assets/lottie/capsule_loading.json'),
+            if (widget.product.imageModel == null) LoadingWidget(),
             if (widget.product.imageModel != null)
               CachedNetworkImage(
                 imageUrl: widget.product.imageModel!.imageURL!,
@@ -131,7 +131,7 @@ class _BuyButtonState extends State<BuyButton> {
                 child: GetX<CartController>(
                   builder: (controller) {
                     bool isInCart = controller.listCart
-                        .any((element) => element.product == widget.product);
+                        .any((element) => element.pid == widget.product.id);
                     return AnimatedSwitcher(
                       duration: const Duration(milliseconds: 200),
                       transitionBuilder: (child, animation) => ScaleTransition(
@@ -142,7 +142,7 @@ class _BuyButtonState extends State<BuyButton> {
                           ? QuantityControl(widget.product)
                           : FilledButton(
                               onPressed: () => controller.addToCart(CartItem(
-                                product: widget.product,
+                                pid: widget.product.id!,
                                 quantity: 1,
                                 price:
                                     num.parse(widget.product.price.toString()),

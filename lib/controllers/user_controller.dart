@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
@@ -36,5 +38,14 @@ class UserController extends GetxController {
 
   String formatPhoneNumber(num phoneNumber) {
     return phoneNumber.toString().padLeft(10, '0');
+  }
+
+  Future loginToken(String token) async {
+    final api = dotenv.env['API_URL']!;
+    final dio = Dio();
+
+    Get.log(token);
+
+    // var response = await dio.post("${api}/api/v1/Member/Customer/Login");
   }
 }

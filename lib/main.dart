@@ -12,6 +12,7 @@ import 'package:pharmacy_mobile/constrains/text.dart';
 import 'package:pharmacy_mobile/controllers/app_controller.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
 import 'package:pharmacy_mobile/controllers/notification_controller.dart';
+import 'package:pharmacy_mobile/controllers/product_controller.dart';
 import 'package:pharmacy_mobile/debug/screen.dart';
 import 'package:pharmacy_mobile/firebase_options.dart';
 import 'package:pharmacy_mobile/screens/address/address.dart';
@@ -49,6 +50,7 @@ void main() async {
 void initController() {
   Get.put(AppController());
   Get.put(UserController());
+  Get.put(ProductController());
   Get.put(CartController());
   Get.put(NotificationController());
 

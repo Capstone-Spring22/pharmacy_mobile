@@ -6,11 +6,11 @@ import 'package:pharmacy_mobile/screens/signin/signin.dart';
 import '../../../services/firebase_phone.dart';
 
 class InputPhone extends StatelessWidget {
-  const InputPhone({super.key});
+  const InputPhone(this.phoneAuth, {super.key});
 
+  final PhoneAuth phoneAuth;
   @override
   Widget build(BuildContext context) {
-    final PhoneAuth phoneAuth = PhoneAuth();
     TextEditingController phoneCtl = TextEditingController();
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,

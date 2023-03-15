@@ -26,4 +26,29 @@ class ProductService {
     }
     return listProduct;
   }
+
+  Future<PharmacyProduct?> getProductByName(String name) async {
+    Response response = await dio.get(
+      '${api}Product',
+      queryParameters: {'pageIndex': 1, 'pageItems': 1, 'productName': name},
+    );
+    try {
+      return PharmacyProduct.fromJson(response.data['items']);
+    } catch (e) {
+      log(e.toString());
+    }
+    return null;
+  }
+  // Future<PharmacyProduct?> getProductById(String id) async {
+  //   Response response = await dio.get(
+  //     '${api}Product',
+  //     queryParameters: {'pageIndex': 1, 'pageItems': 1, 'productName': name},
+  //   );
+  //   try {
+  //     return PharmacyProduct.fromJson(response.data['items']);
+  //   } catch (e) {
+  //     log(e.toString());
+  //   }
+  //   return null;
+  // }
 }

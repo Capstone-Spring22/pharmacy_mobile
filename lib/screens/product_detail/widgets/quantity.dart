@@ -5,8 +5,8 @@ import 'package:pharmacy_mobile/constrains/theme.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
 import 'package:pharmacy_mobile/models/product.dart';
 
-class QuantityControl extends GetView<CartController> {
-  const QuantityControl(this.product, {super.key});
+class QuantityControlDetail extends GetView<CartController> {
+  const QuantityControlDetail(this.product, {super.key});
 
   final PharmacyProduct product;
 
@@ -86,18 +86,24 @@ class QuantityControl extends GetView<CartController> {
           Expanded(
             child: Container(),
           ),
-          GestureDetector(
-            onTap: () =>
-                controller.increaseQuan(controller.cartItem(id: product.id)),
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: context.theme.primaryColor,
-                  width: 2.0,
+          Expanded(
+            flex: 6,
+            child: FilledButton(
+              onPressed: () =>
+                  controller.increaseQuan(controller.cartItem(id: product.id)),
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: context.theme.primaryColor,
+                    width: 2.0,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [Icon(Icons.add), Text("Add more")],
                 ),
               ),
-              child: const Icon(Icons.add),
             ),
           ),
           Expanded(

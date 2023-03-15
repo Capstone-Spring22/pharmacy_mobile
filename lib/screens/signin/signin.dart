@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:pharmacy_mobile/screens/signin/widget/code_sent.dart';
 import 'package:pharmacy_mobile/screens/signin/widget/input_phone.dart';
+import 'package:pharmacy_mobile/services/firebase_phone.dart';
 import 'package:pharmacy_mobile/widgets/appbar.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -16,6 +17,7 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  final PhoneAuth phoneAuth = PhoneAuth();
   @override
   Widget build(BuildContext context) {
     bool result = true;
@@ -47,8 +49,8 @@ class _SignInScreenState extends State<SignInScreen> {
               child: child,
             ),
             child: controller.codeSent.value
-                ? const CodeSent()
-                : const InputPhone(),
+                ? CodeSent(phoneAuth)
+                : InputPhone(phoneAuth),
           ),
         ),
       ),
