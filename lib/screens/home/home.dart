@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:draggable_home/draggable_home.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
@@ -5,13 +6,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
+import 'package:pharmacy_mobile/controllers/user_controller.dart';
 import 'package:pharmacy_mobile/helpers/qr_scanner.dart';
+import 'package:pharmacy_mobile/models/pharmacy_user.dart';
 import 'package:pharmacy_mobile/screens/home/widgets/cart_btn.dart';
 import 'package:pharmacy_mobile/screens/home/widgets/drawer_btn.dart';
 import 'package:pharmacy_mobile/screens/home/widgets/option_row.dart';
 import 'package:pharmacy_mobile/screens/home/widgets/scroll_to_top.dart';
 import 'package:pharmacy_mobile/widgets/appbar.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:pharmacy_mobile/widgets/list_item_blr.dart';
 
 import '../search/search_page.dart';
@@ -73,17 +75,29 @@ class HomeScreen extends StatelessWidget {
           titleStyle:
               context.textTheme.headlineMedium!.copyWith(fontSize: 30.h),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5),
-          child: AnimatedTextKit(
-            totalRepeatCount: 1,
-            animatedTexts: [
-              TypewriterAnimatedText(
-                "$welcomeText, User",
-                textStyle: context.textTheme.headlineSmall!,
-              )
-            ],
-          ),
+        GetBuilder<UserController>(
+          builder: (userCtl) {
+            String txt = "";
+            Get.log(userCtl.user.value.toString());
+            if (userCtl.user == PharmacyUser().obs) {
+              txt = welcomeText;
+            } else {
+              Get.log("got here");
+              txt = "$welcomeText, ${userCtl.user.value.name}";
+            }
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: AnimatedTextKit(
+                totalRepeatCount: 1,
+                animatedTexts: [
+                  TypewriterAnimatedText(
+                    txt,
+                    textStyle: context.textTheme.headlineSmall!,
+                  )
+                ],
+              ),
+            );
+          },
         ),
         const SearchScreen(),
         const Padding(

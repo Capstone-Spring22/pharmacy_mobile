@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:dio/dio.dart';
 import 'package:pharmacy_mobile/models/product.dart';
+import 'package:pharmacy_mobile/models/product_detail.dart';
 
 class ProductService {
   final dio = Dio();
@@ -51,4 +52,16 @@ class ProductService {
   //   }
   //   return null;
   // }
+
+  Future<PharmacyDetail?> getProductDetail(String id) async {
+    Response response = await dio.get(
+      '${api}Product/View/$id',
+    );
+    try {
+      return PharmacyDetail.fromJson(response.data);
+    } catch (e) {
+      log(e.toString());
+    }
+    return null;
+  }
 }

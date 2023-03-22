@@ -59,7 +59,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               snap: true,
               initialChildSize: .14,
               minChildSize: .14,
-              maxChildSize: .9,
+              maxChildSize: .8,
               controller: draggableScrollableController,
               builder: (context, scrollController) {
                 return Container(
@@ -126,7 +126,7 @@ class _CheckoutInfoPanelState extends State<CheckoutInfoPanel> {
     return SingleChildScrollView(
       controller: widget.scrollController,
       child: SizedBox(
-        height: Get.height * .8,
+        height: Get.height * .7,
         child: Obx(() {
           if (!checkoutController.isCollase.value) {
             return Row(

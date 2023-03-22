@@ -8,11 +8,13 @@ class OptionBox extends StatelessWidget {
       {super.key,
       required this.color,
       required this.image,
-      required this.text});
+      required this.text,
+      required this.func});
 
   final Color color;
   final String image;
   final String text;
+  final VoidCallback func;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class OptionBox extends StatelessWidget {
         color: context.theme.canvasColor,
         lightSource: LightSource.top,
       ),
-      onPressed: () {},
+      onPressed: func,
       child: SizedBox(
         width: 90.w,
         child: Column(

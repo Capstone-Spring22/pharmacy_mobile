@@ -1,9 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:pharmacy_mobile/models/description.dart';
 import 'package:pharmacy_mobile/models/discount.dart';
-import 'package:pharmacy_mobile/models/image_model.dart';
 
-class PharmacyProduct {
+class PharmacyDetail {
   String? id;
+  String? productIdParent;
   String? name;
   String? nameWithUnit;
   String? totalUnitOnly;
@@ -12,18 +12,18 @@ class PharmacyProduct {
   bool? isPrescription;
   bool? isBatches;
   String? unitId;
+  String? unitName;
   num? unitLevel;
-  num? quantitative;
-  num? sellQuantity;
   num? price;
   num? priceAfterDiscount;
-  bool? isSell;
-  String? barCode;
-  ImageModel? imageModel;
+  DescriptionModels? descriptionModels;
+  List<ImageModels>? imageModels;
+  List<String>? productUnitReferences;
   DiscountModel? discountModel;
 
-  PharmacyProduct(
+  PharmacyDetail(
       {this.id,
+      this.productIdParent,
       this.name,
       this.nameWithUnit,
       this.totalUnitOnly,
@@ -32,18 +32,18 @@ class PharmacyProduct {
       this.isPrescription,
       this.isBatches,
       this.unitId,
+      this.unitName,
       this.unitLevel,
-      this.quantitative,
-      this.sellQuantity,
       this.price,
       this.priceAfterDiscount,
-      this.isSell,
-      this.barCode,
-      this.imageModel,
+      this.descriptionModels,
+      this.imageModels,
+      this.productUnitReferences,
       this.discountModel});
 
-  PharmacyProduct.fromJson(Map<String, dynamic> json) {
+  PharmacyDetail.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    productIdParent = json['productIdParent'];
     name = json['name'];
     nameWithUnit = json['nameWithUnit'];
     totalUnitOnly = json['totalUnitOnly'];
@@ -52,16 +52,20 @@ class PharmacyProduct {
     isPrescription = json['isPrescription'];
     isBatches = json['isBatches'];
     unitId = json['unitId'];
+    unitName = json['unitName'];
     unitLevel = json['unitLevel'];
-    quantitative = json['quantitative'];
-    sellQuantity = json['sellQuantity'];
     price = json['price'];
     priceAfterDiscount = json['priceAfterDiscount'];
-    isSell = json['isSell'];
-    barCode = json['barCode'];
-    imageModel = json['imageModel'] != null
-        ? ImageModel.fromJson(json['imageModel'])
+    descriptionModels = json['descriptionModels'] != null
+        ? DescriptionModels.fromJson(json['descriptionModels'])
         : null;
+    if (json['imageModels'] != null) {
+      imageModels = <ImageModels>[];
+      json['imageModels'].forEach((v) {
+        imageModels!.add(ImageModels.fromJson(v));
+      });
+    }
+    productUnitReferences = json['productUnitReferences'].cast<String>();
     discountModel = json['discountModel'] != null
         ? DiscountModel.fromJson(json['discountModel'])
         : null;
@@ -70,6 +74,7 @@ class PharmacyProduct {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
+    data['productIdParent'] = productIdParent;
     data['name'] = name;
     data['nameWithUnit'] = nameWithUnit;
     data['totalUnitOnly'] = totalUnitOnly;
@@ -78,24 +83,39 @@ class PharmacyProduct {
     data['isPrescription'] = isPrescription;
     data['isBatches'] = isBatches;
     data['unitId'] = unitId;
+    data['unitName'] = unitName;
     data['unitLevel'] = unitLevel;
-    data['quantitative'] = quantitative;
-    data['sellQuantity'] = sellQuantity;
     data['price'] = price;
     data['priceAfterDiscount'] = priceAfterDiscount;
-    data['isSell'] = isSell;
-    data['barCode'] = barCode;
-    if (imageModel != null) {
-      data['imageModel'] = imageModel!.toJson();
+    if (descriptionModels != null) {
+      data['descriptionModels'] = descriptionModels!.toJson();
     }
+    if (imageModels != null) {
+      data['imageModels'] = imageModels!.map((v) => v.toJson()).toList();
+    }
+    data['productUnitReferences'] = productUnitReferences;
     if (discountModel != null) {
       data['discountModel'] = discountModel!.toJson();
     }
     return data;
   }
+}
 
-  @override
-  String toString() {
-    return 'PharmacyProduct(id: $id, name: $name, nameWithUnit: $nameWithUnit, totalUnitOnly: $totalUnitOnly, subCategoryId: $subCategoryId, manufacturerId: $manufacturerId, isPrescription: $isPrescription, isBatches: $isBatches, unitId: $unitId, unitLevel: $unitLevel, quantitative: $quantitative, sellQuantity: $sellQuantity, price: $price, priceAfterDiscount: $priceAfterDiscount, isSell: $isSell, barCode: $barCode, imageModel: $imageModel, discountModel: $discountModel)';
+class ImageModels {
+  String? id;
+  String? imageURL;
+
+  ImageModels({this.id, this.imageURL});
+
+  ImageModels.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    imageURL = json['imageURL'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['imageURL'] = imageURL;
+    return data;
   }
 }

@@ -22,6 +22,7 @@ import 'package:pharmacy_mobile/screens/nav_hub/nav_bar_hub.dart';
 import 'package:pharmacy_mobile/screens/setting/setting.dart';
 import 'package:pharmacy_mobile/screens/signin/signin.dart';
 import 'package:pharmacy_mobile/screens/signup/signup.dart';
+import 'package:pharmacy_mobile/screens/user/user.dart';
 
 import 'controllers/user_controller.dart';
 import 'screens/introduction/intro.dart';
@@ -106,6 +107,10 @@ class MyApp extends StatelessWidget {
             GetPage(
               name: '/signup',
               page: () => const SignUpScreen(),
+            ),
+            GetPage(
+              name: '/user',
+              page: () => const UserScreen(),
             ),
             GetPage(
               name: '/address',

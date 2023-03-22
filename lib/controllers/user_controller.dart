@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/models/pharmacy_user.dart';
 
@@ -20,32 +19,37 @@ class UserController extends GetxController {
     ever(_firebaseuser, _setUser);
   }
 
-  // _setInitialScreen(User? user) => isLoggedIn.value = user != null;
   _setUser(User? firebaseUser) async {
     isLoggedIn.value = firebaseUser != null;
     try {
-      if (firebaseUser != null) {
+      if (firebaseUser != null && user == PharmacyUser().obs) {
         var firebaseToken = await firebaseUser.getIdToken();
-        Map<String, dynamic> decodedToken = JwtDecoder.decode(firebaseToken);
-        user = PharmacyUser(
-                phone: num.parse(e164ToReadable(decodedToken['phone_number'])))
-            .obs;
+        loginToken(firebaseToken);
+      } else {
+        user = PharmacyUser().obs;
       }
     } catch (e) {
       Get.log(e.toString());
     }
   }
 
-  String formatPhoneNumber(num phoneNumber) {
-    return phoneNumber.toString().padLeft(10, '0');
+  String formatPhoneNumber(String phoneNumber) {
+    return phoneNumber.padLeft(10, '0');
   }
 
   Future loginToken(String token) async {
     final api = dotenv.env['API_URL']!;
     final dio = Dio();
 
-    Get.log(token);
+    var res = await dio
+        .post("${api}Member/Customer/Login", data: {"firebaseToken": token});
 
-    // var response = await dio.post("${api}/api/v1/Member/Customer/Login");
+    user.value = PharmacyUser.fromMap(res.data);
+
+    // Get.log(res.data.toString());
+    // Get.log(token);
+
+    appController.drawerKey.currentState!.closeDrawer();
+    Get.back();
   }
 }

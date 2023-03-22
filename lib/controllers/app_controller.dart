@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -14,6 +15,8 @@ class AppController extends GetxController {
   static AppController instance = Get.find();
 
   final GlobalKey<ScaffoldState> drawerKey = GlobalKey();
+
+  late AndroidDeviceInfo androidInfo;
 
   Rx<TextEditingController> searchCtl = TextEditingController().obs;
 
@@ -52,6 +55,11 @@ class AppController extends GetxController {
     Motion.instance.setUpdateInterval(60.fps);
   }
 
+  void initDeviceInfo() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    androidInfo = await deviceInfo.androidInfo;
+  }
+
   void toggleMenuDrawer() => drawerKey.currentState!.openDrawer();
   void toggleCartDrawer() => drawerKey.currentState!.openEndDrawer();
 
@@ -59,6 +67,7 @@ class AppController extends GetxController {
   void onInit() {
     readTheme();
     initMotion();
+    initDeviceInfo();
     ever(searchCtl, (callback) => print("VALUE: ${callback.value.text}"));
     ever(isDarkMode, (callback) => toggleTheme());
     super.onInit();

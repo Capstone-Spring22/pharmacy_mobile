@@ -50,7 +50,7 @@ class _DebugScreenState extends State<DebugScreen> {
                 tmnCode: tmnCode,
                 txnRef: AppController().generateRefBill(),
                 amount: 500000,
-                returnUrl: 'https://www.google.com/',
+                returnUrl: 'https://www.ff.com/',
                 ipAdress: ip,
                 vnpayHashKey: hash,
               );

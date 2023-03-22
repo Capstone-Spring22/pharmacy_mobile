@@ -1,4 +1,3 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,7 @@ import 'package:pharmacy_mobile/controllers/cart_controller.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
 import 'package:pharmacy_mobile/widgets/quan_control.dart';
 
-class CartItemListView extends StatelessWidget {
+class CartItemListView extends GetView<CartController> {
   const CartItemListView({super.key});
 
   @override
@@ -47,26 +46,15 @@ class CartItemListView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Expanded(
-                        // child: AnimatedSwitcher(
-                        //   key: UniqueKey(),
-                        //   switchInCurve: Curves.easeIn,
-                        //   duration: const Duration(milliseconds: 300),
-                        //   child: AutoSizeText(
-                        //     convertCurrency(controller.listCart[index].price),
-                        //     style: context.theme.primaryTextTheme.bodyLarge!
-                        //         .copyWith(color: Colors.black),
-                        //   ),
-                        // ),
-                        child: AnimatedTextKit(
+                        child: AnimatedSwitcher(
                           key: UniqueKey(),
-                          animatedTexts: [
-                            TyperAnimatedText(
-                              convertCurrency(controller.listCart[index].price),
-                              textStyle: const TextStyle(fontSize: 20.0),
-                              speed: const Duration(milliseconds: 50),
-                            ),
-                          ],
-                          totalRepeatCount: 1,
+                          switchInCurve: Curves.easeIn,
+                          duration: const Duration(milliseconds: 300),
+                          child: AutoSizeText(
+                            convertCurrency(controller.listCart[index].price),
+                            style: context.theme.primaryTextTheme.bodyLarge!
+                                .copyWith(color: Colors.black),
+                          ),
                         ),
                       ),
                       Expanded(

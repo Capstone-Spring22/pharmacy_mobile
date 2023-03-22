@@ -1,10 +1,7 @@
-// phone_auth.dart
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
-import 'package:pharmacy_mobile/controllers/user_controller.dart';
 
 class PhoneAuth {
   final _auth = FirebaseAuth.instance;
@@ -14,27 +11,19 @@ class PhoneAuth {
   Future<void> verifyPhoneNumber() async {
     verificationCompleted(AuthCredential credential) async {
       var res = await _auth.signInWithCredential(credential);
-      if (res.user != null) {
-        String token = await res.user!.getIdToken();
-        UserController userController = Get.find();
-        userController.loginToken(token);
-        Get.back();
-      }
     }
 
     verificationFailed(exception) {
-      print("Phone Verification Failed: ${exception.message}");
+      debugPrint("Phone Verification Failed: ${exception.message}");
       ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
           content: Text("Phone Verification Failed ${exception.message}")));
     }
 
-    codeSent(String verificationId, [int? forceResendingToken]) async {
-      _verificationId = verificationId;
-    }
+    codeSent(String verificationId, int? forceResendingToken) async =>
+        _verificationId = verificationId;
 
-    codeAutoRetrievalTimeout(String verificationId) {
-      _verificationId = verificationId;
-    }
+    codeAutoRetrievalTimeout(String verificationId) =>
+        _verificationId = verificationId;
 
     await _auth.verifyPhoneNumber(
       phoneNumber: toE164(_phoneNumber.substring(1)),
@@ -57,9 +46,7 @@ class PhoneAuth {
     return true;
   }
 
-  void setPhoneNumber(String phoneNumber) {
-    _phoneNumber = phoneNumber;
-  }
+  void setPhoneNumber(String phoneNumber) => _phoneNumber = phoneNumber;
 
   String getPhoneNumber() => _phoneNumber;
 }

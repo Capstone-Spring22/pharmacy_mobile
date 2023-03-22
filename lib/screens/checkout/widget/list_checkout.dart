@@ -5,6 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
 import 'package:pharmacy_mobile/screens/checkout/checkout.dart';
+import 'package:pharmacy_mobile/screens/checkout/widget/hori_list.dart';
 
 class ListCheckout extends StatelessWidget {
   const ListCheckout({super.key});
@@ -21,51 +22,13 @@ class ListCheckout extends StatelessWidget {
             builder: (controller) {
               return AnimatedContainer(
                 height: controller.isCollase.value
-                    ? Get.height * .08
+                    ? Get.height * .2
                     : Get.height * .8,
                 duration: const Duration(milliseconds: 300),
                 child: AnimatedSwitcher(
                     duration: const Duration(milliseconds: 300),
                     child: controller.isCollase.value
-                        ? SizedBox(
-                            height: Get.height * .08,
-                            key: UniqueKey(),
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                // var item = ctl.listCart[index];
-                                final item = productController
-                                    .getProductById(ctl.listCart[index].pid);
-                                return ClipRRect(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(50)),
-                                  // child: Image.network(
-                                  //   item.product.img,
-                                  //   width: Get.width * 0.25,
-                                  //   height: Get.width * 0.25,
-                                  // ),
-
-                                  child: item.imageModel == null
-                                      ? Lottie.asset(
-                                          'assets/lottie/capsule_loading.json',
-                                          width: Get.width * 0.25,
-                                          height: Get.width * 0.25,
-                                        )
-                                      : CachedNetworkImage(
-                                          width: Get.width * 0.25,
-                                          height: Get.width * 0.25,
-                                          imageUrl: item.imageModel!.imageURL!,
-                                          placeholder: (context, url) =>
-                                              Lottie.asset(
-                                                  'assets/lottie/capsule_loading.json'),
-                                          errorWidget: (context, url, error) =>
-                                              const Icon(Icons.error),
-                                        ),
-                                );
-                              },
-                              itemCount: ctl.listCart.length,
-                            ),
-                          )
+                        ? HorizontalList(ctl)
                         : ListView.builder(
                             key: UniqueKey(),
                             scrollDirection: Axis.vertical,

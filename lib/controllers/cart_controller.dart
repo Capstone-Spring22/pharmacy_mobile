@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/user_controller.dart';
 import 'package:pharmacy_mobile/models/cart.dart';
+import 'package:pharmacy_mobile/services/cart_service.dart';
 
 class CartController extends GetxController {
   static CartController instance = Get.find();
@@ -43,7 +44,8 @@ class CartController extends GetxController {
         middleText: "Remove this item from cart ?",
         onConfirm: () {
           removeCart(item);
-          syncCartToFirebase();
+          //TODO: Delete item
+          // syncCartToFirebase();
           Get.back();
         },
         onCancel: () {},
@@ -89,7 +91,7 @@ class CartController extends GetxController {
         .toString());
     num quan = listCart[index].quantity;
     listCart[index] = item.copyWith(price: price * quan);
-    syncCartToFirebase();
+    syncCartToFirebase(id);
   }
 
   void recalcPriceTotal() {
@@ -110,12 +112,13 @@ class CartController extends GetxController {
       cartMap.add({
         "pid": listCart[i].pid,
         "quantity": listCart[i].quantity,
-        "image": productController
-            .getProductById(listCart[i].pid)
-            .imageModel!
-            .imageURL,
-        "name": productController.getProductById(listCart[i].pid).name,
-        "price": productController.getProductById(listCart[i].pid).price,
+        // "image": productController
+        //     .getProductById(listCart[i].pid)
+        //     .imageModel!
+        //     .imageURL,
+
+        // "name": productController.getProductById(listCart[i].pid).name,
+        // "price": productController.getProductById(listCart[i].pid).price,
       });
     }
 
@@ -127,14 +130,21 @@ class CartController extends GetxController {
     return map;
   }
 
-  //DEMO
+  Future syncCartToFirebase(String pid) async {
+    // if (userCtl.isLoggedIn.value) {
+    //   await _db
+    //       .collection(_collection)
+    //       .doc("0${userCtl.user.value.phone}")
+    //       .set(listCartToMap());
+    // } else {}
 
-  Future<void> syncCartToFirebase() async {
-    if (userCtl.isLoggedIn.value) {
-      await _db
-          .collection(_collection)
-          .doc("0${userCtl.user.value.phone}")
-          .set(listCartToMap());
-    } else {}
+    final item = listCart.firstWhere((e) => e.pid == pid);
+
+    final map = {
+      "productId": item.pid,
+      "quantity": item.quantity,
+    };
+
+    await CartService().postCart(map, appController.androidInfo.id);
   }
 }
