@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pharmacy_mobile/controllers/user_controller.dart';
 import 'package:pharmacy_mobile/screens/home/widgets/option_box.dart';
 
 class OptionButtonRow extends StatelessWidget {
@@ -23,10 +22,7 @@ class OptionButtonRow extends StatelessWidget {
           color: Colors.yellow[100]!.withOpacity(1),
           image: "assets/images/Image.png",
           text: "prescription_btn".tr,
-          func: () {
-            UserController userController = Get.find();
-            Get.log("user: ${userController.user.value.toString()}");
-          },
+          func: () {},
         ),
         OptionBox(
           color: Colors.green[100]!.withOpacity(.7),

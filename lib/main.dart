@@ -19,6 +19,7 @@ import 'package:pharmacy_mobile/screens/address/address.dart';
 import 'package:pharmacy_mobile/screens/alarm/alarm_picker.dart';
 import 'package:pharmacy_mobile/screens/checkout/checkout.dart';
 import 'package:pharmacy_mobile/screens/nav_hub/nav_bar_hub.dart';
+import 'package:pharmacy_mobile/screens/product_detail/product_detail.dart';
 import 'package:pharmacy_mobile/screens/setting/setting.dart';
 import 'package:pharmacy_mobile/screens/signin/signin.dart';
 import 'package:pharmacy_mobile/screens/signup/signup.dart';
@@ -93,7 +94,6 @@ class MyApp extends StatelessWidget {
           locale: const Locale('en', 'US'),
           defaultTransition: Transition.cupertino,
           title: 'Pharmacy App',
-          // initialRoute: '/demo',
           initialRoute: '/intro',
           getPages: [
             GetPage(name: '/intro', page: () => const IntroductionScreen()),
@@ -111,6 +111,10 @@ class MyApp extends StatelessWidget {
             GetPage(
               name: '/user',
               page: () => const UserScreen(),
+            ),
+            GetPage(
+              name: '/product_detail',
+              page: () => const ProductDetailScreen(),
             ),
             GetPage(
               name: '/address',

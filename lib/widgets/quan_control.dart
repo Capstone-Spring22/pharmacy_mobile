@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/constrains/theme.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
 import 'package:pharmacy_mobile/models/product.dart';
@@ -12,6 +11,9 @@ class QuantityControl extends GetView<CartController> {
 
   @override
   Widget build(BuildContext context) {
+    final count = controller.listCart
+        .singleWhere((element) => element.pid == product.id)
+        .quantity;
     return GestureDetector(
       onTap: () {
         var focusNode = FocusNode();
@@ -76,11 +78,7 @@ class QuantityControl extends GetView<CartController> {
             child: Container(),
           ),
           Text(
-            controller.listCart
-                .firstWhere((element) =>
-                    productController.getProductById(element.pid) == product)
-                .quantity
-                .toString(),
+            count.toString(),
             style: tileTitle.copyWith(fontSize: 18),
           ),
           Expanded(

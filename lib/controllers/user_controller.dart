@@ -1,11 +1,13 @@
-import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/models/pharmacy_user.dart';
 
 class UserController extends GetxController {
+  static UserController instance = Get.find();
+
   Rx<PharmacyUser> user = PharmacyUser().obs;
 
   RxBool isLoggedIn = false.obs;
@@ -24,7 +26,8 @@ class UserController extends GetxController {
     try {
       if (firebaseUser != null && user == PharmacyUser().obs) {
         var firebaseToken = await firebaseUser.getIdToken();
-        loginToken(firebaseToken);
+        await loginToken(firebaseToken);
+        Get.log(JwtDecoder.isExpired(user.value.token!).toString());
       } else {
         user = PharmacyUser().obs;
       }
@@ -39,15 +42,12 @@ class UserController extends GetxController {
 
   Future loginToken(String token) async {
     final api = dotenv.env['API_URL']!;
-    final dio = Dio();
+    final dio = appController.dio;
 
     var res = await dio
         .post("${api}Member/Customer/Login", data: {"firebaseToken": token});
 
     user.value = PharmacyUser.fromMap(res.data);
-
-    // Get.log(res.data.toString());
-    // Get.log(token);
 
     appController.drawerKey.currentState!.closeDrawer();
     Get.back();

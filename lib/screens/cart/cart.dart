@@ -13,14 +13,11 @@ class CartScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
-          title: Hero(
-            tag: "cart_title".tr,
-            child: AutoSizeText(
-              textAlign: TextAlign.center,
-              "cart_title".tr,
-              maxLines: 1,
-              style: context.textTheme.headlineMedium,
-            ),
+          title: AutoSizeText(
+            textAlign: TextAlign.center,
+            "cart_title".tr,
+            maxLines: 1,
+            style: context.textTheme.headlineMedium,
           ),
           centerTitle: true,
           backgroundColor: Colors.transparent,

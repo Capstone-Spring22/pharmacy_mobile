@@ -1,10 +1,11 @@
 import 'package:animations/animations.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/user_controller.dart';
 import 'package:pharmacy_mobile/debug/screen.dart';
@@ -25,11 +26,38 @@ class MenuDrawer extends StatelessWidget {
           padding: const EdgeInsets.all(15.0),
           child: Column(
             children: [
-              CircleAvatar(
-                radius: 80.w,
-                child: Icon(
-                  Icons.account_circle,
-                  size: 100.w,
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Lottie.asset(
+                      "assets/lottie/user_circle.json",
+                      height: Get.height * .2,
+                      width: Get.height * .2,
+                    ),
+                    Obx(() {
+                      if (!userController.isLoggedIn.value) {
+                        return Lottie.asset(
+                          "assets/lottie/user.json",
+                          height: Get.height * .13,
+                          width: Get.height * .13,
+                        );
+                      } else {
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: CachedNetworkImage(
+                            imageUrl: userController.user.value.imageURL!,
+                            errorWidget: (context, url, error) => Image.network(
+                              "https://png.pngtree.com/png-vector/20220709/ourmid/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png",
+                              height: Get.height * .155,
+                              width: Get.height * .155,
+                            ),
+                          ),
+                        );
+                      }
+                    })
+                  ],
                 ),
               ),
               GetX<UserController>(

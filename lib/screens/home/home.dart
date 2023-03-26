@@ -7,8 +7,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
 import 'package:pharmacy_mobile/controllers/user_controller.dart';
-import 'package:pharmacy_mobile/helpers/qr_scanner.dart';
 import 'package:pharmacy_mobile/models/pharmacy_user.dart';
+import 'package:pharmacy_mobile/screens/camera/camera.dart';
 import 'package:pharmacy_mobile/screens/home/widgets/cart_btn.dart';
 import 'package:pharmacy_mobile/screens/home/widgets/drawer_btn.dart';
 import 'package:pharmacy_mobile/screens/home/widgets/option_row.dart';
@@ -29,7 +29,7 @@ class HomeScreen extends StatelessWidget {
       maintainBottomViewPadding: true,
       child: ScrollToTop(
         child: DraggableHome(
-          expandedBody: const QrScannerWidget(),
+          expandedBody: const CameraScreen(),
           fullyStretchable: true,
           leading: const Padding(
             padding: EdgeInsets.symmetric(horizontal: 5),
@@ -47,8 +47,6 @@ class HomeScreen extends StatelessWidget {
               }),
             )
           ],
-          // appBarColor: const Color(0xFFFAFCFF),
-          // backgroundColor: const Color(0xFFFAFCFF),
           headerExpandedHeight: 0.5,
           title: AutoSizeText(
             "title".tr,
@@ -56,7 +54,6 @@ class HomeScreen extends StatelessWidget {
             style: context.textTheme.headlineMedium!.copyWith(fontSize: 30.h),
           ),
           headerWidget: headerWidget(context),
-
           body: const [ListItemBuilder()],
         ),
       ),
@@ -78,11 +75,9 @@ class HomeScreen extends StatelessWidget {
         GetBuilder<UserController>(
           builder: (userCtl) {
             String txt = "";
-            Get.log(userCtl.user.value.toString());
             if (userCtl.user == PharmacyUser().obs) {
               txt = welcomeText;
             } else {
-              Get.log("got here");
               txt = "$welcomeText, ${userCtl.user.value.name}";
             }
             return Padding(

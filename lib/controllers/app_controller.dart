@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:dio/dio.dart';
+import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -31,10 +33,30 @@ class AppController extends GetxController {
   //Debug
   RxString debugText = "".obs;
 
+  Dio dio = Dio();
+
+  late CacheStore cacheStore;
+  late CacheOptions cacheOptions;
+
   void toggleTheme() {
     final box = GetStorage();
     box.write('theme', isDarkMode.value);
     Get.changeTheme(isDarkMode.value ? themeLight : themeDark);
+  }
+
+  initCacheOption() {
+    cacheStore = MemCacheStore(maxSize: 10485760, maxEntrySize: 1048576);
+
+    cacheOptions = CacheOptions(
+      maxStale: const Duration(hours: 1),
+      store: cacheStore, allowPostMethod: true,
+      hitCacheOnErrorExcept: [], // for offline behaviour
+    );
+
+    dio = Dio()
+      ..interceptors.add(
+        DioCacheInterceptor(options: cacheOptions),
+      );
   }
 
   void readTheme() {
@@ -68,6 +90,7 @@ class AppController extends GetxController {
     readTheme();
     initMotion();
     initDeviceInfo();
+    initCacheOption();
     ever(searchCtl, (callback) => print("VALUE: ${callback.value.text}"));
     ever(isDarkMode, (callback) => toggleTheme());
     super.onInit();

@@ -189,6 +189,7 @@ class _AlarmPickerState extends State<AlarmPicker> {
                     ),
                     IconButton(
                         onPressed: () {
+                          final now = DateTime.now();
                           Navigator.of(context).push(
                             showPicker(
                               iosStylePicker: true,
@@ -196,7 +197,7 @@ class _AlarmPickerState extends State<AlarmPicker> {
                               accentColor: context.theme.primaryColor,
                               ltrMode: true,
                               context: context,
-                              value: TimeOfDay.now(),
+                              value: Time(hour: now.hour, minute: now.minute),
                               onChange: (v) {
                                 if (_alarm.times!.contains(v)) {
                                   Get.snackbar(
@@ -239,6 +240,7 @@ class _AlarmPickerState extends State<AlarmPicker> {
                                   children: [
                                     SlidableAction(
                                       onPressed: (v) {
+                                        final now = TimeOfDay.now();
                                         Navigator.of(context).push(
                                           showPicker(
                                             iosStylePicker: true,
@@ -247,7 +249,9 @@ class _AlarmPickerState extends State<AlarmPicker> {
                                                 context.theme.primaryColor,
                                             ltrMode: true,
                                             context: context,
-                                            value: TimeOfDay.now(),
+                                            value: Time(
+                                                hour: now.hour,
+                                                minute: now.minute),
                                             onChange: (v) {
                                               setState(() {
                                                 _alarm.times![index] = v;

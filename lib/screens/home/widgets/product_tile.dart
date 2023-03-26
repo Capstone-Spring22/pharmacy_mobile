@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/constrains/theme.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
 import 'package:pharmacy_mobile/models/cart.dart';
 import 'package:pharmacy_mobile/models/product.dart';
+import 'package:pharmacy_mobile/services/product_service.dart';
 import 'package:pharmacy_mobile/widgets/quan_control.dart';
 
 class ProductTile extends StatefulWidget {
@@ -74,11 +74,13 @@ class _ProductTileState extends State<ProductTile>
           children: [
             if (widget.product.imageModel == null) LoadingWidget(),
             if (widget.product.imageModel != null)
-              CachedNetworkImage(
-                imageUrl: widget.product.imageModel!.imageURL!,
-                placeholder: (context, url) =>
-                    Lottie.asset('assets/lottie/capsule_loading.json'),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
+              Hero(
+                tag: 'image${widget.product.id}',
+                child: CachedNetworkImage(
+                  imageUrl: widget.product.imageModel!.imageURL!,
+                  placeholder: (context, url) => LoadingWidget(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
               ),
             Text(
               widget.product.name!,
@@ -120,10 +122,20 @@ class _BuyButtonState extends State<BuyButton> {
     return Expanded(
       child: Column(
         children: [
-          Text(
-            convertCurrency(num.parse(widget.product.price.toString())),
-            textAlign: TextAlign.center,
-            style: tilePrice.copyWith(color: Colors.blue),
+          FutureBuilder(
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return LoadingWidget();
+              } else {
+                final unit = snapshot.data;
+                return Text(
+                  '${convertCurrency(num.parse(widget.product.price.toString()))} / ${unit!.unitName!}',
+                  textAlign: TextAlign.center,
+                  style: tilePrice.copyWith(color: Colors.blue),
+                );
+              }
+            },
+            future: ProductService().getProductUnitById(widget.product.unitId!),
           ),
           Expanded(
             child: SizedBox(
@@ -131,7 +143,7 @@ class _BuyButtonState extends State<BuyButton> {
                 child: GetX<CartController>(
                   builder: (controller) {
                     bool isInCart = controller.listCart
-                        .any((element) => element.pid == widget.product.id);
+                        .any((e) => e.pid == widget.product.id);
                     return AnimatedSwitcher(
                       duration: const Duration(milliseconds: 200),
                       transitionBuilder: (child, animation) => ScaleTransition(

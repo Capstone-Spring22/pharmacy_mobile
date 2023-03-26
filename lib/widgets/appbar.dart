@@ -17,19 +17,6 @@ class PharmacyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return AppBar(
-    //   elevation: 0,
-    //   backgroundColor: Colors.transparent,
-    //   toolbarHeight: 100.h,
-    //   leading: leftWidget,
-    //   title: AutoSizeText(
-    //     midText,
-    //     maxLines: 1,
-    //     style: titleStyle ?? context.textTheme.headlineMedium,
-    //   ),
-    //   actions: [rightWidget],
-    //   centerTitle: true,
-    // );
     return Align(
       alignment: Alignment.bottomCenter,
       child: Row(

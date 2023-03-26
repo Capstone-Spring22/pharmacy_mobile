@@ -1,11 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
-import 'package:pharmacy_mobile/screens/checkout/checkout.dart';
+import 'package:pharmacy_mobile/helpers/loading.dart';
 import 'package:pharmacy_mobile/screens/checkout/widget/hori_list.dart';
+
+import '../../../controllers/checkout_controller.dart';
 
 class ListCheckout extends StatelessWidget {
   const ListCheckout({super.key});
@@ -35,35 +36,43 @@ class ListCheckout extends StatelessWidget {
                             itemBuilder: (context, index) {
                               final item = productController
                                   .getProductById(ctl.listCart[index].pid);
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                child: ListTile(
-                                  leading: item.imageModel == null
-                                      ? Lottie.asset(
-                                          'assets/lottie/capsule_loading.json')
-                                      : CachedNetworkImage(
-                                          imageUrl: item.imageModel!.imageURL!,
-                                          placeholder: (context, url) =>
-                                              Lottie.asset(
-                                                  'assets/lottie/capsule_loading.json'),
-                                          errorWidget: (context, url, error) =>
-                                              const Icon(Icons.error),
+                              return GestureDetector(
+                                onTap: () => Get.toNamed(
+                                  '/product_detail',
+                                  arguments: item.id,
+                                ),
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: ListTile(
+                                    leading: item.imageModel == null
+                                        ? LoadingWidget()
+                                        : CachedNetworkImage(
+                                            imageUrl:
+                                                item.imageModel!.imageURL!,
+                                            placeholder: (context, url) =>
+                                                LoadingWidget(),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    const Icon(Icons.error),
+                                          ),
+                                    title: Text(
+                                      item.name!,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    subtitle: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text(
+                                            "Quantity: ${ctl.listCart[index].quantity}"),
+                                        Text(
+                                          convertCurrency(
+                                              item.priceAfterDiscount!),
                                         ),
-                                  title: Text(
-                                    item.name!,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  subtitle: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Text(
-                                          "Quantity: ${ctl.listCart[index].quantity}"),
-                                      Text(convertCurrency(
-                                          item.priceAfterDiscount!)),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               );

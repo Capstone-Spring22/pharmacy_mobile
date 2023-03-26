@@ -2,7 +2,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
@@ -21,48 +20,51 @@ class CartItemListView extends GetView<CartController> {
           itemBuilder: (context, index) {
             final item = productController
                 .getProductById(controller.listCart[index].pid);
-            return Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                children: [
-                  if (item.imageModel == null)
-                    Lottie.asset('assets/lottie/capsule_loading.json'),
-                  if (item.imageModel != null)
-                    CachedNetworkImage(
-                      imageUrl: item.imageModel!.imageURL!,
-                      placeholder: (context, url) => LoadingWidget(),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
+            return GestureDetector(
+              onTap: () => Get.toNamed('/product_detail', arguments: item.id),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    if (item.imageModel == null) LoadingWidget(),
+                    if (item.imageModel != null)
+                      CachedNetworkImage(
+                        imageUrl: item.imageModel!.imageURL!,
+                        placeholder: (context, url) => LoadingWidget(),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Text(
+                        item.name.toString(),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: context.textTheme.titleMedium,
+                      ),
                     ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: AutoSizeText(
-                      item.name.toString(),
-                      maxLines: 2,
-                      style: context.textTheme.headlineSmall,
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: AnimatedSwitcher(
-                          key: UniqueKey(),
-                          switchInCurve: Curves.easeIn,
-                          duration: const Duration(milliseconds: 300),
-                          child: AutoSizeText(
-                            convertCurrency(controller.listCart[index].price),
-                            style: context.theme.primaryTextTheme.bodyLarge!
-                                .copyWith(color: Colors.black),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                          child: AnimatedSwitcher(
+                            key: UniqueKey(),
+                            switchInCurve: Curves.easeIn,
+                            duration: const Duration(milliseconds: 300),
+                            child: AutoSizeText(
+                              convertCurrency(controller.listCart[index].price),
+                              style: context.theme.primaryTextTheme.bodyLarge!
+                                  .copyWith(color: Colors.black),
+                            ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        child: QuantityControl(item),
-                      )
-                    ],
-                  ),
-                ],
+                        Expanded(
+                          child: QuantityControl(item),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
             );
           },

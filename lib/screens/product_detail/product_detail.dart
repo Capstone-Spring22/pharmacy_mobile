@@ -16,7 +16,7 @@ import 'package:pharmacy_mobile/screens/home/widgets/drawer_btn.dart';
 import 'package:pharmacy_mobile/screens/product_detail/widgets/add_to_cart.dart';
 import 'package:pharmacy_mobile/screens/product_detail/widgets/content_info.dart';
 import 'package:pharmacy_mobile/screens/product_detail/widgets/image_view.dart';
-import 'package:pharmacy_mobile/screens/product_detail/widgets/ingredeent.dart';
+import 'package:pharmacy_mobile/screens/product_detail/widgets/ingredient.dart';
 import 'package:pharmacy_mobile/services/product_service.dart';
 import 'package:pharmacy_mobile/widgets/appbar.dart';
 import 'package:pharmacy_mobile/widgets/back_button.dart';
@@ -24,15 +24,14 @@ import 'package:pharmacy_mobile/widgets/back_button.dart';
 import '../../models/description.dart';
 
 class ProductDetailScreen extends GetView<AppController> {
-  const ProductDetailScreen(
-    this.product, {
+  const ProductDetailScreen({
     super.key,
   });
 
-  final PharmacyProduct product;
-
   @override
   Widget build(BuildContext context) {
+    String pid = Get.arguments;
+    final product = productController.getProductById(pid);
     GlobalKey<ScaffoldState> drawerKey = GlobalKey();
     return Scaffold(
       bottomNavigationBar: SizedBox(
@@ -65,12 +64,15 @@ class ProductDetailScreen extends GetView<AppController> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Column(
                     children: [
-                      CachedNetworkImage(
-                        height: Get.height * .3,
-                        imageUrl: product.imageModel!.imageURL!,
-                        width: double.infinity,
+                      Hero(
+                        tag: 'image${product.id}',
+                        child: CachedNetworkImage(
+                          height: Get.height * .3,
+                          imageUrl: product.imageModel!.imageURL!,
+                          width: double.infinity,
+                        ),
                       ),
-                      ...infoWidget(context),
+                      ...infoWidget(context, product),
                       LoadingWidget(
                         size: 60,
                       )
@@ -92,7 +94,7 @@ class ProductDetailScreen extends GetView<AppController> {
                               .toList(),
                         ),
                       ),
-                      ...infoWidget(context),
+                      ...infoWidget(context, product),
                       ...descriptionWidgets(detail.descriptionModels!)
                     ],
                   );
@@ -139,7 +141,7 @@ class ProductDetailScreen extends GetView<AppController> {
     ];
   }
 
-  List infoWidget(BuildContext context) {
+  List infoWidget(BuildContext context, PharmacyProduct product) {
     return [
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -172,7 +174,7 @@ class ProductDetailScreen extends GetView<AppController> {
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: AutoSizeText(
-          product.name!,
+          detail.name!,
           maxLines: 3,
           style: context.textTheme.labelLarge!.copyWith(fontSize: 24),
         ),
@@ -184,7 +186,7 @@ class ProductDetailScreen extends GetView<AppController> {
           children: [
             Expanded(
               child: Text(
-                "${convertCurrency(num.parse(product.price.toString()))}/${detail.unitName}",
+                "${convertCurrency(num.parse(detail.price.toString()))}/${detail.unitName}",
                 textAlign: TextAlign.center,
                 style: detailPrice.copyWith(color: Colors.blue),
               ),
