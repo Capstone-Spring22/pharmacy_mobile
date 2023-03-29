@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/screens/cart/widget/cart_list.dart';
 
 class CartScreen extends StatelessWidget {
@@ -32,7 +33,18 @@ class CartScreen extends StatelessWidget {
                 child: SizedBox(
                   width: Get.width * 0.5,
                   child: FilledButton(
-                    onPressed: () => Get.toNamed("/checkout"),
+                    onPressed: () {
+                      if (cartController.listCart.isEmpty) {
+                        Get.snackbar(
+                          "Error",
+                          "Please add products to your cart",
+                          backgroundColor: Colors.red,
+                          colorText: Colors.white,
+                        );
+                      } else {
+                        Get.toNamed("/checkout");
+                      }
+                    },
                     child: const Text("Checkout"),
                   ),
                 ),

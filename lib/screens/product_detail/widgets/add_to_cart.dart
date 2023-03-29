@@ -16,8 +16,8 @@ class AddToCartDetail extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 20),
       child: GetX<CartController>(
         builder: (controller) {
-          bool isInCart =
-              controller.listCart.any((element) => element.pid == product.id);
+          bool isInCart = controller.listCart
+              .any((element) => element.productId! == product.id);
           return AnimatedSwitcher(
             duration: const Duration(milliseconds: 200),
             transitionBuilder: (child, animation) => ScaleTransition(
@@ -30,9 +30,9 @@ class AddToCartDetail extends StatelessWidget {
                     width: Get.width * .5,
                     child: FilledButton(
                       onPressed: () => controller.addToCart(CartItem(
-                        pid: product.id!,
+                        productId: product.id!,
                         quantity: 1,
-                        price: num.parse(product.price.toString()),
+                        price: int.parse(product.price.toString()),
                       )),
                       child: const Text("Add to Cart"),
                     ),

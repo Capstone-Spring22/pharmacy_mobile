@@ -42,10 +42,10 @@ class QuantityControlDetail extends GetView<CartController> {
             ),
           ),
           onConfirm: () {
-            controller.updateQuantity(
-              product.id!,
-              num.parse(txt.text),
-            );
+            // controller.updateQuantity(
+            //   product.id!,
+            //   num.parse(txt.text),
+            // );
             Get.back();
           },
           onCancel: () {},
@@ -59,8 +59,7 @@ class QuantityControlDetail extends GetView<CartController> {
             child: Container(),
           ),
           GestureDetector(
-            onTap: () =>
-                controller.decreaseQuan(controller.cartItem(id: product.id)),
+            onTap: () => controller.decreaseQuan(product.id!),
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
@@ -78,7 +77,8 @@ class QuantityControlDetail extends GetView<CartController> {
           Text(
             controller.listCart
                 .firstWhere((element) =>
-                    productController.getProductById(element.pid) == product)
+                    productController.getProductById(element.productId!) ==
+                    product)
                 .quantity
                 .toString(),
             style: tileTitle.copyWith(fontSize: 18),
@@ -89,8 +89,7 @@ class QuantityControlDetail extends GetView<CartController> {
           Expanded(
             flex: 6,
             child: FilledButton(
-              onPressed: () =>
-                  controller.increaseQuan(controller.cartItem(id: product.id)),
+              onPressed: () => controller.increaseQuan(product.id!),
               child: Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,

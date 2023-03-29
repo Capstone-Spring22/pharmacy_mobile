@@ -19,7 +19,7 @@ class CartItemListView extends GetView<CartController> {
           itemCount: controller.listCart.length,
           itemBuilder: (context, index) {
             final item = productController
-                .getProductById(controller.listCart[index].pid);
+                .getProductById(controller.listCart[index].productId!);
             return GestureDetector(
               onTap: () => Get.toNamed('/product_detail', arguments: item.id),
               child: Padding(
@@ -52,7 +52,8 @@ class CartItemListView extends GetView<CartController> {
                             switchInCurve: Curves.easeIn,
                             duration: const Duration(milliseconds: 300),
                             child: AutoSizeText(
-                              convertCurrency(controller.listCart[index].price),
+                              convertCurrency(controller
+                                  .listCart[index].priceAfterDiscount!),
                               style: context.theme.primaryTextTheme.bodyLarge!
                                   .copyWith(color: Colors.black),
                             ),

@@ -18,7 +18,7 @@ class AppController extends GetxController {
 
   final GlobalKey<ScaffoldState> drawerKey = GlobalKey();
 
-  late AndroidDeviceInfo androidInfo;
+  AndroidDeviceInfo? androidInfo;
 
   Rx<TextEditingController> searchCtl = TextEditingController().obs;
 

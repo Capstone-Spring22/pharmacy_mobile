@@ -38,7 +38,7 @@ class _HorizontalListState extends State<HorizontalList> {
               }
             },
             items: widget.ctl.listCart.map((e) {
-              final item = productController.getProductById(e.pid);
+              final item = productController.getProductById(e.productId!);
               return ImageCarditem(
                 item.imageModel!.imageURL!,
                 h: Get.width * 0.25,
@@ -50,7 +50,7 @@ class _HorizontalListState extends State<HorizontalList> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: AutoSizeText(
-              "${productController.getProductById(item.pid).name} - ${item.quantity} - ${convertCurrency(item.price)}",
+              "${productController.getProductById(item.productId!).name} - ${item.quantity} - ${convertCurrency(item.priceAfterDiscount!)}",
             ),
           )
         ],

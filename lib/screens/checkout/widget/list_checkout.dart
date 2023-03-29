@@ -34,8 +34,8 @@ class ListCheckout extends StatelessWidget {
                             key: UniqueKey(),
                             scrollDirection: Axis.vertical,
                             itemBuilder: (context, index) {
-                              final item = productController
-                                  .getProductById(ctl.listCart[index].pid);
+                              final item = productController.getProductById(
+                                  ctl.listCart[index].productId!);
                               return GestureDetector(
                                 onTap: () => Get.toNamed(
                                   '/product_detail',
@@ -48,6 +48,8 @@ class ListCheckout extends StatelessWidget {
                                     leading: item.imageModel == null
                                         ? LoadingWidget()
                                         : CachedNetworkImage(
+                                            height: Get.height * .1,
+                                            width: Get.width * .15,
                                             imageUrl:
                                                 item.imageModel!.imageURL!,
                                             placeholder: (context, url) =>

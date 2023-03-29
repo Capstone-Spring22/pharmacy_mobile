@@ -143,7 +143,7 @@ class _BuyButtonState extends State<BuyButton> {
                 child: GetX<CartController>(
                   builder: (controller) {
                     bool isInCart = controller.listCart
-                        .any((e) => e.pid == widget.product.id);
+                        .any((e) => e.productId == widget.product.id);
                     return AnimatedSwitcher(
                       duration: const Duration(milliseconds: 200),
                       transitionBuilder: (child, animation) => ScaleTransition(
@@ -154,10 +154,9 @@ class _BuyButtonState extends State<BuyButton> {
                           ? QuantityControl(widget.product)
                           : FilledButton(
                               onPressed: () => controller.addToCart(CartItem(
-                                pid: widget.product.id!,
+                                productId: widget.product.id!,
                                 quantity: 1,
-                                price:
-                                    num.parse(widget.product.price.toString()),
+                                price: widget.product.priceAfterDiscount,
                               )),
                               child: const Text("Add to Cart"),
                             ),

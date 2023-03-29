@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
-import 'package:pharmacy_mobile/models/cart.dart';
 
 class QuantityEditSheet extends GetView<CartController> {
   const QuantityEditSheet({super.key, required this.productId});
@@ -11,7 +10,7 @@ class QuantityEditSheet extends GetView<CartController> {
   @override
   Widget build(BuildContext context) {
     TextEditingController txt = TextEditingController();
-    CartItem item = controller.cartItem(id: productId);
+    // CartItem item = controller.cartItem(id: productId);
     return TextFormField(
       controller: txt,
       keyboardType: TextInputType.phone,

@@ -12,7 +12,7 @@ class QuantityControl extends GetView<CartController> {
   @override
   Widget build(BuildContext context) {
     final count = controller.listCart
-        .singleWhere((element) => element.pid == product.id)
+        .singleWhere((element) => element.productId == product.id)
         .quantity;
     return GestureDetector(
       onTap: () {
@@ -44,7 +44,7 @@ class QuantityControl extends GetView<CartController> {
             ),
           ),
           onConfirm: () {
-            controller.updateQuantity(
+            controller.customQuan(
               product.id!,
               num.parse(txt.text),
             );
@@ -61,8 +61,7 @@ class QuantityControl extends GetView<CartController> {
             child: Container(),
           ),
           GestureDetector(
-            onTap: () =>
-                controller.decreaseQuan(controller.cartItem(id: product.id)),
+            onTap: () => controller.decreaseQuan(product.id!),
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
@@ -85,8 +84,7 @@ class QuantityControl extends GetView<CartController> {
             child: Container(),
           ),
           GestureDetector(
-            onTap: () =>
-                controller.increaseQuan(controller.cartItem(id: product.id)),
+            onTap: () => controller.increaseQuan(product.id!),
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
