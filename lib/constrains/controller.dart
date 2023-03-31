@@ -2,9 +2,11 @@ import 'package:intl/intl.dart';
 import 'package:pharmacy_mobile/controllers/app_controller.dart';
 import 'package:pharmacy_mobile/controllers/camera_controller.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
+import 'package:pharmacy_mobile/controllers/chat_controller.dart';
 import 'package:pharmacy_mobile/controllers/notification_controller.dart';
 import 'package:pharmacy_mobile/controllers/product_controller.dart';
 import 'package:pharmacy_mobile/controllers/user_controller.dart';
+import 'package:pharmacy_mobile/screens/address/address.dart';
 
 AppController appController = AppController.instance;
 CartController cartController = CartController.instance;
@@ -12,6 +14,8 @@ ProductController productController = ProductController.instance;
 UserController userController = UserController.instance;
 NotificationController notiController = NotificationController.instance;
 QrCameraController cameraController = QrCameraController.instance;
+AddressController addressController = AddressController.instance;
+ChatController chatController = ChatController.instance;
 
 String convertCurrency(num number) {
   var formatter = NumberFormat.currency(

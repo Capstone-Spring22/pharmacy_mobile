@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
-import 'package:pharmacy_mobile/screens/address/address.dart';
 import 'package:pharmacy_mobile/screens/checkout/checkout.dart';
 
 class CheckoutController extends GetxController {
@@ -45,25 +44,25 @@ class CheckoutController extends GetxController {
           label: "Name",
           txtCtrl: nameCtl,
           type: TextInputType.name),
-      TextFieldProperty(
-          icon: Icons.home,
-          label: "Address",
-          txtCtrl: address,
-          type: TextInputType.streetAddress,
-          fn: () {
-            Get.put(AddressController());
-            showModalBottomSheet(
-              useSafeArea: true,
-              enableDrag: true,
-              shape: const RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.vertical(top: Radius.circular(25.0))),
-              context: Get.context!,
-              builder: (context) {
-                return const AddressSelectionScreen();
-              },
-            );
-          }),
+      // TextFieldProperty(
+      //     icon: Icons.home,
+      //     label: "Address",
+      //     txtCtrl: address,
+      //     type: TextInputType.streetAddress,
+      //     fn: () {
+      //       Get.put(AddressController());
+      //       showModalBottomSheet(
+      //         useSafeArea: true,
+      //         enableDrag: true,
+      //         shape: const RoundedRectangleBorder(
+      //             borderRadius:
+      //                 BorderRadius.vertical(top: Radius.circular(25.0))),
+      //         context: Get.context!,
+      //         builder: (context) {
+      //           return const AddressSelectionScreen();
+      //         },
+      //       );
+      //     }),
       TextFieldProperty(
           icon: Icons.phone,
           label: "Phone Number",

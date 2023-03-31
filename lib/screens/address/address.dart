@@ -1,10 +1,9 @@
-import 'dart:developer';
-
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
-import 'package:pharmacy_mobile/controllers/checkout_controller.dart';
+import 'package:pharmacy_mobile/constrains/controller.dart';
+import 'package:pharmacy_mobile/models/detail_user.dart';
 import 'package:pharmacy_mobile/widgets/input.dart';
 
 class AddressSelectionScreen extends StatefulWidget {
@@ -16,36 +15,35 @@ class AddressSelectionScreen extends StatefulWidget {
 
 class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
   @override
-  void dispose() {
-    Get.delete<AddressController>();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    AddressController addressController = Get.find();
-    CheckoutController checkoutController = Get.find();
+    // CheckoutController checkoutController = Get.find();
     return Scaffold(
       body: SingleChildScrollView(
         child: SizedBox(
-          height: Get.height * .45,
+          height: Get.height * .5,
+          width: double.infinity,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Obx(
                 () => addressController.isCityLoaded.value
-                    ? dropdownBox(
-                        hint: "Select a City",
-                        items: addressController.listCityItems,
-                        value: addressController.selectedCityId.value.isNotEmpty
-                            ? addressController.selectedCityId.value
-                            : null,
-                        searchController: addressController.searchCityCtrl,
-                        searchInnerWidget: Input(
-                          inputController: addressController.searchCityCtrl,
+                    ? IgnorePointer(
+                        child: dropdownBox(
+                          disableHint:
+                              const Text('Only available in Ho Chi Minh City'),
+                          hint: null,
+                          items: addressController.listCityItems,
+                          value:
+                              addressController.selectedCityId.value.isNotEmpty
+                                  ? addressController.selectedCityId.value
+                                  : null,
+                          searchController: addressController.searchCityCtrl,
+                          searchInnerWidget: Input(
+                            inputController: addressController.searchCityCtrl,
+                          ),
+                          onChanged: addressController.changeCity,
+                          searchMatchFn: addressController.searchCity,
                         ),
-                        onChanged: addressController.changeCity,
-                        searchMatchFn: addressController.searchCity,
                       )
                     : const CircularProgressIndicator.adaptive(),
               ),
@@ -54,7 +52,7 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
                   return Container();
                 } else if (addressController.isDistrictLoaded.value) {
                   return dropdownBox(
-                    hint: "Select a District",
+                    hint: const Text("Select a District"),
                     items: addressController.listDistrictItem,
                     value: addressController.selectedDistrictId.value.isNotEmpty
                         ? addressController.selectedDistrictId.value
@@ -76,7 +74,7 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
                   return Container();
                 } else if (addressController.isWardLoaded.value) {
                   return dropdownBox(
-                    hint: "Select a Ward",
+                    hint: const Text("Select a Ward"),
                     items: addressController.listWardItem,
                     value: addressController.selectedWardId.value.isNotEmpty
                         ? addressController.selectedWardId.value
@@ -99,16 +97,34 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
                       addressController.selectedWardId.isEmpty) {
                     return Container();
                   }
-                  return Input(
-                    inputController: addressController.addressTextCtl,
-                    inputType: TextInputType.streetAddress,
-                    title: "Address",
-                    onChanged: (v) {
-                      checkoutController.address.text =
-                          "$v ${addressController.addressTile}";
-                    },
+                  return SizedBox(
+                    width: Get.width * .9,
+                    child: Input(
+                      inputController: addressController.addressTextCtl,
+                      inputType: TextInputType.streetAddress,
+                      title: "Address",
+                      onChanged: (v) {
+                        addressController.addressTile.value = v;
+                      },
+                    ),
                   );
                 },
+              ),
+              Obx(
+                () => SizedBox(
+                  width: Get.width * .8,
+                  child: FilledButton(
+                    onPressed: addressController.selectedCityId.isEmpty ||
+                            addressController.selectedDistrictId.isEmpty ||
+                            addressController.selectedWardId.isEmpty ||
+                            addressController.addressTile.value.isEmpty
+                        ? null
+                        : () {
+                            addressController.addAddress();
+                          },
+                    child: const Text("Add Address"),
+                  ),
+                ),
               )
             ],
           ),
@@ -117,19 +133,22 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
     );
   }
 
-  DropdownButton2<dynamic> dropdownBox(
-      {List<DropdownMenuItem<dynamic>>? items,
-      dynamic value,
-      TextEditingController? searchController,
-      Widget? searchInnerWidget,
-      bool Function(DropdownMenuItem<dynamic>, String)? searchMatchFn,
-      void Function(dynamic)? onChanged,
-      required String hint}) {
+  DropdownButton2<dynamic> dropdownBox({
+    List<DropdownMenuItem<dynamic>>? items,
+    dynamic value,
+    TextEditingController? searchController,
+    Widget? searchInnerWidget,
+    bool Function(DropdownMenuItem<dynamic>, String)? searchMatchFn,
+    void Function(dynamic)? onChanged,
+    Widget? hint,
+    Widget? disableHint,
+  }) {
     return DropdownButton2(
       isExpanded: true,
+      disabledHint: disableHint,
       items: items,
       value: value,
-      hint: Text(hint),
+      hint: hint,
       searchController: searchController,
       searchInnerWidget: searchInnerWidget,
       searchInnerWidgetHeight: 100,
@@ -137,7 +156,7 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
       onChanged: onChanged,
       iconSize: 14,
       buttonHeight: 50,
-      buttonWidth: Get.width * .75,
+      buttonWidth: Get.width * .8,
       buttonPadding: const EdgeInsets.only(left: 14, right: 14),
       buttonDecoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
@@ -161,18 +180,70 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
   }
 }
 
-class AddressService extends GetConnect {
+class AddressService {
+  final dio = appController.dio;
   String apiUrl = dotenv.env['API_URL']!;
 
-  Future<Response> getCity() => get('${apiUrl}Address/City');
-  Future<Response> getDistrict(String cityId) =>
-      get('${apiUrl}Address/$cityId/District');
-  Future<Response> getWard(String wardId) =>
-      get('${apiUrl}Address/$wardId/Ward');
+  Future getCity() async {
+    try {
+      var response = await dio.get('${apiUrl}Address/City');
+      return response;
+    } catch (e) {
+      Get.log("getCity: $e");
+    }
+  }
+
+  Future getDistrict(String cityId) async {
+    try {
+      var response = await dio.get('${apiUrl}Address/$cityId/District');
+      return response;
+    } catch (e) {
+      Get.log("getDistrict: $e");
+    }
+  }
+
+  Future getWard(String districtId) async {
+    try {
+      var response = await dio.get('${apiUrl}Address/$districtId/Ward');
+      return response;
+    } catch (e) {
+      // Get.log("getWard: $apiUrl - $districtId - $e");
+    }
+  }
+
+  Future addAddress(Map<String, dynamic> map) async {
+    try {
+      var response = await dio.post(
+        '${apiUrl}CustomerAddress',
+        data: map,
+        options: userController.options,
+      );
+      Get.log(response.toString());
+      await userController.refeshUser();
+      return response;
+    } catch (e) {
+      Get.log("addAddress: $e");
+    }
+  }
+
+  Future removeAddress(String id) async {
+    try {
+      var response = await dio.delete(
+        '${apiUrl}CustomerAddress/$id',
+        options: userController.options,
+      );
+      Get.log(response.toString());
+      return response;
+    } catch (e) {
+      Get.log("removeAddress: $e");
+    }
+  }
 }
 
 class AddressController extends GetxController {
-  CheckoutController checkoutController = Get.find();
+  static AddressController instance = Get.find();
+
+  RxString selectedAddressid = "".obs;
 
   //City
   RxBool isCityLoaded = false.obs;
@@ -197,7 +268,9 @@ class AddressController extends GetxController {
 
   //Address
   final addressTextCtl = TextEditingController();
-  String addressTile = "";
+  RxString addressTile = "".obs;
+
+  RxList<String> listUserAddress = <String>[].obs;
 
   @override
   void onInit() {
@@ -205,36 +278,53 @@ class AddressController extends GetxController {
     getListCity();
     ever(selectedCityId, getListDistrict);
     ever(selectedDistrictId, getListWard);
-    everAll(
-        [selectedCityId, selectedDistrictId, selectedWardId],
-        (callback) => setAddressCtrl(
-              selectedCityId.value,
-              selectedDistrictId.value,
-              selectedWardId.value,
-            ));
+
+    ever(userController.detailUser, addListUserAddress);
   }
 
-  void setAddressCtrl(String? cityId, String? districtId, String? wardId) {
+  void addListUserAddress(DetailUser user) {
+    if (user.customerAddressList != null) {
+      for (var element in user.customerAddressList!) {
+        listUserAddress.add(element.addressId!);
+      }
+    }
+  }
+
+  String setAddressCtrl() {
     String ward = '';
     String district = '';
     String city = '';
 
     try {
-      city = listCityMap
-          .firstWhere((element) => element['id'] == cityId)['cityName'];
-      district = listDistrictMap.firstWhere(
-              (element) => element['id'] == districtId)['districtName'] +
+      city = listCityMap.firstWhere(
+          (element) => element['id'] == selectedCityId.value)['cityName'];
+      district = listDistrictMap.firstWhere((element) =>
+              element['id'] == selectedDistrictId.value)['districtName'] +
           ',';
-      ward = listWardMap
-              .firstWhere((element) => element['id'] == wardId)['wardName'] +
+      ward = listWardMap.firstWhere(
+              (element) => element['id'] == selectedWardId.value)['wardName'] +
           ',';
     } catch (e) {
       Get.log(e.toString());
     }
 
-    addressTile = "$ward $district $city";
+    return "${addressTextCtl.text} $ward $district $city";
+  }
 
-    checkoutController.address.text = addressTile;
+  Future addAddress() async {
+    var address = {
+      "customerId": userController.user.value.id,
+      "cityId": selectedCityId.value,
+      "districtId": selectedDistrictId.value,
+      "wardId": selectedWardId.value,
+      "homeAddress": addressTextCtl.text,
+      "isMainAddress": false
+    };
+    Get.log(address.toString());
+    AddressService().addAddress(address).then((value) {
+      Get.back();
+      Get.snackbar("Thông báo", "Thêm địa chỉ thành công");
+    });
   }
 
   String removeSpecialCharacters(String text) {
@@ -277,7 +367,7 @@ class AddressController extends GetxController {
     listCityMap.clear();
     searchCityCtrl.text = '';
     try {
-      for (var e in res.body as List<dynamic>) {
+      for (var e in res.data as List<dynamic>) {
         listCityMap.add(e);
         listCityItems.add(DropdownMenuItem(
           value: e['id'],
@@ -288,6 +378,7 @@ class AddressController extends GetxController {
       Get.log("City Error: $e");
     }
     isCityLoaded.value = true;
+    selectedCityId.value = "79";
   }
 
   Future getListDistrict(String cityId) async {
@@ -298,8 +389,7 @@ class AddressController extends GetxController {
     listDistrictItem.clear();
     listDistrictMap.clear();
     try {
-      for (var e in res.body as List<dynamic>) {
-        log("${e['districtName']} added");
+      for (var e in res.data as List<dynamic>) {
         listDistrictMap.add(e);
         listDistrictItem.add(DropdownMenuItem(
           value: e['id'],
@@ -309,7 +399,7 @@ class AddressController extends GetxController {
     } on Exception catch (e) {
       Get.log("District Error: $e");
     }
-    // selectedCityId.value = ((res.body) as List<dynamic>)[0]['id'];
+    // selectedCityId.value = ((res.data) as List<dynamic>)[0]['id'];
     isDistrictLoaded.value = true;
   }
 
@@ -321,15 +411,14 @@ class AddressController extends GetxController {
     listWardItem.clear();
     listWardMap.clear();
     try {
-      for (var e in res.body as List<dynamic>) {
-        log("${e['wardName']} added");
+      for (var e in res.data as List<dynamic>) {
         listWardMap.add(e);
         listWardItem.add(DropdownMenuItem(
           value: e['id'],
           child: Text(e['wardName']),
         ));
       }
-    } on Exception catch (e) {
+    } catch (e) {
       Get.log("Ward Error: $e");
     }
     // selectedCityId.value = ((res.body) as List<dynamic>)[0]['id'];

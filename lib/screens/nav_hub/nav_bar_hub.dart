@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/app_controller.dart';
 import 'package:pharmacy_mobile/screens/camera/camera.dart';
-import 'package:pharmacy_mobile/screens/chat/chat.dart';
 import 'package:pharmacy_mobile/screens/drawer/cart_drawer.dart';
 import 'package:pharmacy_mobile/screens/drawer/menu_drawer.dart';
 import 'package:pharmacy_mobile/screens/home/home.dart';
@@ -43,7 +42,7 @@ class NavBarHub extends GetView<AppController> {
       case 2:
         return const CameraScreen();
       case 3:
-        return const ChatScreen();
+        return const StoreScreen();
       case 4:
         return const UserScreen();
       default:

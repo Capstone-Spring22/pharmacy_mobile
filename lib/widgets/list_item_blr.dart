@@ -23,23 +23,6 @@ class ListItemBuilder extends StatelessWidget {
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           childAspectRatio: .6,
-                          // children: controller.products
-                          //     .map(
-                          //       (e) => OpenContainer(
-                          //         closedElevation: 0,
-                          //         tappable: false,
-                          //         closedBuilder: (context, action) => Padding(
-                          //           padding: const EdgeInsets.all(20),
-                          //           child: ProductTile(
-                          //             fn: () => action(),
-                          //             product: e,
-                          //           ),
-                          //         ),
-                          //         openBuilder: (context, action) =>
-                          //             ProductDetailScreen(e),
-                          //       ),
-                          //     )
-                          //     .toList(),
                           children: controller.products
                               .map(
                                 (e) => Padding(

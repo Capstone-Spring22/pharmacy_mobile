@@ -11,6 +11,7 @@ class Input extends StatelessWidget {
   final String? hint;
   final Function(String)? onSubmit;
   final bool centerText;
+  final TextInputAction? inputAction;
   const Input(
       {Key? key,
       required this.inputController,
@@ -20,6 +21,7 @@ class Input extends StatelessWidget {
       this.inputType,
       this.enabled = true,
       this.hint,
+      this.inputAction,
       this.centerText = false,
       this.onSubmit})
       : super(key: key);
@@ -44,6 +46,7 @@ class Input extends StatelessWidget {
                   color: Colors.grey.withOpacity(.1)),
             ]),
             child: TextField(
+              textInputAction: inputAction,
               focusNode: focus,
               enabled: enabled,
               textAlign: centerText ? TextAlign.center : TextAlign.left,

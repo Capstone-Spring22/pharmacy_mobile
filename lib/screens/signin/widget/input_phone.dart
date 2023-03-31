@@ -17,6 +17,7 @@ class InputPhone extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         TextField(
+          textAlign: TextAlign.center,
           controller: phoneCtl,
           keyboardType: TextInputType.phone,
           decoration: InputDecoration(

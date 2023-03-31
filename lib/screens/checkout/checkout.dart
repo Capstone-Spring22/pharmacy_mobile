@@ -7,6 +7,7 @@ import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/checkout_controller.dart';
 import 'package:pharmacy_mobile/screens/checkout/widget/list_checkout.dart';
 import 'package:pharmacy_mobile/screens/checkout/widget/toggle_checkout.dart';
+import 'package:pharmacy_mobile/screens/user/widget/address_card.dart';
 import 'package:pharmacy_mobile/widgets/input.dart';
 
 class CheckoutScreen extends StatefulWidget {
@@ -211,42 +212,45 @@ class _UserCheckoutInfoState extends State<UserCheckoutInfo>
           SizedBox(
             height: Get.height * .05,
           ),
+          ...checkoutCtrl.listTextField.map((element) {
+            final int index = checkoutCtrl.listTextField.indexOf(element);
+            return SlideTransition(
+              position: getSlideTransition(index),
+              child: GestureDetector(
+                onTap: checkoutCtrl.listTextField[index].fn,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    children: [
+                      Icon(
+                        checkoutCtrl.listTextField[index].icon,
+                        color: context.theme.primaryColor,
+                      ),
+                      Expanded(
+                        child: Input(
+                          enabled: checkoutCtrl
+                                  .listTextField[checkoutCtrl.listTextField
+                                      .indexOf(element)]
+                                  .fn ==
+                              null,
+                          inputController:
+                              checkoutCtrl.listTextField[index].txtCtrl,
+                          title: checkoutCtrl.listTextField[index].label,
+                          inputType: checkoutCtrl.listTextField[index].type,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }),
           const Text("Order Type:"),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 8),
             child: ToggleCheckout(),
           ),
-          Expanded(
-            child: ListView.builder(
-              itemBuilder: (context, index) {
-                return SlideTransition(
-                  position: getSlideTransition(index),
-                  child: GestureDetector(
-                    onTap: checkoutCtrl.listTextField[index].fn,
-                    child: Row(
-                      children: [
-                        Icon(
-                          checkoutCtrl.listTextField[index].icon,
-                          color: context.theme.primaryColor,
-                        ),
-                        Expanded(
-                          child: Input(
-                            enabled:
-                                checkoutCtrl.listTextField[index].fn == null,
-                            inputController:
-                                checkoutCtrl.listTextField[index].txtCtrl,
-                            title: checkoutCtrl.listTextField[index].label,
-                            inputType: checkoutCtrl.listTextField[index].type,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-              itemCount: checkoutCtrl.listTextField.length,
-            ),
-          ),
+          const AddressCard(),
         ],
       ),
     );

@@ -49,6 +49,10 @@ class UserController extends GetxController {
     }
   }
 
+  Future refeshUser() async {
+    detailUser.value = await UserService().getUserDetail(user.value.id!);
+  }
+
   String formatPhoneNumber(String phoneNumber) {
     return phoneNumber.padLeft(10, '0');
   }
@@ -63,5 +67,22 @@ class UserController extends GetxController {
     appController.drawerKey.currentState!.closeDrawer();
     Get.back();
     return PharmacyUser.fromMap(res.data);
+  }
+
+  Future logout() async {
+    await FirebaseAuth.instance.signOut();
+    resetState();
+    appController.drawerKey.currentState!.closeDrawer();
+    Get.back();
+  }
+
+  void resetState() {
+    user = PharmacyUser().obs;
+    detailUser = DetailUser().obs;
+    isLoggedIn = false.obs;
+    options = null;
+    cartController
+      ..listCart.clear()
+      ..refresh();
   }
 }

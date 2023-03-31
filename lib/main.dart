@@ -11,12 +11,14 @@ import 'package:get_storage/get_storage.dart';
 import 'package:pharmacy_mobile/constrains/text.dart';
 import 'package:pharmacy_mobile/controllers/app_controller.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
+import 'package:pharmacy_mobile/controllers/chat_controller.dart';
 import 'package:pharmacy_mobile/controllers/notification_controller.dart';
 import 'package:pharmacy_mobile/controllers/product_controller.dart';
 import 'package:pharmacy_mobile/debug/screen.dart';
 import 'package:pharmacy_mobile/firebase_options.dart';
 import 'package:pharmacy_mobile/screens/address/address.dart';
 import 'package:pharmacy_mobile/screens/alarm/alarm_picker.dart';
+import 'package:pharmacy_mobile/screens/chat/chat.dart';
 import 'package:pharmacy_mobile/screens/checkout/checkout.dart';
 import 'package:pharmacy_mobile/screens/nav_hub/nav_bar_hub.dart';
 import 'package:pharmacy_mobile/screens/product_detail/product_detail.dart';
@@ -27,6 +29,7 @@ import 'package:pharmacy_mobile/screens/user/user.dart';
 
 import 'controllers/user_controller.dart';
 import 'screens/introduction/intro.dart';
+import 'screens/message/message.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,6 +58,8 @@ void initController() {
   Get.put(ProductController());
   Get.put(CartController());
   Get.put(NotificationController());
+  Get.put(AddressController());
+  Get.put(ChatController());
 
   //TODO: remove debug controller
   // Get.put(MyController());
@@ -109,6 +114,14 @@ class MyApp extends StatelessWidget {
               page: () => const SignUpScreen(),
             ),
             GetPage(
+              name: '/chat',
+              page: () => const ChatScreen(),
+            ),
+            GetPage(
+              name: '/message',
+              page: () => const MessageScreen(),
+            ),
+            GetPage(
               name: '/user',
               page: () => const UserScreen(),
             ),
@@ -119,7 +132,6 @@ class MyApp extends StatelessWidget {
             GetPage(
               name: '/address',
               page: () {
-                Get.put(AddressController());
                 return const AddressSelectionScreen();
               },
             ),

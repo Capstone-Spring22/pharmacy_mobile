@@ -14,18 +14,6 @@ class AuthButtonRow extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Hero(
-              tag: 'signupBtn',
-              child: PharmacyButton(
-                onPressed: () => Get.toNamed("/signup"),
-                text: "Sign up",
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Hero(
               tag: 'signinBtn',
               child: PharmacyButton(
                 onPressed: () => Get.toNamed("/signin"),

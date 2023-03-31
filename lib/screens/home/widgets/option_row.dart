@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/screens/home/widgets/option_box.dart';
 
 class OptionButtonRow extends StatelessWidget {
@@ -28,7 +29,13 @@ class OptionButtonRow extends StatelessWidget {
           color: Colors.green[100]!.withOpacity(.7),
           image: "assets/images/UserFocus.png",
           text: "contact_btn".tr,
-          func: () {},
+          func: () {
+            if (userController.isLoggedIn.isTrue) {
+              Get.toNamed("/chat");
+            } else {
+              Get.toNamed("/signin");
+            }
+          },
         ),
       ],
     );

@@ -49,6 +49,7 @@ class CodeSent extends StatelessWidget {
             ),
             Divider(color: Colors.transparent, height: Get.height * .05),
             TextField(
+              textAlign: TextAlign.center,
               controller: otpCtl,
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
