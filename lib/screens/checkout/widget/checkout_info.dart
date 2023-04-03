@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/controllers/checkout_controller.dart';
+import 'package:pharmacy_mobile/screens/checkout/widget/check_product_avail.dart';
 import 'package:pharmacy_mobile/screens/checkout/widget/toggle_checkout.dart';
 import 'package:pharmacy_mobile/screens/user/widget/address_card.dart';
 import 'package:pharmacy_mobile/widgets/input.dart';
@@ -114,7 +115,13 @@ class _UserCheckoutInfoState extends State<UserCheckoutInfo>
             child: Text("Order Type:"),
           ),
           const ToggleCheckout(),
-          const AddressCard(),
+          Obx(() {
+            if (checkoutCtrl.checkoutType.value == 0) {
+              return const AddressCard();
+            } else {
+              return const CheckProductAvailbility();
+            }
+          }),
 
           //////
           SizedBox(

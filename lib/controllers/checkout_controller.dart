@@ -5,6 +5,7 @@ import 'package:pharmacy_mobile/helpers/loading.dart';
 import 'package:pharmacy_mobile/models/order.dart';
 import 'package:pharmacy_mobile/screens/checkout/checkout.dart';
 import 'package:pharmacy_mobile/services/order_service.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CheckoutController extends GetxController {
   RxBool isCollase = false.obs;
@@ -18,6 +19,12 @@ class CheckoutController extends GetxController {
   final noteCtl = TextEditingController();
 
   Rx<ScrollController?> scrollController = null.obs;
+
+  RxString selectSite = "".obs;
+  RxString selectDate = "".obs;
+  RxString selectTime = "".obs;
+
+  RxBool activeBtn = true.obs;
 
   RxInt paymentType = 0.obs;
   //0 - Cash
@@ -43,6 +50,30 @@ class CheckoutController extends GetxController {
   @override
   void onInit() {
     final user = userController.user.value;
+
+    ever(checkoutType, (type) {
+      if (type == 0) {
+        selectSite.value = "";
+        selectDate.value = "";
+        selectTime.value = "";
+        activeBtn.value = true;
+      } else {
+        activeBtn.value = false;
+        everAll([selectDate, selectSite, selectTime], (value) {
+          if (type != 0) {
+            if (selectDate.value != "" &&
+                selectSite.value != "" &&
+                selectTime.value != "") {
+              activeBtn.value = true;
+            } else {
+              activeBtn.value = false;
+            }
+          } else {
+            activeBtn.value = true;
+          }
+        }, condition: type != 0);
+      }
+    });
 
     if (user.name != null) {
       nameCtl.text = user.name!;
@@ -71,24 +102,16 @@ class CheckoutController extends GetxController {
           txtCtrl: noteCtl,
           type: TextInputType.multiline),
     ];
-
-    // ever(
-    //     scrollController,
-    //     (callback) => {
-    //           if (callback != null)
-    //             {
-    //               callback.addListener(() {
-    //                 if (callback.position.pixels ==
-    //                     callback.position.maxScrollExtent) {
-    //                   Get.log("at bottom");
-    //                 }
-    //               })
-    //             }
-    //           else
-    //             {callback!.removeListener(() {})}
-    //         });
-
     super.onInit();
+  }
+
+  void launchMaps(String address) async {
+    String googleUrl =
+        'https://www.google.com/maps/search/?api=1&query=$address';
+    if (!await launchUrl(Uri.parse(googleUrl),
+        mode: LaunchMode.externalApplication)) {
+      throw Exception('Could not launch $googleUrl');
+    }
   }
 
   void toggleOrderType(int? index) {
@@ -103,6 +126,109 @@ class CheckoutController extends GetxController {
     final user = userController.user.value;
     final detailUser = userController.detailUser.value;
     num type = 2;
+
+    List<Products> listProducts = [];
+
+    for (var element in cartController.listCart) {
+      listProducts.add(Products(
+        productId: element.productId,
+        quantity: element.quantity,
+        discountPrice: element.priceAfterDiscount,
+        originalPrice: element.price,
+      ));
+    }
+
+    Get.dialog(
+      Center(
+        child: LoadingWidget(),
+      ),
+    );
+
+    if (paymentType.value == 0) {
+      final order = Order(
+        orderId: await OrderService().getOrderId(),
+        orderTypeId: type,
+        usedPoint: 0,
+        payType: 1,
+        isPaid: false,
+        discountPrice: cartController.calculateTotal(),
+        subTotalPrice: cartController.calculateTotalNonDiscount(),
+        shippingPrice: 0,
+        totalPrice: cartController.calculateTotal(),
+        products: listProducts,
+        vouchers: [],
+        note: noteCtl.text,
+        orderPickUp: null,
+        siteId: selectSite.value,
+      );
+
+      await OrderService().postOrder(order).then((value) {
+        if (value == 200) {
+          Get.offAllNamed(
+            '/order-success',
+            arguments: order.orderId,
+          );
+        } else {
+          Get.back();
+          Get.snackbar("Error", "Something went wrong");
+        }
+      });
+    } else {
+      Get.toNamed('/vnpay')!.then((value) async {
+        Get.log("Data from previous Screen: $value");
+        if (value != null) {
+          Uri uri = Uri.parse(value.toString());
+          String vnpAmount = uri.queryParameters['vnp_Amount']!;
+          String vnpBankCode = uri.queryParameters['vnp_BankCode']!;
+          String vnpBankTranNo = uri.queryParameters['vnp_BankTranNo']!;
+          String vnpCardType = uri.queryParameters['vnp_CardType']!;
+          String vnpOrderInfo = uri.queryParameters['vnp_OrderInfo']!;
+          String vnpPayDate = uri.queryParameters['vnp_PayDate']!;
+          String vnpResponseCode = uri.queryParameters['vnp_ResponseCode']!;
+          String vnpTmnCode = uri.queryParameters['vnp_TmnCode']!;
+          String vnpTransactionNo = uri.queryParameters['vnp_TransactionNo']!;
+          String vnpTransactionStatus =
+              uri.queryParameters['vnp_TransactionStatus']!;
+          String vnpTxnRef = uri.queryParameters['vnp_TxnRef']!;
+          String vnpSecureHash = uri.queryParameters['vnp_SecureHash']!;
+
+          final order = Order(
+              orderId: await OrderService().getOrderId(),
+              orderTypeId: type,
+              usedPoint: 0,
+              payType: 2,
+              isPaid: true,
+              discountPrice: cartController.calculateTotal(),
+              subTotalPrice: cartController.calculateTotalNonDiscount(),
+              shippingPrice: 0,
+              totalPrice: cartController.calculateTotal(),
+              products: listProducts,
+              vouchers: [],
+              note: noteCtl.text,
+              siteId: selectSite.value,
+              orderPickUp: null,
+              vnpayInformation: VnpayInformation(
+                vnpTransactionNo: vnpTransactionNo,
+                vnpPayDate: vnpPayDate,
+              ));
+
+          await OrderService().postOrder(order).then((value) {
+            if (value == 200) {
+              Get.offAllNamed(
+                '/order-success',
+                arguments: order.orderId,
+              );
+            } else {
+              Get.back();
+              Get.snackbar("Error", "Something went wrong");
+            }
+          });
+        } else {
+          Get.back();
+          Get.snackbar("Error", "You cancel the payment");
+        }
+      });
+    }
   }
 
   Future createOrderOnline() async {

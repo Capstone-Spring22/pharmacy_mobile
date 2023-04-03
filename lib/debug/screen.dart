@@ -1,82 +1,129 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:get/get.dart';
-import 'package:pharmacy_mobile/constrains/controller.dart';
-import 'package:pharmacy_mobile/controllers/app_controller.dart';
-import 'package:pharmacy_mobile/controllers/vn_pay.dart';
-import 'package:pharmacy_mobile/helpers/loading.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class DebugScreen extends StatefulWidget {
-  const DebugScreen({super.key});
+  const DebugScreen({Key? key}) : super(key: key);
 
   @override
-  State<DebugScreen> createState() => _DebugScreenState();
+  _DebugScreenState createState() => _DebugScreenState();
 }
 
 class _DebugScreenState extends State<DebugScreen> {
-  late WebViewController controller;
-  bool isLoaded = false;
+  int _currentIndex = 0;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    controller.clearCache();
-    controller.clearLocalStorage();
-  }
+  final List<Widget> _widgets = [
+    Container(
+      key: const ValueKey(0),
+      child: const Center(
+        child: Text(
+          'Widget 1',
+          style: TextStyle(fontSize: 24),
+        ),
+      ),
+    ),
+    Container(
+      key: const ValueKey(1),
+      child: const Center(
+        child: Text(
+          'Widget 2',
+          style: TextStyle(fontSize: 24),
+        ),
+      ),
+    ),
+    Container(
+      key: const ValueKey(2),
+      child: const Center(
+        child: Text(
+          'Widget 3',
+          style: TextStyle(fontSize: 24),
+        ),
+      ),
+    ),
+    Container(
+      key: const ValueKey(3),
+      child: const Center(
+        child: Text(
+          'Widget 4',
+          style: TextStyle(fontSize: 24),
+        ),
+      ),
+    ),
+    Container(
+      key: const ValueKey(4),
+      child: const Center(
+        child: Text(
+          'Widget 5',
+          style: TextStyle(fontSize: 24),
+        ),
+      ),
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Debug")),
+      appBar: AppBar(
+        title: const Text('Animated Widget Switcher'),
+      ),
       body: Center(
-        // child: WebViewWidget(controller: controller),
-        child: FutureBuilder(
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return LoadingWidget();
-            } else {
-              String ip = snapshot.data!;
-              String tmnCode = dotenv.env['VNPAY_tmnCode']!;
-              String hash = dotenv.env['VNPAY_Hash']!;
-              final url = VNPAYFlutter.instance.generatePaymentUrl(
-                version: '2.0.1',
-                tmnCode: tmnCode,
-                txnRef: AppController().generateRefBill(),
-                amount: 500000,
-                returnUrl: 'https://www.ff.com/',
-                ipAdress: ip,
-                vnpayHashKey: hash,
-              );
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 500),
+              transitionBuilder: (child, animation) {
+                final index = _widgets.indexOf(child);
+                final isEntering = index > _currentIndex;
 
-              controller = WebViewController()
-                ..setJavaScriptMode(JavaScriptMode.unrestricted)
-                ..setBackgroundColor(const Color(0x00000000))
-                ..setNavigationDelegate(
-                  NavigationDelegate(
-                    onNavigationRequest: (NavigationRequest request) {
-                      Get.log(request.url);
-                      if (request.url.startsWith('https://www.google.com/')) {
-                        Get.toNamed('/navhub');
-                        return NavigationDecision.navigate;
-                      }
-                      return NavigationDecision.navigate;
-                    },
-                  ),
-                )
-                ..loadRequest(Uri.parse(url));
+                final begin = isEntering
+                    ? const Offset(0.0, 1.0)
+                    : const Offset(0.0, 0.0);
+                final end = isEntering
+                    ? const Offset(0.0, 0.0)
+                    : const Offset(0.0, -1.0);
 
-              return WebViewWidget(controller: controller);
-            }
-          },
-          future: appController.getIpAddress(),
+                return Stack(
+                  children: [
+                    SlideTransition(
+                      position: Tween<Offset>(
+                        begin: const Offset(0.0, 0.0),
+                        end: begin,
+                      ).animate(animation),
+                      child: FadeTransition(
+                        opacity: Tween<double>(
+                          begin: 1.0,
+                          end: 0.0,
+                        ).animate(animation),
+                        child: child,
+                      ),
+                    ),
+                    SlideTransition(
+                      position: Tween<Offset>(
+                        begin: const Offset(0.0, 1.0),
+                        end: end,
+                      ).animate(animation),
+                      child: FadeTransition(
+                        opacity: Tween<double>(
+                          begin: 0.0,
+                          end: 1.0,
+                        ).animate(animation),
+                        child: _widgets[_currentIndex],
+                      ),
+                    ),
+                  ],
+                );
+              },
+              child: _widgets[_currentIndex],
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  _currentIndex = (_currentIndex + 1) % _widgets.length;
+                });
+              },
+              child: const Text('Switch Widget'),
+            ),
+          ],
         ),
       ),
     );

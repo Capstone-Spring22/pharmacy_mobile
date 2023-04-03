@@ -1,9 +1,9 @@
 import 'dart:developer';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:dio/dio.dart';
+import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
+import 'package:pharmacy_mobile/controllers/checkout_controller.dart';
 import 'package:pharmacy_mobile/models/product.dart';
 import 'package:pharmacy_mobile/models/product_detail.dart';
 import 'package:pharmacy_mobile/models/unit.dart';
@@ -15,7 +15,7 @@ class ProductService {
   //Get product 1 page 10 item
   Future<List<PharmacyProduct>> getProducts(int page, int items) async {
     List<PharmacyProduct> listProduct = [];
-    Response response = await dio.get(
+    var response = await dio.get(
       '${api}Product',
       queryParameters: {
         'pageIndex': page,
@@ -36,7 +36,7 @@ class ProductService {
   }
 
   Future<PharmacyProduct?> getProductByName(String name) async {
-    Response response = await dio.get(
+    var response = await dio.get(
       '${api}Product',
       queryParameters: {'pageIndex': 1, 'pageItems': 1, 'productName': name},
     );
@@ -50,7 +50,7 @@ class ProductService {
   }
 
   Future<List<PharmacyProduct>> getListProductByName(String name) async {
-    Response response = await dio.get(
+    var response = await dio.get(
       '${api}Product',
       queryParameters: {'pageIndex': 1, 'pageItems': 30, 'productName': name},
     );
@@ -73,17 +73,14 @@ class ProductService {
   Future<List<PharmacyProduct>> getTopSelling() async {
     List<PharmacyProduct> listProduct = [];
     try {
-      var res = await dio.get(
-          'https://betterhealthapi.azurewebsites.net/api/v1/Product/HomePage?GetProductType=1&pageIndex=1&pageItems=10');
-      // var res = await dio.get('${api}Product/HomePage', queryParameters: {
-      //   'GetProductType ': 1,
-      //   'pageIndex': 1,
-      //   'pageItems': 10,
-      // });
+      var res = await dio.get('${api}Product/HomePage', queryParameters: {
+        'GetProductType': 1,
+        'pageIndex': 1,
+        'pageItems': 10,
+      });
 
       final list = res.data['items'] as List<dynamic>;
       for (var e in list) {
-        debugPrint(e.toString());
         final item = PharmacyProduct.fromJson(e);
         listProduct.add(item);
       }
@@ -95,7 +92,7 @@ class ProductService {
   }
 
   Future<PharmacyDetail?> getProductDetail(String id) async {
-    Response response = await dio.get(
+    var response = await dio.get(
       '${api}Product/View/$id',
     );
     try {
@@ -107,7 +104,7 @@ class ProductService {
   }
 
   Future<PharmacyProduct?> getProductByBarcode(String barcode) async {
-    Response response = await dio.get(
+    var response = await dio.get(
       '${api}Product',
       queryParameters: {'pageIndex': 1, 'pageItems': 1, 'productName': barcode},
     );
@@ -120,12 +117,52 @@ class ProductService {
   }
 
   Future<ProductUnit?> getProductUnitById(String id) async {
-    Response response = await dio.get('${api}Unit/$id');
+    var response = await dio.get('${api}Unit/$id');
     try {
       return ProductUnit.fromJson(response.data);
     } catch (e) {
       log(e.toString());
     }
     return null;
+  }
+
+  Future checkAvailSite() async {
+    final listItem = cartController.listCart;
+
+    final dio = appController.dio;
+    final api = dotenv.env['API_URL']!;
+
+    final res = await dio.get('${api}Order/PickUp/Site', queryParameters: {
+      'ProductId': listItem.map((e) => e.productId).join(';'),
+      'Quantity': listItem.map((e) => e.quantity).join(';'),
+      // 'CityId':userController.detailUser.value.customerAddressList!.singleWhere((element) => element.isMainAddress==true).cityId,
+      'CityId': "79",
+    });
+
+    return res.data;
+  }
+
+  Future pickDate() async {
+    final dio = appController.dio;
+    final api = dotenv.env['API_URL']!;
+
+    final res = await dio.get('${api}Order/PickUp/DateAvailable');
+
+    return res.data;
+  }
+
+  Future pickTime() async {
+    final dio = appController.dio;
+    final api = dotenv.env['API_URL']!;
+
+    CheckoutController checkoutController = Get.find();
+    final date = checkoutController.selectDate.value;
+    if (date != "") {
+      final res = await dio.get('${api}Order/PickUp/$date/TimeAvailable');
+
+      return res.data;
+    } else {
+      return [];
+    }
   }
 }

@@ -43,9 +43,19 @@ class AddressCard extends StatefulWidget {
 class _AddressCardState extends State<AddressCard> {
   bool isCollase = true;
 
-  void onTap() => setState(() {
-        isCollase = !isCollase;
-      });
+  void onTap() {
+    setState(() {
+      isCollase = !isCollase;
+    });
+
+    // CheckoutController checkoutController = Get.find();
+
+    // checkoutController.scrollController.value?.animateTo(
+    //   checkoutController.scrollController.value!.position.maxScrollExtent,
+    //   duration: const Duration(milliseconds: 200),
+    //   curve: Curves.easeOut,
+    // );
+  }
 
   @override
   Widget build(BuildContext context) {

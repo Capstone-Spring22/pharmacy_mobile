@@ -98,30 +98,33 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     "Total ${convertCurrency(cartController.calculateTotal())}";
               }
               return FilledButton(
-                onPressed: () {
-                  if (checkoutController.isCollase.value) {
-                    if (checkoutController
-                            .scrollController.value!.position.pixels ==
-                        checkoutController
-                            .scrollController.value!.position.maxScrollExtent) {
-                      checkoutController.createOrderOnline();
-                    } else {
-                      checkoutController.scrollController.value?.animateTo(
-                        checkoutController
-                            .scrollController.value!.position.maxScrollExtent,
-                        duration: const Duration(milliseconds: 200),
-                        curve: Curves.easeOut,
-                      );
-                    }
-                  } else {
-                    checkoutController.isCollase.value = true;
-                    draggableScrollableController.animateTo(
-                      .9,
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.linear,
-                    );
-                  }
-                },
+                onPressed: checkoutController.activeBtn.isFalse
+                    ? null
+                    : () {
+                        if (checkoutController.isCollase.value) {
+                          if (checkoutController
+                                  .scrollController.value!.position.pixels ==
+                              checkoutController.scrollController.value!
+                                  .position.maxScrollExtent) {
+                            checkoutController.createOrderOnline();
+                          } else {
+                            checkoutController.scrollController.value
+                                ?.animateTo(
+                              checkoutController.scrollController.value!
+                                  .position.maxScrollExtent,
+                              duration: const Duration(milliseconds: 200),
+                              curve: Curves.easeOut,
+                            );
+                          }
+                        } else {
+                          checkoutController.isCollase.value = true;
+                          draggableScrollableController.animateTo(
+                            .9,
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.linear,
+                          );
+                        }
+                      },
                 child: cartController.listCart.isEmpty
                     ? const Text("Empty Cart")
                     : Text(txt),
