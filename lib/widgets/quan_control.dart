@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/theme.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
-import 'package:pharmacy_mobile/models/product.dart';
 
 class QuantityControl extends GetView<CartController> {
-  const QuantityControl(this.product, {super.key});
+  const QuantityControl(this.productId, {super.key});
 
-  final PharmacyProduct product;
+  final String productId;
 
   @override
   Widget build(BuildContext context) {
     final count = controller.listCart
-        .singleWhere((element) => element.productId == product.id)
+        .singleWhere((element) => element.productId == productId)
         .quantity;
     return GestureDetector(
       onTap: () {
@@ -45,7 +44,7 @@ class QuantityControl extends GetView<CartController> {
           ),
           onConfirm: () {
             controller.customQuan(
-              product.id!,
+              productId,
               num.parse(txt.text),
             );
             Get.back();
@@ -61,7 +60,7 @@ class QuantityControl extends GetView<CartController> {
             child: Container(),
           ),
           GestureDetector(
-            onTap: () => controller.decreaseQuan(product.id!),
+            onTap: () => controller.decreaseQuan(productId),
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
@@ -84,7 +83,7 @@ class QuantityControl extends GetView<CartController> {
             child: Container(),
           ),
           GestureDetector(
-            onTap: () => controller.increaseQuan(product.id!),
+            onTap: () => controller.increaseQuan(productId),
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,

@@ -43,7 +43,8 @@ class _ProductTileState extends State<ProductTile>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    const Text('This is a bottom modal dialog with animation.'),
+                    Text(
+                        'This is a bottom modal dialog with animation. ${widget.product.imageModel!.imageURL}'),
                     const SizedBox(height: 20.0),
                     FilledButton(
                       onPressed: () => Navigator.pop(context),
@@ -77,6 +78,8 @@ class _ProductTileState extends State<ProductTile>
               Hero(
                 tag: 'image${widget.product.id}',
                 child: CachedNetworkImage(
+                  height: Get.height * .18,
+                  width: Get.width * .4,
                   imageUrl: widget.product.imageModel!.imageURL!,
                   placeholder: (context, url) => LoadingWidget(),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
@@ -151,7 +154,7 @@ class _BuyButtonState extends State<BuyButton> {
                         child: child,
                       ),
                       child: isInCart
-                          ? QuantityControl(widget.product)
+                          ? QuantityControl(widget.product.id!)
                           : FilledButton(
                               onPressed: () => controller.addToCart(CartItem(
                                 productId: widget.product.id!,

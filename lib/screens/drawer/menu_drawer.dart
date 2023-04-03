@@ -5,8 +5,8 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/user_controller.dart';
-import 'package:pharmacy_mobile/debug/screen.dart';
 import 'package:pharmacy_mobile/screens/alarm/alarm.dart';
+import 'package:pharmacy_mobile/screens/order_success/order_success.dart';
 import 'package:pharmacy_mobile/screens/setting/setting.dart';
 import 'package:pharmacy_mobile/widgets/user_avatar.dart';
 
@@ -123,7 +123,7 @@ class MenuDrawer extends StatelessWidget {
                   closedElevation: 0,
                   closedColor: Colors.transparent,
                   openBuilder: (context, action) {
-                    return const DebugScreen();
+                    return const OrderSuccessScreen();
                   },
                 ),
               const Spacer(),

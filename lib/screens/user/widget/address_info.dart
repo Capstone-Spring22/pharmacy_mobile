@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/models/detail_user.dart';
 import 'package:pharmacy_mobile/screens/address/address.dart';
@@ -11,7 +12,7 @@ class AddressInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () => addressController.switchMainAddress(address.id!),
       onLongPress: () {
         showDialog(
           context: context,
@@ -28,9 +29,10 @@ class AddressInfo extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    AddressService()
-                        .removeAddress(address.id!)
-                        .then((value) => userController.refeshUser());
+                    AddressService().removeAddress(address.id!).then((value) {
+                      userController.refeshUser();
+                      Get.back();
+                    });
                   },
                   child: const Text("Delete"),
                 ),
@@ -46,13 +48,13 @@ class AddressInfo extends StatelessWidget {
             Expanded(
               child: Text(address.fullyAddress!),
             ),
-            Radio(
-              value: address.id,
-              groupValue: addressController.listUserAddress.value,
-              onChanged: (value) {
-                addressController.selectedAddressid.value = address.id!;
-              },
-            ),
+            Obx(() => Radio(
+                  value: address.id,
+                  groupValue: addressController.selectedAddressid.value,
+                  onChanged: (value) {
+                    addressController.switchMainAddress(value!);
+                  },
+                )),
           ],
         ),
       ),

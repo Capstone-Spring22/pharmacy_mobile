@@ -18,18 +18,21 @@ class CartItemListView extends GetView<CartController> {
           shrinkWrap: true,
           itemCount: controller.listCart.length,
           itemBuilder: (context, index) {
-            final item = productController
-                .getProductById(controller.listCart[index].productId!);
+            final item = controller.listCart[index];
             return GestureDetector(
-              onTap: () => Get.toNamed('/product_detail', arguments: item.id),
+              onTap: () => Get.toNamed(
+                '/product_detail',
+                arguments: item.productId,
+                preventDuplicates: false,
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   children: [
-                    if (item.imageModel == null) LoadingWidget(),
-                    if (item.imageModel != null)
+                    if (item.productImageUrl == null) LoadingWidget(),
+                    if (item.productImageUrl != null)
                       CachedNetworkImage(
-                        imageUrl: item.imageModel!.imageURL!,
+                        imageUrl: item.productImageUrl!,
                         placeholder: (context, url) => LoadingWidget(),
                         errorWidget: (context, url, error) =>
                             const Icon(Icons.error),
@@ -37,7 +40,7 @@ class CartItemListView extends GetView<CartController> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Text(
-                        item.name.toString(),
+                        item.productName.toString(),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: context.textTheme.titleMedium,
@@ -60,7 +63,7 @@ class CartItemListView extends GetView<CartController> {
                           ),
                         ),
                         Expanded(
-                          child: QuantityControl(item),
+                          child: QuantityControl(item.productId!),
                         )
                       ],
                     ),

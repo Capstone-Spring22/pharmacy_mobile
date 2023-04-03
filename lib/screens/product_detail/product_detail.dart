@@ -31,80 +31,98 @@ class ProductDetailScreen extends GetView<AppController> {
   @override
   Widget build(BuildContext context) {
     String pid = Get.arguments;
-    final product = productController.getProductById(pid);
     GlobalKey<ScaffoldState> drawerKey = GlobalKey();
-    return Scaffold(
-      bottomNavigationBar: SizedBox(
-        width: Get.width,
-        height: Get.height * .08,
-        child: AddToCartDetail(product),
-      ),
-      key: drawerKey,
-      drawer: const MenuDrawer(),
-      endDrawer: const CartDrawer(),
-      appBar: PharmacyAppBar(
-        leftWidget: Row(
-          children: [
-            const PharmacyBackButton(),
-            DrawerButton(fn: () => drawerKey.currentState!.openDrawer()),
-          ],
-        ),
-        midText: "title".tr,
-        rightWidget:
-            CartButton(fn: () => drawerKey.currentState!.openEndDrawer()),
-        titleStyle: context.textTheme.headlineMedium!.copyWith(fontSize: 30.h),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            FutureBuilder(
-              future: ProductService().getProductDetail(product.id!),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Column(
-                    children: [
-                      Hero(
-                        tag: 'image${product.id}',
-                        child: CachedNetworkImage(
-                          height: Get.height * .3,
-                          imageUrl: product.imageModel!.imageURL!,
-                          width: double.infinity,
-                        ),
-                      ),
-                      ...infoWidget(context, product),
-                      LoadingWidget(
-                        size: 60,
-                      )
-                    ],
-                  );
-                } else if (snapshot.data is String) {
-                  return const Text("Empty Error");
-                } else {
-                  final detail = snapshot.data;
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: Get.height * .3,
-                        width: double.infinity,
-                        child: ImageList(
-                          imageUrls: detail!.imageModels!
-                              .map((e) => e.imageURL!)
-                              .toList(),
-                        ),
-                      ),
-                      ...infoWidget(context, product),
-                      ...descriptionWidgets(detail.descriptionModels!)
-                    ],
-                  );
-                }
-              },
-            ),
-          ],
-        ),
-      ),
-    );
+    return FutureBuilder(
+        future: productController.getProductById(pid),
+        builder: (_, snap) {
+          bool isLoad = snap.connectionState == ConnectionState.waiting;
+          final product = snap.data;
+          if (product != null) {
+            return Scaffold(
+              bottomNavigationBar: SizedBox(
+                width: Get.width,
+                height: Get.height * .08,
+                child: isLoad ? LoadingWidget() : AddToCartDetail(product),
+              ),
+              key: drawerKey,
+              drawer: const MenuDrawer(),
+              endDrawer: const CartDrawer(),
+              appBar: PharmacyAppBar(
+                leftWidget: Row(
+                  children: [
+                    const PharmacyBackButton(),
+                    DrawerButton(
+                        fn: () => drawerKey.currentState!.openDrawer()),
+                  ],
+                ),
+                midText: "title".tr,
+                rightWidget: CartButton(
+                    fn: () => drawerKey.currentState!.openEndDrawer()),
+                titleStyle:
+                    context.textTheme.headlineMedium!.copyWith(fontSize: 30.h),
+              ),
+              body: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    FutureBuilder(
+                      future: ProductService().getProductDetail(pid),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Column(
+                            children: [
+                              Hero(
+                                tag: 'image$pid',
+                                child: CachedNetworkImage(
+                                  height: Get.height * .3,
+                                  imageUrl: product.imageModel!.imageURL!,
+                                  width: double.infinity,
+                                ),
+                              ),
+                              ...infoWidget(context, product),
+                              LoadingWidget(
+                                size: 60,
+                              )
+                            ],
+                          );
+                        } else if (snapshot.data is String) {
+                          return const Text("Empty Error");
+                        } else {
+                          final detail = snapshot.data;
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: Get.height * .3,
+                                width: double.infinity,
+                                child: ImageList(
+                                  imageUrls: detail!.imageModels!
+                                      .map((e) => e.imageURL!)
+                                      .toList(),
+                                ),
+                              ),
+                              ...infoWidget(context, product),
+                              ...descriptionWidgets(detail.descriptionModels!)
+                            ],
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+          } else {
+            return Scaffold(
+              body: Center(
+                child: LoadingWidget(
+                  size: 100,
+                ),
+              ),
+            );
+          }
+        });
   }
 
   List descriptionWidgets(DescriptionModels desc) {

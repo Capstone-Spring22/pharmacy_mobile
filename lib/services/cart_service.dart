@@ -11,11 +11,14 @@ class CartService {
 
   Future postCart(Map<String, dynamic> item) async {
     try {
+      Get.log(item.toString());
       var res = await dio.post(
         "${api}Cart",
         data: item,
         options: userController.options,
       );
+
+      Get.log(res.data.toString());
 
       if (res.statusCode == 400) {
         Get.snackbar(

@@ -112,4 +112,12 @@ class CartController extends GetxController {
     }
     return total;
   }
+
+  double calculateTotalNonDiscount() {
+    double total = 0.0;
+    for (var item in listCart) {
+      total += item.price! * item.quantity!;
+    }
+    return total;
+  }
 }

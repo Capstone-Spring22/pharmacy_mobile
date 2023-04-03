@@ -7,35 +7,34 @@ import 'package:pharmacy_mobile/controllers/vn_pay.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class DebugScreen extends StatefulWidget {
-  const DebugScreen({super.key});
+class VNPayScreen extends StatefulWidget {
+  const VNPayScreen({super.key});
 
   @override
-  State<DebugScreen> createState() => _DebugScreenState();
+  State<VNPayScreen> createState() => _VNPayScreenState();
 }
 
-class _DebugScreenState extends State<DebugScreen> {
+class _VNPayScreenState extends State<VNPayScreen> {
   late WebViewController controller;
   bool isLoaded = false;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    super.dispose();
     controller.clearCache();
     controller.clearLocalStorage();
+    super.dispose();
   }
 
+  final String url = 'https://www.betterhealthapi.azurewebsites.net/';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Debug")),
+      appBar: AppBar(title: const Text("VN Pay")),
       body: Center(
         // child: WebViewWidget(controller: controller),
         child: FutureBuilder(
@@ -46,12 +45,13 @@ class _DebugScreenState extends State<DebugScreen> {
               String ip = snapshot.data!;
               String tmnCode = dotenv.env['VNPAY_tmnCode']!;
               String hash = dotenv.env['VNPAY_Hash']!;
-              final url = VNPAYFlutter.instance.generatePaymentUrl(
+
+              final genPayment = VNPAYFlutter.instance.generatePaymentUrl(
                 version: '2.0.1',
                 tmnCode: tmnCode,
                 txnRef: AppController().generateRefBill(),
-                amount: 500000,
-                returnUrl: 'https://www.ff.com/',
+                amount: cartController.calculateTotal() + 10000,
+                returnUrl: url,
                 ipAdress: ip,
                 vnpayHashKey: hash,
               );
@@ -63,15 +63,15 @@ class _DebugScreenState extends State<DebugScreen> {
                   NavigationDelegate(
                     onNavigationRequest: (NavigationRequest request) {
                       Get.log(request.url);
-                      if (request.url.startsWith('https://www.google.com/')) {
-                        Get.toNamed('/navhub');
+                      if (request.url.startsWith(url)) {
+                        Get.back(result: request.url);
                         return NavigationDecision.navigate;
                       }
                       return NavigationDecision.navigate;
                     },
                   ),
                 )
-                ..loadRequest(Uri.parse(url));
+                ..loadRequest(Uri.parse(genPayment));
 
               return WebViewWidget(controller: controller);
             }

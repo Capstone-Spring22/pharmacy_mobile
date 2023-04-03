@@ -17,53 +17,55 @@ class UserScreen extends GetView<UserController> {
     if (userController.isLoggedIn.value) {
       return Scaffold(
         body: SafeArea(
-          child: SizedBox(
-            width: double.infinity,
-            child: Column(
-              children: [
-                const UserAvatar(),
-                controller.user.value.name == null
-                    ? AutoSizeText(
-                        "Set Name and Info",
-                        style: context.textTheme.headlineSmall!.copyWith(
-                          decoration: TextDecoration.underline,
-                          decorationColor: Colors.blue,
-                          shadows: [
-                            const Shadow(
-                              color: Colors.blue,
-                              offset: Offset(0, -5),
-                            )
-                          ],
-                          color: Colors.transparent,
+          child: SingleChildScrollView(
+            child: SizedBox(
+              width: double.infinity,
+              child: Column(
+                children: [
+                  const UserAvatar(),
+                  controller.user.value.name == null
+                      ? AutoSizeText(
+                          "Set Name and Info",
+                          style: context.textTheme.headlineSmall!.copyWith(
+                            decoration: TextDecoration.underline,
+                            decorationColor: Colors.blue,
+                            shadows: [
+                              const Shadow(
+                                color: Colors.blue,
+                                offset: Offset(0, -5),
+                              )
+                            ],
+                            color: Colors.transparent,
+                          ),
+                        )
+                      : AutoSizeText(
+                          controller.user.value.name!,
+                          style: context.textTheme.headlineSmall!.copyWith(
+                            decorationColor: Colors.blue,
+                            shadows: [
+                              const Shadow(
+                                color: Colors.blue,
+                                offset: Offset(0, -5),
+                              )
+                            ],
+                            color: Colors.transparent,
+                          ),
                         ),
-                      )
-                    : AutoSizeText(
-                        controller.user.value.name!,
-                        style: context.textTheme.headlineSmall!.copyWith(
-                          decorationColor: Colors.blue,
-                          shadows: [
-                            const Shadow(
-                              color: Colors.blue,
-                              offset: Offset(0, -5),
-                            )
-                          ],
-                          color: Colors.transparent,
-                        ),
-                      ),
-                InfoCard(
-                  icon: Icons.phone,
-                  text: controller.user.value.phoneNo.toString(),
-                ),
-                InfoCard(
-                  icon: Icons.email,
-                  text: controller.user.value.email.toString(),
-                ),
-                InfoCard(
-                  icon: Icons.date_range_outlined,
-                  text: controller.detailUser.value.dob.toString(),
-                ),
-                const AddressCard()
-              ],
+                  InfoCard(
+                    icon: Icons.phone,
+                    text: controller.user.value.phoneNo.toString(),
+                  ),
+                  InfoCard(
+                    icon: Icons.email,
+                    text: controller.user.value.email.toString(),
+                  ),
+                  InfoCard(
+                    icon: Icons.date_range_outlined,
+                    text: controller.detailUser.value.dob.toString(),
+                  ),
+                  const AddressCard()
+                ],
+              ),
             ),
           ),
         ),

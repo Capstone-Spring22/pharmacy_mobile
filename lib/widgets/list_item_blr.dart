@@ -28,8 +28,11 @@ class ListItemBuilder extends StatelessWidget {
                                 (e) => Padding(
                                   padding: const EdgeInsets.all(18),
                                   child: ProductTile(
-                                    fn: () => Get.toNamed('/product_detail',
-                                        arguments: e.id),
+                                    fn: () => Get.toNamed(
+                                      '/product_detail',
+                                      preventDuplicates: false,
+                                      arguments: e.id,
+                                    ),
                                     product: e,
                                   ),
                                 ),

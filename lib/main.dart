@@ -30,6 +30,8 @@ import 'package:pharmacy_mobile/screens/user/user.dart';
 import 'controllers/user_controller.dart';
 import 'screens/introduction/intro.dart';
 import 'screens/message/message.dart';
+import 'screens/order_success/order_success.dart';
+import 'screens/vnpay/vnpay.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -100,6 +102,10 @@ class MyApp extends StatelessWidget {
           defaultTransition: Transition.cupertino,
           title: 'Pharmacy App',
           initialRoute: '/intro',
+          unknownRoute: GetPage(
+            name: '/navhub',
+            page: () => const NavBarHub(),
+          ),
           getPages: [
             GetPage(name: '/intro', page: () => const IntroductionScreen()),
             GetPage(
@@ -127,6 +133,7 @@ class MyApp extends StatelessWidget {
             ),
             GetPage(
               name: '/product_detail',
+              preventDuplicates: false,
               page: () => const ProductDetailScreen(),
             ),
             GetPage(
@@ -144,12 +151,20 @@ class MyApp extends StatelessWidget {
               page: () => const NavBarHub(),
             ),
             GetPage(
+              name: '/order_success',
+              page: () => const OrderSuccessScreen(),
+            ),
+            GetPage(
               name: '/setting',
               page: () => const SettingPage(),
             ),
             GetPage(
               name: '/demo',
               page: () => const DebugScreen(),
+            ),
+            GetPage(
+              name: '/vnpay',
+              page: () => const VNPayScreen(),
             ),
             GetPage(
               name: '/reminder_picker',

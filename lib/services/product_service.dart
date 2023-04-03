@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:dio/dio.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
@@ -16,7 +17,11 @@ class ProductService {
     List<PharmacyProduct> listProduct = [];
     Response response = await dio.get(
       '${api}Product',
-      queryParameters: {'pageIndex': page, 'pageItems': items},
+      queryParameters: {
+        'pageIndex': page,
+        'pageItems': items,
+        'isPrescription': false,
+      },
     );
     // log(response.data.toString());
     try {
@@ -30,18 +35,64 @@ class ProductService {
     return listProduct;
   }
 
-  // Future<PharmacyProduct?> getProductByName(String name) async {
-  //   Response response = await dio.get(
-  //     '${api}Product',
-  //     queryParameters: {'pageIndex': 1, 'pageItems': 1, 'productName': name},
-  //   );
-  //   try {
-  //     return PharmacyProduct.fromJson(response.data['items']);
-  //   } catch (e) {
-  //     log(e.toString());
-  //   }
-  //   return null;
-  // }
+  Future<PharmacyProduct?> getProductByName(String name) async {
+    Response response = await dio.get(
+      '${api}Product',
+      queryParameters: {'pageIndex': 1, 'pageItems': 1, 'productName': name},
+    );
+    return PharmacyProduct.fromJson(response.data['items'][0]);
+    // try {
+    //   debugPrint(response.data['items']);
+    // } catch (e) {
+    //   log("Error: $e");
+    // }
+    // return null;
+  }
+
+  Future<List<PharmacyProduct>> getListProductByName(String name) async {
+    Response response = await dio.get(
+      '${api}Product',
+      queryParameters: {'pageIndex': 1, 'pageItems': 30, 'productName': name},
+    );
+    List<PharmacyProduct> listProduct = [];
+    try {
+      final list = response.data['items'] as List<dynamic>;
+      for (var e in list) {
+        final item = PharmacyProduct.fromJson(e);
+        listProduct.add(item);
+        if (!list.contains(item)) {
+          list.add(item);
+        }
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    return listProduct;
+  }
+
+  Future<List<PharmacyProduct>> getTopSelling() async {
+    List<PharmacyProduct> listProduct = [];
+    try {
+      var res = await dio.get(
+          'https://betterhealthapi.azurewebsites.net/api/v1/Product/HomePage?GetProductType=1&pageIndex=1&pageItems=10');
+      // var res = await dio.get('${api}Product/HomePage', queryParameters: {
+      //   'GetProductType ': 1,
+      //   'pageIndex': 1,
+      //   'pageItems': 10,
+      // });
+
+      final list = res.data['items'] as List<dynamic>;
+      for (var e in list) {
+        debugPrint(e.toString());
+        final item = PharmacyProduct.fromJson(e);
+        listProduct.add(item);
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+
+    return listProduct;
+  }
 
   Future<PharmacyDetail?> getProductDetail(String id) async {
     Response response = await dio.get(

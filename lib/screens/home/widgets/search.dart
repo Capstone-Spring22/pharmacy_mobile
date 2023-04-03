@@ -32,7 +32,7 @@ class RoundedSearchInput extends GetView<AppController> {
       child: TextField(
         focusNode: fcNode,
         enabled: enable,
-        controller: controller.searchCtl.value,
+        controller: textController,
         onChanged: (value) {},
         decoration: InputDecoration(
           prefixIcon: Icon(
@@ -41,9 +41,9 @@ class RoundedSearchInput extends GetView<AppController> {
           ),
           suffixIcon: enable
               ? IconButton(
-                  onPressed: () => controller.searchCtl.value.text = "",
+                  onPressed: () => textController.text = "",
                   icon: const Icon(Icons.clear),
-                  color: controller.searchCtl.value.text.isEmpty
+                  color: textController.text.isEmpty
                       ? Colors.grey[500]!
                       : Colors.red,
                 )

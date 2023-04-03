@@ -63,4 +63,9 @@ class CartItem {
         priceAfterDiscount.hashCode ^
         priceTotal.hashCode;
   }
+
+  @override
+  String toString() {
+    return 'CartItem(productId: $productId, quantity: $quantity, productName: $productName, productImageUrl: $productImageUrl, price: $price, priceAfterDiscount: $priceAfterDiscount, priceTotal: $priceTotal)';
+  }
 }

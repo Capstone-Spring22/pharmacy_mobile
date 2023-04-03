@@ -1,11 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/user_controller.dart';
 import 'package:pharmacy_mobile/screens/address/address.dart';
 import 'package:pharmacy_mobile/screens/user/widget/address_info.dart';
 
-class AddressCard extends GetView<UserController> {
+class AddressCardCollase extends GetView<UserController> {
+  const AddressCardCollase({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    bool isEmpty = userController.detailUser.value.customerAddressList!.isEmpty;
+    return Obx(() => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: context.theme.primaryColor),
+            ),
+            child: ListTile(
+              leading: const Icon(Icons.location_on),
+              title: const Text("Primary Address"),
+              subtitle: isEmpty
+                  ? const Text("Please add an Address")
+                  : Text(controller.detailUser.value.customerAddressList!
+                      .singleWhere((element) => element.isMainAddress == true)
+                      .fullyAddress!),
+              trailing: const Icon(Icons.more_horiz),
+            ),
+          ),
+        ));
+  }
+}
+
+class AddressCard extends StatefulWidget {
   const AddressCard({super.key});
+
+  @override
+  State<AddressCard> createState() => _AddressCardState();
+}
+
+class _AddressCardState extends State<AddressCard> {
+  bool isCollase = true;
+
+  void onTap() => setState(() {
+        isCollase = !isCollase;
+      });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 500),
+        child:
+            isCollase ? const AddressCardCollase() : const AddressCardExtend(),
+      ),
+    );
+  }
+}
+
+class AddressCardExtend extends GetView<UserController> {
+  const AddressCardExtend({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +80,7 @@ class AddressCard extends GetView<UserController> {
                   children: [
                     Row(
                       children: [
-                        const Text("Address"),
+                        const Text("Primary Address"),
                         const Spacer(),
                         IconButton(
                           icon: const Icon(Icons.add),
@@ -46,7 +102,8 @@ class AddressCard extends GetView<UserController> {
                       ],
                     ),
                     ...controller.detailUser.value.customerAddressList!
-                        .map((e) => AddressInfo(address: e))
+                        .map((e) => AddressInfo(address: e, key: UniqueKey()))
+                        .toList()
                   ],
                 ),
               ),

@@ -54,12 +54,14 @@ class ChatController extends GetxController {
   }
 
   Future<void> _getChats(String patientId) async {
-    QuerySnapshot snapshot = await _firestore
+    _firestore
         .collection('chats')
         .where('patientId', isEqualTo: patientId)
         .orderBy('timestamp', descending: true)
-        .get();
-    chats.value = snapshot.docs.map((doc) => Chat.fromSnapshot(doc)).toList();
+        .snapshots()
+        .map((event) {
+      chats.value = event.docs.map((doc) => Chat.fromSnapshot(doc)).toList();
+    });
     isLoading.value = false;
   }
 
@@ -88,6 +90,7 @@ class ChatController extends GetxController {
       'pharmacistId': pharmacistId,
       'request': request,
       'timestamp': timestamp,
+      'fontSize': 16,
     });
 
     final message = ChatMessage(

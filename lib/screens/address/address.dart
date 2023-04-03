@@ -16,7 +16,6 @@ class AddressSelectionScreen extends StatefulWidget {
 class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
   @override
   Widget build(BuildContext context) {
-    // CheckoutController checkoutController = Get.find();
     return Scaffold(
       body: SingleChildScrollView(
         child: SizedBox(
@@ -283,10 +282,48 @@ class AddressController extends GetxController {
   }
 
   void addListUserAddress(DetailUser user) {
+    int index = 0;
+    listUserAddress.clear();
     if (user.customerAddressList != null) {
       for (var element in user.customerAddressList!) {
-        listUserAddress.add(element.addressId!);
+        listUserAddress.add(element.id!);
+        if (element.isMainAddress == true) {
+          selectedAddressid.value = element.id!;
+          index = listUserAddress.indexOf(element.id);
+          Get.log('index: $index');
+        }
       }
+      userController.detailUser.value.customerAddressList!.insert(
+          0, userController.detailUser.value.customerAddressList![index]);
+      userController.detailUser.value.customerAddressList!.removeAt(index + 1);
+    }
+  }
+
+  Future switchMainAddress(String id) async {
+    addressController.selectedAddressid.value = id;
+    final address = userController.detailUser.value.customerAddressList!
+        .singleWhere((element) => element.id == id);
+    var map = {
+      "customerAddressId": address.id,
+      "cityId": address.cityId,
+      "districtId": address.districtId,
+      "wardId": address.wardId,
+      "homeAddress": address.homeAddress,
+      "isMainAddress": true
+    };
+    try {
+      final dio = appController.dio;
+      final api = dotenv.env['API_URL']!;
+      var response = await dio.put(
+        '${api}CustomerAddress',
+        data: map,
+        options: userController.options,
+      );
+      if (response.statusCode == 200) {
+        userController.refeshUser();
+      }
+    } catch (e) {
+      Get.log(e.toString());
     }
   }
 
@@ -320,11 +357,20 @@ class AddressController extends GetxController {
       "homeAddress": addressTextCtl.text,
       "isMainAddress": false
     };
-    Get.log(address.toString());
     AddressService().addAddress(address).then((value) {
       Get.back();
+      selectedCityId.value = '79';
+      selectedDistrictId.value = '';
+      selectedWardId.value = '';
+      addressTextCtl.clear();
+      searchCityCtrl.clear();
+      searchDistrictCtrl.clear();
+      searchWardCtrl.clear();
       Get.snackbar("Thông báo", "Thêm địa chỉ thành công");
     });
+    // isCityLoaded.value = false;
+    // isDistrictLoaded.value = false;
+    // isWardLoaded.value = false;
   }
 
   String removeSpecialCharacters(String text) {

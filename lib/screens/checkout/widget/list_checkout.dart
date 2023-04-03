@@ -34,24 +34,23 @@ class ListCheckout extends StatelessWidget {
                             key: UniqueKey(),
                             scrollDirection: Axis.vertical,
                             itemBuilder: (context, index) {
-                              final item = productController.getProductById(
-                                  ctl.listCart[index].productId!);
+                              final item = ctl.listCart[index];
                               return GestureDetector(
                                 onTap: () => Get.toNamed(
                                   '/product_detail',
-                                  arguments: item.id,
+                                  arguments: item.productId,
+                                  preventDuplicates: false,
                                 ),
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 10),
                                   child: ListTile(
-                                    leading: item.imageModel == null
+                                    leading: item.productImageUrl == null
                                         ? LoadingWidget()
                                         : CachedNetworkImage(
                                             height: Get.height * .1,
                                             width: Get.width * .15,
-                                            imageUrl:
-                                                item.imageModel!.imageURL!,
+                                            imageUrl: item.productImageUrl!,
                                             placeholder: (context, url) =>
                                                 LoadingWidget(),
                                             errorWidget:
@@ -59,7 +58,7 @@ class ListCheckout extends StatelessWidget {
                                                     const Icon(Icons.error),
                                           ),
                                     title: Text(
-                                      item.name!,
+                                      item.productName!,
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                     ),

@@ -5,10 +5,8 @@ import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 
 import 'package:pharmacy_mobile/controllers/checkout_controller.dart';
+import 'package:pharmacy_mobile/screens/checkout/widget/checkout_panel.dart';
 import 'package:pharmacy_mobile/screens/checkout/widget/list_checkout.dart';
-import 'package:pharmacy_mobile/screens/checkout/widget/toggle_checkout.dart';
-import 'package:pharmacy_mobile/screens/user/widget/address_card.dart';
-import 'package:pharmacy_mobile/widgets/input.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
@@ -42,6 +40,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     CheckoutController checkoutController = Get.find();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Checkout"),
@@ -68,6 +67,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               maxChildSize: .8,
               controller: draggableScrollableController,
               builder: (context, scrollController) {
+                checkoutController.scrollController = scrollController.obs;
                 return Container(
                   decoration: BoxDecoration(
                     color: Get.theme.hoverColor,
@@ -77,9 +77,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ),
                   ),
                   child: CheckoutInfoPanel(
-                      scrollController: scrollController,
-                      draggableScrollableController:
-                          draggableScrollableController),
+                    scrollController: scrollController,
+                    draggableScrollableController:
+                        draggableScrollableController,
+                  ),
                 );
               },
             ),
@@ -89,168 +90,44 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             left: 10,
             right: 10,
             top: Get.height * .82,
-            child: FilledButton(
-              onPressed: () {
-                if (checkoutController.isCollase.value) {
-                } else {
-                  checkoutController.isCollase.value = true;
-                  draggableScrollableController.animateTo(
-                    .9,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.linear,
-                  );
-                }
-              },
-              child: cartController.listCart.isEmpty
-                  ? const Text("Empty Cart")
-                  : Text(
-                      "Total ${convertCurrency(cartController.calculateTotal())}",
-                    ),
-            ),
+            child: Obx(() {
+              String txt =
+                  "Total ${convertCurrency(cartController.calculateTotal())} + 10.000₫ Shipping";
+              if (checkoutController.checkoutType.value != 0) {
+                txt =
+                    "Total ${convertCurrency(cartController.calculateTotal())}";
+              }
+              return FilledButton(
+                onPressed: () {
+                  if (checkoutController.isCollase.value) {
+                    if (checkoutController
+                            .scrollController.value!.position.pixels ==
+                        checkoutController
+                            .scrollController.value!.position.maxScrollExtent) {
+                      checkoutController.createOrderOnline();
+                    } else {
+                      checkoutController.scrollController.value?.animateTo(
+                        checkoutController
+                            .scrollController.value!.position.maxScrollExtent,
+                        duration: const Duration(milliseconds: 200),
+                        curve: Curves.easeOut,
+                      );
+                    }
+                  } else {
+                    checkoutController.isCollase.value = true;
+                    draggableScrollableController.animateTo(
+                      .9,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.linear,
+                    );
+                  }
+                },
+                child: cartController.listCart.isEmpty
+                    ? const Text("Empty Cart")
+                    : Text(txt),
+              );
+            }),
           )
-        ],
-      ),
-    );
-  }
-}
-
-class CheckoutInfoPanel extends StatefulWidget {
-  final ScrollController scrollController;
-  final DraggableScrollableController draggableScrollableController;
-  const CheckoutInfoPanel({
-    super.key,
-    required this.scrollController,
-    required this.draggableScrollableController,
-  });
-
-  @override
-  State<CheckoutInfoPanel> createState() => _CheckoutInfoPanelState();
-}
-
-class _CheckoutInfoPanelState extends State<CheckoutInfoPanel> {
-  @override
-  Widget build(BuildContext context) {
-    CheckoutController checkoutController = Get.find();
-    return SingleChildScrollView(
-      controller: widget.scrollController,
-      child: SizedBox(
-        height: Get.height * .7,
-        child: Obx(() {
-          if (!checkoutController.isCollase.value) {
-            return Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "⬆️ Scroll up to checkout",
-                  style: TextStyle(color: Colors.grey.shade700),
-                ),
-              ],
-            );
-          } else {
-            return const UserCheckoutInfo();
-          }
-        }),
-      ),
-    );
-  }
-}
-
-class UserCheckoutInfo extends StatefulWidget {
-  const UserCheckoutInfo({super.key});
-
-  @override
-  State<UserCheckoutInfo> createState() => _UserCheckoutInfoState();
-}
-
-class _UserCheckoutInfoState extends State<UserCheckoutInfo>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  final Duration _duration = const Duration(milliseconds: 500);
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      duration: _duration,
-      vsync: this,
-    );
-
-    _animationController.forward();
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  getSlideTransition(int index) {
-    final end = (index + 1) * 0.3;
-    return Tween<Offset>(
-      begin: const Offset(1.5, 0.0),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Interval(
-          index * 0.3,
-          end.clamp(0.0, 1.0),
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final CheckoutController checkoutCtrl = Get.find();
-
-    return Padding(
-      padding: const EdgeInsets.only(left: 15),
-      child: Column(
-        children: [
-          SizedBox(
-            height: Get.height * .05,
-          ),
-          ...checkoutCtrl.listTextField.map((element) {
-            final int index = checkoutCtrl.listTextField.indexOf(element);
-            return SlideTransition(
-              position: getSlideTransition(index),
-              child: GestureDetector(
-                onTap: checkoutCtrl.listTextField[index].fn,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Row(
-                    children: [
-                      Icon(
-                        checkoutCtrl.listTextField[index].icon,
-                        color: context.theme.primaryColor,
-                      ),
-                      Expanded(
-                        child: Input(
-                          enabled: checkoutCtrl
-                                  .listTextField[checkoutCtrl.listTextField
-                                      .indexOf(element)]
-                                  .fn ==
-                              null,
-                          inputController:
-                              checkoutCtrl.listTextField[index].txtCtrl,
-                          title: checkoutCtrl.listTextField[index].label,
-                          inputType: checkoutCtrl.listTextField[index].type,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          }),
-          const Text("Order Type:"),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8),
-            child: ToggleCheckout(),
-          ),
-          const AddressCard(),
         ],
       ),
     );

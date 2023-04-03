@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
+import 'package:pharmacy_mobile/helpers/loading.dart';
+import 'package:pharmacy_mobile/models/order.dart';
 import 'package:pharmacy_mobile/screens/checkout/checkout.dart';
+import 'package:pharmacy_mobile/services/order_service.dart';
 
 class CheckoutController extends GetxController {
   RxBool isCollase = false.obs;
@@ -11,6 +14,14 @@ class CheckoutController extends GetxController {
   final nameCtl = TextEditingController();
   final phoneCtl = TextEditingController();
   final address = TextEditingController();
+  final emailCtl = TextEditingController();
+  final noteCtl = TextEditingController();
+
+  Rx<ScrollController?> scrollController = null.obs;
+
+  RxInt paymentType = 0.obs;
+  //0 - Cash
+  //1 - Card
 
   RxInt checkoutType = 0.obs;
   //0 - Online
@@ -44,31 +55,38 @@ class CheckoutController extends GetxController {
           label: "Name",
           txtCtrl: nameCtl,
           type: TextInputType.name),
-      // TextFieldProperty(
-      //     icon: Icons.home,
-      //     label: "Address",
-      //     txtCtrl: address,
-      //     type: TextInputType.streetAddress,
-      //     fn: () {
-      //       Get.put(AddressController());
-      //       showModalBottomSheet(
-      //         useSafeArea: true,
-      //         enableDrag: true,
-      //         shape: const RoundedRectangleBorder(
-      //             borderRadius:
-      //                 BorderRadius.vertical(top: Radius.circular(25.0))),
-      //         context: Get.context!,
-      //         builder: (context) {
-      //           return const AddressSelectionScreen();
-      //         },
-      //       );
-      //     }),
       TextFieldProperty(
           icon: Icons.phone,
           label: "Phone Number",
           txtCtrl: phoneCtl,
           type: TextInputType.phone),
+      TextFieldProperty(
+          icon: Icons.email,
+          label: "Email (Optional)",
+          txtCtrl: emailCtl,
+          type: TextInputType.emailAddress),
+      TextFieldProperty(
+          icon: Icons.note,
+          label: "Note (Optional)",
+          txtCtrl: noteCtl,
+          type: TextInputType.multiline),
     ];
+
+    // ever(
+    //     scrollController,
+    //     (callback) => {
+    //           if (callback != null)
+    //             {
+    //               callback.addListener(() {
+    //                 if (callback.position.pixels ==
+    //                     callback.position.maxScrollExtent) {
+    //                   Get.log("at bottom");
+    //                 }
+    //               })
+    //             }
+    //           else
+    //             {callback!.removeListener(() {})}
+    //         });
 
     super.onInit();
   }
@@ -76,4 +94,145 @@ class CheckoutController extends GetxController {
   void toggleOrderType(int? index) {
     checkoutType.value = index!;
   }
+
+  void togglePaymentType(int? index) {
+    paymentType.value = index!;
+  }
+
+  Future createOrderPickUp() async {
+    final user = userController.user.value;
+    final detailUser = userController.detailUser.value;
+    num type = 2;
+  }
+
+  Future createOrderOnline() async {
+    final detailUser = userController.detailUser.value;
+    num type = 3;
+
+    List<Products> listProducts = [];
+
+    for (var element in cartController.listCart) {
+      listProducts.add(Products(
+        productId: element.productId,
+        quantity: element.quantity,
+        discountPrice: element.priceAfterDiscount,
+        originalPrice: element.price,
+      ));
+    }
+
+    final address = detailUser.customerAddressList!
+        .singleWhere((element) => element.isMainAddress == true);
+
+    num shipping = 10000;
+
+    Get.dialog(
+      Center(
+        child: LoadingWidget(),
+      ),
+    );
+
+    if (paymentType.value == 0) {
+      final order = Order(
+        orderId: await OrderService().getOrderId(),
+        orderTypeId: type,
+        usedPoint: 0,
+        payType: 1,
+        isPaid: false,
+        discountPrice: cartController.calculateTotal(),
+        subTotalPrice: cartController.calculateTotalNonDiscount(),
+        shippingPrice: shipping,
+        totalPrice: cartController.calculateTotal() + shipping,
+        products: listProducts,
+        vouchers: [],
+        note: noteCtl.text,
+        reveicerInformation: ReveicerInformation(
+          cityId: address.cityId,
+          districtId: address.districtId,
+          wardId: address.wardId,
+          gender: true,
+          fullname: nameCtl.text,
+          phoneNumber: phoneCtl.text,
+          email: emailCtl.text,
+          homeAddress: address.fullyAddress,
+        ),
+      );
+
+      await OrderService().postOrder(order).then((value) {
+        if (value == 200) {
+          Get.offAllNamed(
+            '/order-success',
+            arguments: order.orderId,
+          );
+        } else {
+          Get.back();
+          Get.snackbar("Error", "Something went wrong");
+        }
+      });
+    } else {
+      Get.toNamed('/vnpay')!.then((value) async {
+        Get.log("Data from previous Screen: $value");
+        if (value != null) {
+          Uri uri = Uri.parse(value.toString());
+          String vnpAmount = uri.queryParameters['vnp_Amount']!;
+          String vnpBankCode = uri.queryParameters['vnp_BankCode']!;
+          String vnpBankTranNo = uri.queryParameters['vnp_BankTranNo']!;
+          String vnpCardType = uri.queryParameters['vnp_CardType']!;
+          String vnpOrderInfo = uri.queryParameters['vnp_OrderInfo']!;
+          String vnpPayDate = uri.queryParameters['vnp_PayDate']!;
+          String vnpResponseCode = uri.queryParameters['vnp_ResponseCode']!;
+          String vnpTmnCode = uri.queryParameters['vnp_TmnCode']!;
+          String vnpTransactionNo = uri.queryParameters['vnp_TransactionNo']!;
+          String vnpTransactionStatus =
+              uri.queryParameters['vnp_TransactionStatus']!;
+          String vnpTxnRef = uri.queryParameters['vnp_TxnRef']!;
+          String vnpSecureHash = uri.queryParameters['vnp_SecureHash']!;
+
+          final order = Order(
+              orderId: await OrderService().getOrderId(),
+              orderTypeId: type,
+              usedPoint: 0,
+              payType: 2,
+              isPaid: true,
+              discountPrice: cartController.calculateTotal(),
+              subTotalPrice: cartController.calculateTotalNonDiscount(),
+              shippingPrice: shipping,
+              totalPrice: cartController.calculateTotal() + shipping,
+              products: listProducts,
+              vouchers: [],
+              note: noteCtl.text,
+              reveicerInformation: ReveicerInformation(
+                cityId: address.cityId,
+                districtId: address.districtId,
+                wardId: address.wardId,
+                gender: true,
+                fullname: nameCtl.text,
+                phoneNumber: phoneCtl.text,
+                email: emailCtl.text,
+                homeAddress: address.fullyAddress,
+              ),
+              vnpayInformation: VnpayInformation(
+                vnpTransactionNo: vnpTransactionNo,
+                vnpPayDate: vnpPayDate,
+              ));
+
+          await OrderService().postOrder(order).then((value) {
+            if (value == 200) {
+              Get.offAllNamed(
+                '/order-success',
+                arguments: order.orderId,
+              );
+            } else {
+              Get.back();
+              Get.snackbar("Error", "Something went wrong");
+            }
+          });
+        } else {
+          Get.back();
+          Get.snackbar("Error", "You cancel the payment");
+        }
+      });
+    }
+  }
+
+  Future redirectToVnPay() async {}
 }

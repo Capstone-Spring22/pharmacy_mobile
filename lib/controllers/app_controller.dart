@@ -20,7 +20,7 @@ class AppController extends GetxController {
 
   AndroidDeviceInfo? androidInfo;
 
-  Rx<TextEditingController> searchCtl = TextEditingController().obs;
+  Rx<String> searchCtl = "".obs;
 
   //App Page Navigation
   RxInt pageIndex = 0.obs;
@@ -91,7 +91,6 @@ class AppController extends GetxController {
     initMotion();
     initDeviceInfo();
     initCacheOption();
-    ever(searchCtl, (callback) => print("VALUE: ${callback.value.text}"));
     ever(isDarkMode, (callback) => toggleTheme());
     super.onInit();
   }

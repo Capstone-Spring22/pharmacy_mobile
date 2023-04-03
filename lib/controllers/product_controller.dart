@@ -9,6 +9,14 @@ class ProductController extends GetxController {
 
   RxBool isFinishLoading = false.obs;
 
+  RxList<PharmacyProduct> trending = <PharmacyProduct>[].obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    loadProduct(1, 10, false);
+  }
+
   loadProduct(int index, int count, bool isContinue) async {
     if (isContinue) {
       var tempList = await ProductService().getProducts(index, count);
@@ -18,16 +26,33 @@ class ProductController extends GetxController {
     }
     products.value = await ProductService().getProducts(index, count);
     isFinishLoading.value = true;
+    await fetchTrending();
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-
-    loadProduct(1, 10, false);
+  Future fetchTrending() async {
+    try {
+      trending.value = await ProductService().getTopSelling();
+      for (final i in trending) {
+        Get.log(i.imageModel!.imageURL!);
+        if (!products.contains(i)) {
+          products.add(i);
+        }
+      }
+    } catch (e) {
+      Get.log("Error loading trending - $e");
+    }
   }
 
-  PharmacyProduct getProductById(String id) {
-    return products.firstWhere((element) => element.id == id);
+  Future<PharmacyProduct?> getProductById(String id) async {
+    try {
+      return products.firstWhere((element) => element.id == id);
+    } catch (e) {
+      var p = await ProductService().getProductByName(id);
+      if (p != null) {
+        products.addIf(!products.contains(p), p);
+        return p;
+      }
+    }
+    return null;
   }
 }

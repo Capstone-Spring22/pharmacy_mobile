@@ -25,7 +25,7 @@ class AddToCartDetail extends StatelessWidget {
               child: child,
             ),
             child: isInCart
-                ? QuantityControlDetail(product)
+                ? QuantityControlDetail(product.id!)
                 : SizedBox(
                     width: Get.width * .5,
                     child: FilledButton(

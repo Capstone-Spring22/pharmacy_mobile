@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/constrains/theme.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
-import 'package:pharmacy_mobile/models/product.dart';
 
 class QuantityControlDetail extends GetView<CartController> {
-  const QuantityControlDetail(this.product, {super.key});
+  const QuantityControlDetail(this.productId, {super.key});
 
-  final PharmacyProduct product;
+  final String productId;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +57,7 @@ class QuantityControlDetail extends GetView<CartController> {
             child: Container(),
           ),
           GestureDetector(
-            onTap: () => controller.decreaseQuan(product.id!),
+            onTap: () => controller.decreaseQuan(productId),
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
@@ -76,9 +74,7 @@ class QuantityControlDetail extends GetView<CartController> {
           ),
           Text(
             controller.listCart
-                .firstWhere((element) =>
-                    productController.getProductById(element.productId!) ==
-                    product)
+                .firstWhere((element) => element.productId == productId)
                 .quantity
                 .toString(),
             style: tileTitle.copyWith(fontSize: 18),
@@ -89,7 +85,7 @@ class QuantityControlDetail extends GetView<CartController> {
           Expanded(
             flex: 6,
             child: FilledButton(
-              onPressed: () => controller.increaseQuan(product.id!),
+              onPressed: () => controller.increaseQuan(productId),
               child: Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,

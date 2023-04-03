@@ -1,19 +1,20 @@
 class Order {
   String? orderId;
-  int? orderTypeId;
+  num? orderTypeId;
   String? siteId;
   String? pharmacistId;
-  int? subTotalPrice;
-  int? discountPrice;
-  int? shippingPrice;
-  int? totalPrice;
-  int? usedPoint;
-  int? payType;
+  num? subTotalPrice;
+  num? discountPrice;
+  num? shippingPrice;
+  num? totalPrice;
+  num? usedPoint;
+  num? payType;
   bool? isPaid;
   String? note;
   List<Vouchers>? vouchers;
   List<Products>? products;
   ReveicerInformation? reveicerInformation;
+  VnpayInformation? vnpayInformation;
   OrderPickUp? orderPickUp;
 
   Order(
@@ -32,6 +33,7 @@ class Order {
       this.vouchers,
       this.products,
       this.reveicerInformation,
+      this.vnpayInformation,
       this.orderPickUp});
 
   Order.fromJson(Map<String, dynamic> json) {
@@ -62,6 +64,9 @@ class Order {
     reveicerInformation = json['reveicerInformation'] != null
         ? ReveicerInformation.fromJson(json['reveicerInformation'])
         : null;
+    vnpayInformation = json['vnpayInformation'] != null
+        ? VnpayInformation.fromJson(json['vnpayInformation'])
+        : null;
     orderPickUp = json['orderPickUp'] != null
         ? OrderPickUp.fromJson(json['orderPickUp'])
         : null;
@@ -90,6 +95,9 @@ class Order {
     if (reveicerInformation != null) {
       data['reveicerInformation'] = reveicerInformation!.toJson();
     }
+    if (vnpayInformation != null) {
+      data['vnpayInformation'] = vnpayInformation!.toJson();
+    }
     if (orderPickUp != null) {
       data['orderPickUp'] = orderPickUp!.toJson();
     }
@@ -115,9 +123,9 @@ class Vouchers {
 
 class Products {
   String? productId;
-  int? quantity;
-  int? originalPrice;
-  int? discountPrice;
+  num? quantity;
+  num? originalPrice;
+  num? discountPrice;
 
   Products(
       {this.productId, this.quantity, this.originalPrice, this.discountPrice});
@@ -180,6 +188,25 @@ class ReveicerInformation {
     data['districtId'] = districtId;
     data['wardId'] = wardId;
     data['homeAddress'] = homeAddress;
+    return data;
+  }
+}
+
+class VnpayInformation {
+  String? vnpTransactionNo;
+  String? vnpPayDate;
+
+  VnpayInformation({this.vnpTransactionNo, this.vnpPayDate});
+
+  VnpayInformation.fromJson(Map<String, dynamic> json) {
+    vnpTransactionNo = json['vnp_TransactionNo'];
+    vnpPayDate = json['vnp_PayDate'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['vnp_TransactionNo'] = vnpTransactionNo;
+    data['vnp_PayDate'] = vnpPayDate;
     return data;
   }
 }

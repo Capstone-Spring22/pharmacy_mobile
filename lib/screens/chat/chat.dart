@@ -31,8 +31,11 @@ class ChatScreen extends GetView<ChatController> {
                     return const Center(child: CircularProgressIndicator());
                   } else if (messages.isEmpty) {
                     return const Center(
-                      child: Text(
-                        "No request sent, if you have any request, please contact pharmacist",
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 30),
+                        child: Text(
+                          "No request sent, if you have any request, please contact pharmacist",
+                        ),
                       ),
                     );
                   } else {
