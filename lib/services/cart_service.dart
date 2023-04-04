@@ -62,7 +62,7 @@ class CartService {
   }
 
   Future removeCart(String productId, String cartId) async {
-    var res = await dio
+    await dio
         .delete('${api}Cart', data: {"productId": productId, "cartId": cartId});
   }
 }

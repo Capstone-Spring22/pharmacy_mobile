@@ -1,5 +1,7 @@
 // login_screen.dart
 
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -25,7 +27,7 @@ class _SignInScreenState extends State<SignInScreen> {
       final box = GetStorage();
       result = box.read("isFirst");
     } catch (e) {
-      print(e);
+      Get.log(e.toString());
     }
     return Scaffold(
       appBar: PharmacyAppBar(

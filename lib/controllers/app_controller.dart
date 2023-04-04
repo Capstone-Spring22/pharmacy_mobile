@@ -11,8 +11,6 @@ import 'package:pharmacy_mobile/constrains/theme.dart';
 
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
-
 class AppController extends GetxController {
   static AppController instance = Get.find();
 
@@ -96,11 +94,10 @@ class AppController extends GetxController {
   }
 
   Future<String> getIpAddress() async {
-    final response =
-        await http.get(Uri.parse('https://api.ipify.org/?format=json'));
+    final response = await dio.get('https://api.ipify.org/?format=json');
 
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
+      final data = jsonDecode(response.data);
       return data['ip'];
     } else {
       throw Exception('Failed to get IP address');

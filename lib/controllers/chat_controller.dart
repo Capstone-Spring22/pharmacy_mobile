@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable, library_private_types_in_public_api
+
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -373,7 +375,7 @@ class _ImageUploaderState extends State<ImageUploader> {
         },
       );
     } catch (e) {
-      print(e);
+      Get.log(e.toString());
     }
   }
 

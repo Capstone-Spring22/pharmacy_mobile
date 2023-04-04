@@ -53,8 +53,4 @@ class NavHomeItem extends StatelessWidget {
       );
     });
   }
-
-  int _switchPage(int index) {
-    return index;
-  }
 }

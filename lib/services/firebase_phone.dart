@@ -10,7 +10,7 @@ class PhoneAuth {
 
   Future<void> verifyPhoneNumber() async {
     verificationCompleted(AuthCredential credential) async {
-      var res = await _auth.signInWithCredential(credential);
+      await _auth.signInWithCredential(credential);
     }
 
     verificationFailed(exception) {

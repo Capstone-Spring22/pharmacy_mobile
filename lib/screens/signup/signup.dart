@@ -36,7 +36,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       final box = GetStorage();
       result = box.read("isFirst");
     } catch (e) {
-      print(e);
+      Get.log(e.toString());
     }
     return Scaffold(
       appBar: PharmacyAppBar(

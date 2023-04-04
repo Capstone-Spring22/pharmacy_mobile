@@ -148,7 +148,7 @@ class _AlarmPickerState extends State<AlarmPicker> {
                               });
                             },
                             onSaved: (value) {
-                              print(value.toString());
+                              Get.log(value.toString());
                             },
                             value: ff[0],
                           ),
@@ -208,7 +208,7 @@ class _AlarmPickerState extends State<AlarmPicker> {
                                 } else {
                                   setState(() {
                                     _alarm.times!.add(v);
-                                    print(v);
+                                    Get.log(v.toString());
                                   });
                                 }
                               },
