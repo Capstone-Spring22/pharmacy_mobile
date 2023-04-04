@@ -9,8 +9,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:motion/motion.dart';
 import 'package:pharmacy_mobile/constrains/theme.dart';
 
-import 'dart:convert';
-
 class AppController extends GetxController {
   static AppController instance = Get.find();
 
@@ -94,13 +92,19 @@ class AppController extends GetxController {
   }
 
   Future<String> getIpAddress() async {
-    final response = await dio.get('https://api.ipify.org/?format=json');
+    try {
+      final response = await dio.get('https://api.ipify.org/?format=json');
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.data);
-      return data['ip'];
-    } else {
-      throw Exception('Failed to get IP address');
+      if (response.statusCode == 200) {
+        final data = response.data;
+        return data['ip'];
+      } else {
+        throw Exception('Failed to get IP address');
+      }
+    } on DioError catch (e) {
+      Get.log(e.response.toString());
+
+      return "";
     }
   }
 

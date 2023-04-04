@@ -69,7 +69,7 @@ class _OrderScreenState extends State<OrderScreen> {
       body: Center(
           child: Column(
         children: [
-          list.isEmpty && isLoading
+          list.isEmpty && !isLoading
               ? const Text("You don't have any order")
               : Expanded(
                   child: RenderList(

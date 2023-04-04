@@ -38,6 +38,7 @@ class _VNPayScreenState extends State<VNPayScreen> {
       body: Center(
         // child: WebViewWidget(controller: controller),
         child: FutureBuilder(
+          future: appController.getIpAddress(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return LoadingWidget();
@@ -76,7 +77,6 @@ class _VNPayScreenState extends State<VNPayScreen> {
               return WebViewWidget(controller: controller);
             }
           },
-          future: appController.getIpAddress(),
         ),
       ),
     );
