@@ -48,23 +48,23 @@ void main() async {
   //init app controller
   initController();
 
-  FlutterError.onError = (FlutterErrorDetails details) {
-    List<String> errorList = [
-      'There are multiple heroes that share the same tag within a subtree',
-      'Invalid argument(s): No host specified in URI 123',
-      'EXCEPTION CAUGHT BY IMAGE RESOURCE SERVICE',
-    ];
+  // FlutterError.onError = (FlutterErrorDetails details) {
+  //   List<String> errorList = [
+  //     'There are multiple heroes that share the same tag within a subtree',
+  //     'Invalid argument(s): No host specified in URI 123',
+  //     'EXCEPTION CAUGHT BY IMAGE RESOURCE SERVICE',
+  //   ];
 
-    if (details.exception is FlutterError &&
-        errorList.any((e) => details.exception.toString().contains(e))) {
-      // Do nothing to hide the exception
-    } else {
-      // Print the exception to the console
-      Get.log(
-          'Error: ${errorList.any((e) => details.exception.toString().contains(e))}');
-      FlutterError.dumpErrorToConsole(details);
-    }
-  };
+  //   if (details.exception is FlutterError &&
+  //       errorList.any((e) => details.exception.toString().contains(e))) {
+  //     // Do nothing to hide the exception
+  //   } else {
+  //     // Print the exception to the console
+  //     Get.log(
+  //         'Error: ${errorList.any((e) => details.exception.toString().contains(e))}');
+  //     FlutterError.dumpErrorToConsole(details);
+  //   }
+  // };
 
   runApp(
     DevicePreview(

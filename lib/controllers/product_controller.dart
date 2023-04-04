@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/models/product.dart';
+import 'package:pharmacy_mobile/models/site.dart';
 import 'package:pharmacy_mobile/services/product_service.dart';
 
 class ProductController extends GetxController {
@@ -10,6 +11,8 @@ class ProductController extends GetxController {
   RxBool isFinishLoading = false.obs;
 
   RxList<PharmacyProduct> trending = <PharmacyProduct>[].obs;
+
+  RxList<PharmacySite> listSite = <PharmacySite>[].obs;
 
   @override
   void onInit() {
@@ -27,6 +30,10 @@ class ProductController extends GetxController {
     products.value = await ProductService().getProducts(index, count);
     isFinishLoading.value = true;
     // await fetchTrending();
+  }
+
+  loadSite() async {
+    listSite.value = await ProductService().getSite();
   }
 
   // Future fetchTrending() async {

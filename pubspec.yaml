@@ -71,6 +71,7 @@ dependencies:
   progressive_time_picker: ^0.0.7
   qr_code_scanner: ^1.0.1
   shimmer: ^2.0.0
+  syncfusion_flutter_barcodes: ^21.1.38
   timeago: ^3.3.0
   timezone: ^0.9.1
   toggle_switch: ^2.0.1

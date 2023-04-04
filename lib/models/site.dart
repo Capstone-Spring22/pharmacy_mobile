@@ -1,0 +1,48 @@
+class PharmacySite {
+  String? id;
+  String? imageUrl;
+  String? siteName;
+  String? addressId;
+  String? lastUpdate;
+  String? description;
+  String? contactInfo;
+  bool? isActivate;
+  bool? isDelivery;
+
+  PharmacySite(
+      {this.id,
+      this.imageUrl,
+      this.siteName,
+      this.addressId,
+      this.lastUpdate,
+      this.description,
+      this.contactInfo,
+      this.isActivate,
+      this.isDelivery});
+
+  PharmacySite.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    imageUrl = json['imageUrl'];
+    siteName = json['siteName'];
+    addressId = json['addressId'];
+    lastUpdate = json['lastUpdate'];
+    description = json['description'];
+    contactInfo = json['contactInfo'];
+    isActivate = json['isActivate'];
+    isDelivery = json['isDelivery'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['imageUrl'] = imageUrl;
+    data['siteName'] = siteName;
+    data['addressId'] = addressId;
+    data['lastUpdate'] = lastUpdate;
+    data['description'] = description;
+    data['contactInfo'] = contactInfo;
+    data['isActivate'] = isActivate;
+    data['isDelivery'] = isDelivery;
+    return data;
+  }
+}

@@ -47,7 +47,7 @@ class OrderSuccessScreen extends StatelessWidget {
               width: Get.width * .7,
               height: Get.height * .05,
               child: FilledButton(
-                onPressed: () {},
+                onPressed: () => Get.toNamed('/order_detail', arguments: id),
                 child: const Text("View my order"),
               ),
             )

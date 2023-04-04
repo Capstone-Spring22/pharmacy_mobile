@@ -40,7 +40,7 @@ class OrderService {
     }
   }
 
-  Future<List<OrderHistory>> getOrderHistory() async {
+  Future<List<OrderHistory>> getOrderHistory(int page) async {
     final dio = appController.dio;
     final api = dotenv.env['API_URL']!;
     List<OrderHistory> list = [];
@@ -48,7 +48,7 @@ class OrderService {
       var res = await dio.get(
         '${api}Order/',
         queryParameters: {
-          'pageIndex': 1,
+          'pageIndex': page,
           'pageItems': 10,
         },
         options: userController.options,
@@ -72,5 +72,16 @@ class OrderService {
       Get.log(e.toString());
     }
     cartController.connectToCloudCart(true);
+  }
+
+  Future getOrderHistoryDetail(String id) async {
+    final dio = appController.dio;
+    final api = dotenv.env['API_URL']!;
+    try {
+      var res = await dio.get('${api}Order/$id');
+      return res.data;
+    } catch (e) {
+      Get.log("Error: $e");
+    }
   }
 }

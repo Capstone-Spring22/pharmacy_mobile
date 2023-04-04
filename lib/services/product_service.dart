@@ -163,4 +163,16 @@ class ProductService {
       return [];
     }
   }
+
+  Future getSite() async {
+    final dio = appController.dio;
+    final api = dotenv.env['API_URL']!;
+
+    final res = await dio.get('${api}Site', queryParameters: {
+      'pageIndex': 1,
+      'pageItems': 10,
+    });
+
+    return res.data;
+  }
 }
