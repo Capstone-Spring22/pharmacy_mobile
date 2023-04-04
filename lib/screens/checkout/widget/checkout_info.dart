@@ -122,8 +122,6 @@ class _UserCheckoutInfoState extends State<UserCheckoutInfo>
               return const CheckProductAvailbility();
             }
           }),
-
-          //////
           SizedBox(
             height: Get.height * .1,
           )

@@ -290,7 +290,6 @@ class AddressController extends GetxController {
         if (element.isMainAddress == true) {
           selectedAddressid.value = element.id!;
           index = listUserAddress.indexOf(element.id);
-          Get.log('index: $index');
         }
       }
       userController.detailUser.value.customerAddressList!.insert(

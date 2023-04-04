@@ -7,7 +7,7 @@ class OrderSuccessScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String id = Get.arguments['id'];
+    String id = Get.arguments;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Order Success"),

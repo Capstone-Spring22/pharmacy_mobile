@@ -34,10 +34,17 @@ class CartController extends GetxController {
     if (isLogged) {
       docId = await CartService().getCartId();
       if (docId != null) {
+        Get.log("have docId");
         listCart.clear();
         listCart.bindStream(firebaseStreamCart(docId!));
-      } else {
-        Get.log('Empty');
+      } else if (docId == "useUserId") {
+        Get.log("No docId");
+        // listCart.clear();
+        // while (userController.user.value.id == null) {
+        //   await Future.delayed(const Duration(milliseconds: 500));
+        // }
+        // listCart.bindStream(
+        //     firebaseStreamCartUseWhere(userController.user.value.id!));
       }
     }
   }
@@ -45,6 +52,26 @@ class CartController extends GetxController {
   Stream<List<CartItem>> firebaseStreamCart(String docId) async* {
     // Subscribe to the Firestore document snapshots
     var snapshots = _db.collection(_collection).doc(docId).snapshots();
+
+    // Wait for the first snapshot to be available
+    var initialSnapshot = await snapshots.first;
+
+    // Emit the initial list of cart items
+    yield await CartService().getListCartItem();
+
+    // Subscribe to future snapshot updates
+    await for (var snapshot in snapshots.skip(1)) {
+      // Emit the updated list of cart items
+      yield await CartService().getListCartItem();
+    }
+  }
+
+  Stream<List<CartItem>> firebaseStreamCartUseWhere(String userId) async* {
+    // Subscribe to the Firestore document snapshots
+    var snapshots = _db
+        .collection(_collection)
+        .where('customerid', isEqualTo: userId)
+        .snapshots();
 
     // Wait for the first snapshot to be available
     var initialSnapshot = await snapshots.first;

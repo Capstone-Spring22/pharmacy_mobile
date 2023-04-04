@@ -160,16 +160,27 @@ class CheckoutController extends GetxController {
         products: listProducts,
         vouchers: [],
         note: noteCtl.text,
-        orderPickUp: null,
+        orderPickUp: OrderPickUp(
+          datePickUp: selectDate.value,
+          timePickUp: selectTime.value,
+        ),
+        reveicerInformation: ReveicerInformation(
+          gender: true,
+          fullname: nameCtl.text,
+          phoneNumber: phoneCtl.text,
+          email: emailCtl.text,
+        ),
         siteId: selectSite.value,
       );
 
-      await OrderService().postOrder(order).then((value) {
+      await OrderService().postOrder(order).then((value) async {
         if (value == 200) {
-          Get.offAllNamed(
-            '/order-success',
+          Get.back();
+          Get.offAndToNamed(
+            '/order_success',
             arguments: order.orderId,
           );
+          await OrderService().wipeCart(cartController.docId!);
         } else {
           Get.back();
           Get.snackbar("Error", "Something went wrong");
@@ -208,16 +219,27 @@ class CheckoutController extends GetxController {
               vouchers: [],
               note: noteCtl.text,
               siteId: selectSite.value,
-              orderPickUp: null,
+              orderPickUp: OrderPickUp(
+                datePickUp: selectDate.value,
+                timePickUp: selectTime.value,
+              ),
+              reveicerInformation: ReveicerInformation(
+                gender: true,
+                fullname: nameCtl.text,
+                phoneNumber: phoneCtl.text,
+                email: emailCtl.text,
+              ),
               vnpayInformation: VnpayInformation(
                 vnpTransactionNo: vnpTransactionNo,
                 vnpPayDate: vnpPayDate,
               ));
 
-          await OrderService().postOrder(order).then((value) {
+          await OrderService().postOrder(order).then((value) async {
             if (value == 200) {
-              Get.offAllNamed(
-                '/order-success',
+              await OrderService().wipeCart(order.orderId!);
+              Get.back();
+              Get.offAndToNamed(
+                '/order_success',
                 arguments: order.orderId,
               );
             } else {
@@ -230,6 +252,14 @@ class CheckoutController extends GetxController {
           Get.snackbar("Error", "You cancel the payment");
         }
       });
+    }
+  }
+
+  void createOrder() {
+    if (checkoutType.value == 0) {
+      createOrderOnline();
+    } else {
+      createOrderPickUp();
     }
   }
 
@@ -251,7 +281,7 @@ class CheckoutController extends GetxController {
     final address = detailUser.customerAddressList!
         .singleWhere((element) => element.isMainAddress == true);
 
-    num shipping = 10000;
+    num shipping = 25000;
 
     Get.dialog(
       Center(
@@ -285,10 +315,12 @@ class CheckoutController extends GetxController {
         ),
       );
 
-      await OrderService().postOrder(order).then((value) {
+      await OrderService().postOrder(order).then((value) async {
+        await OrderService().wipeCart(order.orderId!);
+        Get.back();
         if (value == 200) {
-          Get.offAllNamed(
-            '/order-success',
+          Get.offAndToNamed(
+            '/order_success',
             arguments: order.orderId,
           );
         } else {
@@ -343,10 +375,12 @@ class CheckoutController extends GetxController {
                 vnpPayDate: vnpPayDate,
               ));
 
-          await OrderService().postOrder(order).then((value) {
+          await OrderService().postOrder(order).then((value) async {
+            await OrderService().wipeCart(order.orderId!);
+            Get.back();
             if (value == 200) {
-              Get.offAllNamed(
-                '/order-success',
+              Get.offAndToNamed(
+                '/order_success',
                 arguments: order.orderId,
               );
             } else {

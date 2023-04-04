@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class Order {
   String? orderId;
   num? orderTypeId;
@@ -103,6 +104,11 @@ class Order {
     }
     return data;
   }
+
+  @override
+  String toString() {
+    return 'Order(orderId: $orderId, orderTypeId: $orderTypeId, siteId: $siteId, pharmacistId: $pharmacistId, subTotalPrice: $subTotalPrice, discountPrice: $discountPrice, shippingPrice: $shippingPrice, totalPrice: $totalPrice, usedPoint: $usedPoint, payType: $payType, isPaid: $isPaid, note: $note, vouchers: $vouchers, products: $products, reveicerInformation: $reveicerInformation, vnpayInformation: $vnpayInformation)';
+  }
 }
 
 class Vouchers {
@@ -119,6 +125,9 @@ class Vouchers {
     data['voucherId'] = voucherId;
     return data;
   }
+
+  @override
+  String toString() => 'Vouchers(voucherId: $voucherId)';
 }
 
 class Products {
@@ -144,6 +153,11 @@ class Products {
     data['originalPrice'] = originalPrice;
     data['discountPrice'] = discountPrice;
     return data;
+  }
+
+  @override
+  String toString() {
+    return 'Products(productId: $productId, quantity: $quantity, originalPrice: $originalPrice, discountPrice: $discountPrice)';
   }
 }
 
@@ -190,6 +204,11 @@ class ReveicerInformation {
     data['homeAddress'] = homeAddress;
     return data;
   }
+
+  @override
+  String toString() {
+    return 'ReveicerInformation(fullname: $fullname, phoneNumber: $phoneNumber, email: $email, gender: $gender, cityId: $cityId, districtId: $districtId, wardId: $wardId, homeAddress: $homeAddress)';
+  }
 }
 
 class VnpayInformation {
@@ -209,6 +228,10 @@ class VnpayInformation {
     data['vnp_PayDate'] = vnpPayDate;
     return data;
   }
+
+  @override
+  String toString() =>
+      'VnpayInformation(vnpTransactionNo: $vnpTransactionNo, vnpPayDate: $vnpPayDate)';
 }
 
 class OrderPickUp {
@@ -228,4 +251,8 @@ class OrderPickUp {
     data['timePickUp'] = timePickUp;
     return data;
   }
+
+  @override
+  String toString() =>
+      'OrderPickUp(datePickUp: $datePickUp, timePickUp: $timePickUp)';
 }

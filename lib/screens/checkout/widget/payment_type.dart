@@ -15,6 +15,7 @@ class PaymentType extends GetView<CheckoutController> {
         labels: const ['Cash', 'VNPay'],
         onToggle: controller.togglePaymentType,
         cornerRadius: 20.0,
+        inactiveBgColor: context.theme.secondaryHeaderColor,
         minWidth: Get.width * .4,
         minHeight: Get.height * .05,
         activeBgColor: [context.theme.primaryColor],

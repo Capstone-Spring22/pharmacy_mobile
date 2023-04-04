@@ -16,6 +16,7 @@ class ToggleCheckout extends StatelessWidget {
         labels: const ['Online Delivery', 'Store Pickup'],
         onToggle: checkoutController.toggleOrderType,
         cornerRadius: 20.0,
+        inactiveBgColor: context.theme.secondaryHeaderColor,
         minWidth: Get.width * .4,
         minHeight: Get.height * .05,
         activeBgColor: [context.theme.primaryColor],

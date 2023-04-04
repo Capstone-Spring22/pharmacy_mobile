@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
@@ -91,7 +92,16 @@ class _ProductTileState extends State<ProductTile>
               overflow: TextOverflow.ellipsis,
               style: tileTitle,
             ),
-            BuyButton(product: widget.product)
+            widget.product.isPrescription!
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: AutoSizeText(
+                      "Can't buy without prescription",
+                      style: tilePrice.copyWith(color: Colors.blue),
+                      maxLines: 2,
+                    ),
+                  )
+                : BuyButton(product: widget.product),
           ],
         ),
       ),

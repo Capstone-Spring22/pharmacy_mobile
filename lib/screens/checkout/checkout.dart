@@ -106,7 +106,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   .scrollController.value!.position.pixels ==
                               checkoutController.scrollController.value!
                                   .position.maxScrollExtent) {
-                            checkoutController.createOrderOnline();
+                            checkoutController.createOrder();
                           } else {
                             checkoutController.scrollController.value
                                 ?.animateTo(

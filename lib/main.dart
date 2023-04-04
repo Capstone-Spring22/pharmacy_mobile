@@ -30,6 +30,8 @@ import 'package:pharmacy_mobile/screens/user/user.dart';
 import 'controllers/user_controller.dart';
 import 'screens/introduction/intro.dart';
 import 'screens/message/message.dart';
+import 'screens/order_detail/order_detail.dart';
+import 'screens/order_history/order.dart';
 import 'screens/order_success/order_success.dart';
 import 'screens/vnpay/vnpay.dart';
 
@@ -45,6 +47,24 @@ void main() async {
 
   //init app controller
   initController();
+
+  FlutterError.onError = (FlutterErrorDetails details) {
+    List<String> errorList = [
+      'There are multiple heroes that share the same tag within a subtree',
+      'Invalid argument(s): No host specified in URI 123',
+      'EXCEPTION CAUGHT BY IMAGE RESOURCE SERVICE',
+    ];
+
+    if (details.exception is FlutterError &&
+        errorList.any((e) => details.exception.toString().contains(e))) {
+      // Do nothing to hide the exception
+    } else {
+      // Print the exception to the console
+      Get.log(
+          'Error: ${errorList.any((e) => details.exception.toString().contains(e))}');
+      FlutterError.dumpErrorToConsole(details);
+    }
+  };
 
   runApp(
     DevicePreview(
@@ -118,6 +138,14 @@ class MyApp extends StatelessWidget {
             GetPage(
               name: '/signup',
               page: () => const SignUpScreen(),
+            ),
+            GetPage(
+              name: '/order_detail',
+              page: () => const OrderDetail(),
+            ),
+            GetPage(
+              name: '/order_history',
+              page: () => const OrderScreen(),
             ),
             GetPage(
               name: '/chat',

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/screens/home/widgets/option_box.dart';
-import 'package:pharmacy_mobile/services/product_service.dart';
 
 class OptionButtonRow extends StatelessWidget {
   const OptionButtonRow({
@@ -24,7 +23,17 @@ class OptionButtonRow extends StatelessWidget {
           color: Colors.yellow[100]!.withOpacity(1),
           image: "assets/images/Image.png",
           text: "prescription_btn".tr,
-          func: () => ProductService().checkAvailSite(),
+          func: () {
+            Get.offAllNamed(
+              '/navhub',
+              arguments: "g",
+            )!
+                .then((value) => Get.toNamed(
+                      '/order_success',
+                      arguments: "g",
+                    ));
+          },
+          // func: () => Get.toNamed('/order_history'),
         ),
         OptionBox(
           color: Colors.green[100]!.withOpacity(.7),

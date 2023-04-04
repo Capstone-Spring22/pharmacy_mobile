@@ -27,13 +27,19 @@ class UserAvatar extends StatelessWidget {
           } else {
             return ClipRRect(
               borderRadius: BorderRadius.circular(50),
+              // child: CachedNetworkImage(
+              //   imageUrl: userController.user.value.imageURL!,
+              //   errorWidget: (context, url, error) => Image.network(
+              //     "https://png.pngtree.com/png-vector/20220709/ourmid/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png",
+              //     height: Get.height * .155,
+              //     width: Get.height * .155,
+              //   ),
+              // ),
               child: CachedNetworkImage(
-                imageUrl: userController.user.value.imageURL!,
-                errorWidget: (context, url, error) => Image.network(
-                  "https://png.pngtree.com/png-vector/20220709/ourmid/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png",
-                  height: Get.height * .155,
-                  width: Get.height * .155,
-                ),
+                imageUrl:
+                    'https://png.pngtree.com/png-vector/20220709/ourmid/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png',
+                height: Get.height * .155,
+                width: Get.height * .155,
               ),
             );
           }

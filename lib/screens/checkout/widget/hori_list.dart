@@ -3,7 +3,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:horizontal_card_pager/horizontal_card_pager.dart';
-import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
 import 'package:horizontal_card_pager/card_item.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
@@ -39,7 +38,7 @@ class _HorizontalListState extends State<HorizontalList> {
             },
             items: widget.ctl.listCart.map((e) {
               return ImageCarditem(
-                item.productImageUrl!,
+                e.productImageUrl!,
                 h: Get.width * 0.25,
                 w: Get.width * 0.25,
                 context: context,
@@ -49,7 +48,7 @@ class _HorizontalListState extends State<HorizontalList> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: AutoSizeText(
-              "${item.productName} - ${item.quantity} - ${convertCurrency(item.priceAfterDiscount!)}",
+              "${item.productName}",
             ),
           )
         ],

@@ -26,22 +26,21 @@ class ProductController extends GetxController {
     }
     products.value = await ProductService().getProducts(index, count);
     isFinishLoading.value = true;
-    await fetchTrending();
+    // await fetchTrending();
   }
 
-  Future fetchTrending() async {
-    try {
-      trending.value = await ProductService().getTopSelling();
-      for (final i in trending) {
-        Get.log(i.imageModel!.imageURL!);
-        if (!products.contains(i)) {
-          products.add(i);
-        }
-      }
-    } catch (e) {
-      Get.log("Error loading trending - $e");
-    }
-  }
+  // Future fetchTrending() async {
+  //   try {
+  //     trending.value = await ProductService().getTopSelling();
+  //     for (final i in trending) {
+  //       if (!products.contains(i)) {
+  //         products.add(i);
+  //       }
+  //     }
+  //   } catch (e) {
+  //     Get.log("Error loading trending - $e");
+  //   }
+  // }
 
   Future<PharmacyProduct?> getProductById(String id) async {
     try {

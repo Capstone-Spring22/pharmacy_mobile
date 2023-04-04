@@ -61,10 +61,19 @@ class _AddressCardState extends State<AddressCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 500),
-        child:
-            isCollase ? const AddressCardCollase() : const AddressCardExtend(),
+      // child: AnimatedSwitcher(
+      //   duration: const Duration(milliseconds: 500),
+      //   child:
+      //       isCollase ? const AddressCardCollase() : const AddressCardExtend(),
+      // ),
+      child: AnimatedSize(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.fastOutSlowIn,
+        child: Container(
+          child: isCollase
+              ? const AddressCardCollase()
+              : const AddressCardExtend(),
+        ),
       ),
     );
   }

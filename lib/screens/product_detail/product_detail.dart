@@ -42,7 +42,25 @@ class ProductDetailScreen extends GetView<AppController> {
               bottomNavigationBar: SizedBox(
                 width: Get.width,
                 height: Get.height * .08,
-                child: isLoad ? LoadingWidget() : AddToCartDetail(product),
+                child: isLoad
+                    ? LoadingWidget()
+                    : product.isPrescription!
+                        ? Padding(
+                            padding: const EdgeInsets.all(15),
+                            child: FilledButton(
+                              onPressed: () {
+                                if (userController.isLoggedIn.isTrue) {
+                                  Get.toNamed("/chat");
+                                } else {
+                                  Get.toNamed("/signin");
+                                }
+                              },
+                              child: const Text(
+                                "Prescription Required, Contact us",
+                              ),
+                            ),
+                          )
+                        : AddToCartDetail(product),
               ),
               key: drawerKey,
               drawer: const MenuDrawer(),

@@ -3,6 +3,10 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 final themeLight = ThemeData(
   brightness: Brightness.light,
   useMaterial3: true,
+  primaryColor: const Color(0xFF82aae3),
+  // buttonTheme: const ButtonThemeData(
+  //   buttonColor: Color(0xFF82aae3),
+  // ),
 );
 
 final themeDark = ThemeData(

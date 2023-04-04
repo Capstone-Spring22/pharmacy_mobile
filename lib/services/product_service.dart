@@ -20,7 +20,7 @@ class ProductService {
       queryParameters: {
         'pageIndex': page,
         'pageItems': items,
-        'isPrescription': false,
+        // 'isPrescription': false,
       },
     );
     // log(response.data.toString());
@@ -41,12 +41,6 @@ class ProductService {
       queryParameters: {'pageIndex': 1, 'pageItems': 1, 'productName': name},
     );
     return PharmacyProduct.fromJson(response.data['items'][0]);
-    // try {
-    //   debugPrint(response.data['items']);
-    // } catch (e) {
-    //   log("Error: $e");
-    // }
-    // return null;
   }
 
   Future<List<PharmacyProduct>> getListProductByName(String name) async {
@@ -132,12 +126,16 @@ class ProductService {
     final dio = appController.dio;
     final api = dotenv.env['API_URL']!;
 
-    final res = await dio.get('${api}Order/PickUp/Site', queryParameters: {
-      'ProductId': listItem.map((e) => e.productId).join(';'),
-      'Quantity': listItem.map((e) => e.quantity).join(';'),
-      // 'CityId':userController.detailUser.value.customerAddressList!.singleWhere((element) => element.isMainAddress==true).cityId,
-      'CityId': "79",
-    });
+    final res = await dio.get(
+      '${api}Order/PickUp/Site',
+      queryParameters: {
+        'ProductId': listItem.map((e) => e.productId).join(';'),
+        'Quantity': listItem.map((e) => e.quantity).join(';'),
+        // 'CityId':userController.detailUser.value.customerAddressList!.singleWhere((element) => element.isMainAddress==true).cityId,
+        'CityId': "79",
+      },
+      options: userController.options,
+    );
 
     return res.data;
   }

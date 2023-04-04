@@ -1,5 +1,6 @@
 // ignore_for_file: unnecessary_null_comparison
 
+import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
@@ -11,14 +12,11 @@ class CartService {
 
   Future postCart(Map<String, dynamic> item) async {
     try {
-      Get.log(item.toString());
       var res = await dio.post(
         "${api}Cart",
         data: item,
         options: userController.options,
       );
-
-      Get.log(res.data.toString());
 
       if (res.statusCode == 400) {
         Get.snackbar(
@@ -26,12 +24,17 @@ class CartService {
           "Please check your network or try again",
         );
       }
-    } catch (e) {
+    } on DioError catch (e) {
       Get.log("Error at post cart: $e");
+      if (e.message != null) {
+        Get.log(
+          e.response.toString(),
+        );
+      }
     }
   }
 
-  Future<String?> getCartId() async {
+  Future<String> getCartId() async {
     try {
       while (appController.androidInfo == null) {
         await Future.delayed(const Duration(seconds: 1));
@@ -40,7 +43,7 @@ class CartService {
       return res.data['cartId'];
     } catch (e) {
       Get.log("getCartId: $e");
-      return null;
+      return 'useUserId';
     }
   }
 
