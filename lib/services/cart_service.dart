@@ -12,24 +12,15 @@ class CartService {
 
   Future postCart(Map<String, dynamic> item) async {
     try {
-      var res = await dio.post(
+      await dio.post(
         "${api}Cart",
         data: item,
         options: userController.options,
       );
-
-      if (res.statusCode == 400) {
-        Get.snackbar(
-          "Error adding to cart",
-          "Please check your network or try again",
-        );
-      }
     } on DioError catch (e) {
       Get.log("Error at post cart: $e");
       if (e.message != null) {
-        Get.log(
-          e.response.toString(),
-        );
+        Get.log(e.response.toString());
       }
     }
   }

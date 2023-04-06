@@ -6,7 +6,7 @@ import 'package:pharmacy_mobile/controllers/chat_controller.dart';
 import 'package:pharmacy_mobile/controllers/notification_controller.dart';
 import 'package:pharmacy_mobile/controllers/product_controller.dart';
 import 'package:pharmacy_mobile/controllers/user_controller.dart';
-import 'package:pharmacy_mobile/screens/address/address.dart';
+import 'package:pharmacy_mobile/views/address/address.dart';
 
 AppController appController = AppController.instance;
 CartController cartController = CartController.instance;

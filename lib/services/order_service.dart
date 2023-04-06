@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:pharmacy_mobile/constrains/controller.dart';
-import 'package:pharmacy_mobile/screens/order_history/models/order_history.dart';
+import 'package:pharmacy_mobile/views/order_history/models/order_history.dart';
 
 import '../models/order.dart';
 

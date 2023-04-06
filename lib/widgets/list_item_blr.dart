@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/controllers/product_controller.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
-import 'package:pharmacy_mobile/screens/home/widgets/product_tile.dart';
+import 'package:pharmacy_mobile/views/home/widgets/product_tile.dart';
 
 class ListItemBuilder extends StatelessWidget {
   const ListItemBuilder({super.key});

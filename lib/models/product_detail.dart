@@ -18,7 +18,7 @@ class PharmacyDetail {
   num? priceAfterDiscount;
   DescriptionModels? descriptionModels;
   List<ImageModels>? imageModels;
-  List<String>? productUnitReferences;
+  List<ProductUnitReferences>? productUnitReferences;
   DiscountModel? discountModel;
 
   PharmacyDetail(
@@ -65,7 +65,13 @@ class PharmacyDetail {
         imageModels!.add(ImageModels.fromJson(v));
       });
     }
-    productUnitReferences = json['productUnitReferences'].cast<String>();
+    if (json['productUnitReferences'] != null) {
+      productUnitReferences = <ProductUnitReferences>[];
+      json['productUnitReferences'].forEach((v) {
+        productUnitReferences!.add(ProductUnitReferences.fromJson(v));
+      });
+    }
+
     discountModel = json['discountModel'] != null
         ? DiscountModel.fromJson(json['discountModel'])
         : null;
@@ -116,6 +122,47 @@ class ImageModels {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['imageURL'] = imageURL;
+    return data;
+  }
+}
+
+class ProductUnitReferences {
+  String? id;
+  String? unitId;
+  String? unitName;
+  num? unitLevel;
+  num? quantitative;
+  num? price;
+  num? priceAfterDiscount;
+
+  ProductUnitReferences(
+      {this.id,
+      this.unitId,
+      this.unitName,
+      this.unitLevel,
+      this.quantitative,
+      this.price,
+      this.priceAfterDiscount});
+
+  ProductUnitReferences.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    unitId = json['unitId'];
+    unitName = json['unitName'];
+    unitLevel = json['unitLevel'];
+    quantitative = json['quantitative'];
+    price = json['price'];
+    priceAfterDiscount = json['priceAfterDiscount'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['unitId'] = unitId;
+    data['unitName'] = unitName;
+    data['unitLevel'] = unitLevel;
+    data['quantitative'] = quantitative;
+    data['price'] = price;
+    data['priceAfterDiscount'] = priceAfterDiscount;
     return data;
   }
 }

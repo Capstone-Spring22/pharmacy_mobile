@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
 import 'package:pharmacy_mobile/models/order.dart';
-import 'package:pharmacy_mobile/screens/checkout/checkout.dart';
+import 'package:pharmacy_mobile/views/checkout/checkout.dart';
 import 'package:pharmacy_mobile/services/order_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
