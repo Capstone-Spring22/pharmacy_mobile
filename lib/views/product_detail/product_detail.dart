@@ -8,6 +8,7 @@ import 'package:pharmacy_mobile/constrains/theme.dart';
 import 'package:pharmacy_mobile/controllers/app_controller.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
 import 'package:pharmacy_mobile/helpers/price_display.dart';
+import 'package:pharmacy_mobile/main.dart';
 import 'package:pharmacy_mobile/models/product.dart';
 import 'package:pharmacy_mobile/models/product_detail.dart';
 import 'package:pharmacy_mobile/views/drawer/cart_drawer.dart';
@@ -221,7 +222,7 @@ class ProductDetailScreen extends GetView<AppController> {
           children: [
             Expanded(
               child: Text(
-                "${convertCurrency(num.parse(detail.price.toString()))}/${detail.unitName}",
+                "${detail.price!.convertCurrentcy()}/${detail.unitName}",
                 textAlign: TextAlign.center,
                 style: detailPrice.copyWith(color: Colors.blue),
               ),

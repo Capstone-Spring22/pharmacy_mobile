@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/theme.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
-import 'package:pharmacy_mobile/helpers/price_display.dart';
+import 'package:pharmacy_mobile/main.dart';
 import 'package:pharmacy_mobile/models/cart.dart';
 import 'package:pharmacy_mobile/models/product.dart';
 import 'package:pharmacy_mobile/widgets/quan_control.dart';

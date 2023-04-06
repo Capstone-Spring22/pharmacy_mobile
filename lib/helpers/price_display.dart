@@ -1,17 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:pharmacy_mobile/constrains/theme.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
+import 'package:pharmacy_mobile/main.dart';
 import 'package:pharmacy_mobile/models/product.dart';
 import 'package:pharmacy_mobile/views/home/widgets/product_tile.dart';
-
-extension PriceConvert on num {
-  String convertCurrentcy() {
-    return NumberFormat.currency(locale: 'vi', symbol: 'đ').format(this);
-  }
-}
 
 List<Widget> displayPrice(num price, num priceAfterDiscount, String unit) {
   if (price == priceAfterDiscount) {

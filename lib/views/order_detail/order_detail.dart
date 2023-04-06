@@ -3,8 +3,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
+import 'package:pharmacy_mobile/main.dart';
 import 'package:pharmacy_mobile/views/order_detail/models/order_history_detail.dart';
 import 'package:pharmacy_mobile/services/order_service.dart';
 import 'package:syncfusion_flutter_barcodes/barcodes.dart';
@@ -73,7 +73,7 @@ class OrderDetail extends StatelessWidget {
                       maxLines: 1,
                     ),
                     AutoSizeText(
-                      "Tổng tiền: ${convertCurrency(item.totalPrice!)}",
+                      "Tổng tiền: ${item.totalPrice!.convertCurrentcy()}",
                       style: context.textTheme.bodyMedium,
                       maxLines: 1,
                     ),
@@ -141,7 +141,7 @@ class OrderDetail extends StatelessWidget {
                                       maxLines: 1,
                                     ),
                                     AutoSizeText(
-                                      "Tổng tiền: ${convertCurrency(e.priceTotal!)}",
+                                      "Tổng tiền: ${e.priceTotal!.convertCurrentcy()}",
                                     )
                                   ],
                                 ),

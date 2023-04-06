@@ -8,6 +8,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:pharmacy_mobile/constrains/text.dart';
 import 'package:pharmacy_mobile/controllers/app_controller.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
@@ -34,6 +35,12 @@ import 'views/order_detail/order_detail.dart';
 import 'views/order_history/order.dart';
 import 'views/order_success/order_success.dart';
 import 'views/vnpay/vnpay.dart';
+
+extension PriceConvert on num {
+  String convertCurrentcy() {
+    return NumberFormat.currency(locale: 'vi', symbol: 'đ').format(this);
+  }
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

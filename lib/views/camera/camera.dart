@@ -9,7 +9,7 @@ import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/constrains/theme.dart';
 import 'package:pharmacy_mobile/controllers/camera_controller.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
-import 'package:pharmacy_mobile/helpers/price_display.dart';
+import 'package:pharmacy_mobile/main.dart';
 import 'package:pharmacy_mobile/views/home/widgets/product_tile.dart';
 import 'package:pharmacy_mobile/services/product_service.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';

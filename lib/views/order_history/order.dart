@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gradient_widgets/gradient_widgets.dart';
 import 'package:intl/intl.dart';
-import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
+import 'package:pharmacy_mobile/main.dart';
 import 'package:pharmacy_mobile/views/order_detail/models/order_history_detail.dart';
 import 'package:pharmacy_mobile/views/order_history/models/order_history.dart';
 import 'package:pharmacy_mobile/services/order_service.dart';
@@ -149,7 +149,7 @@ class RenderList extends StatelessWidget {
                     trailing: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        AutoSizeText(convertCurrency(item.totalPrice!)),
+                        AutoSizeText(item.totalPrice!.convertCurrentcy()),
                         AutoSizeText(item.paymentMethod!),
                       ],
                     ),

@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
+import 'package:pharmacy_mobile/main.dart';
 import 'package:pharmacy_mobile/views/checkout/widget/hori_list.dart';
 
 import '../../../controllers/checkout_controller.dart';
@@ -69,8 +69,8 @@ class ListCheckout extends StatelessWidget {
                                         Text(
                                             "Quantity: ${ctl.listCart[index].quantity}"),
                                         Text(
-                                          convertCurrency(
-                                              item.priceAfterDiscount!),
+                                          item.priceAfterDiscount!
+                                              .convertCurrentcy(),
                                         ),
                                       ],
                                     ),

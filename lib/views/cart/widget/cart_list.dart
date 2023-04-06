@@ -2,9 +2,9 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
+import 'package:pharmacy_mobile/main.dart';
 import 'package:pharmacy_mobile/widgets/quan_control.dart';
 
 class CartItemListView extends GetView<CartController> {
@@ -55,8 +55,8 @@ class CartItemListView extends GetView<CartController> {
                             switchInCurve: Curves.easeIn,
                             duration: const Duration(milliseconds: 300),
                             child: AutoSizeText(
-                              convertCurrency(controller
-                                  .listCart[index].priceAfterDiscount!),
+                              controller.listCart[index].priceAfterDiscount!
+                                  .convertCurrentcy(),
                               style: context.theme.primaryTextTheme.bodyLarge!
                                   .copyWith(color: Colors.black),
                             ),

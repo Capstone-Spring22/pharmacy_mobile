@@ -1,4 +1,3 @@
-import 'package:intl/intl.dart';
 import 'package:pharmacy_mobile/controllers/app_controller.dart';
 import 'package:pharmacy_mobile/controllers/camera_controller.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
@@ -17,13 +16,13 @@ QrCameraController cameraController = QrCameraController.instance;
 AddressController addressController = AddressController.instance;
 ChatController chatController = ChatController.instance;
 
-String convertCurrency(num number) {
-  var formatter = NumberFormat.currency(
-    locale: 'vi_VN',
-    symbol: '₫',
-  );
-  return formatter.format(number);
-}
+// String convertCurrency(num number) {
+//   var formatter = NumberFormat.currency(
+//     locale: 'vi_VN',
+//     symbol: '₫',
+//   );
+//   return formatter.format(number);
+// }
 
 bool isVietnamesePhoneNumber(String phoneNumber) {
   final phoneNumberPattern = RegExp(r"^(0[3|5|7|8|9])+([0-9]{8})$");

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 
 import 'package:pharmacy_mobile/controllers/checkout_controller.dart';
+import 'package:pharmacy_mobile/main.dart';
 import 'package:pharmacy_mobile/views/checkout/widget/checkout_panel.dart';
 import 'package:pharmacy_mobile/views/checkout/widget/list_checkout.dart';
 
@@ -92,10 +93,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             top: Get.height * .82,
             child: Obx(() {
               String txt =
-                  "Total ${convertCurrency(cartController.calculateTotal())} + 10.000₫ Shipping";
+                  "Total ${cartController.calculateTotal().convertCurrentcy()} + 20.000₫ Shipping";
               if (checkoutController.checkoutType.value != 0) {
                 txt =
-                    "Total ${convertCurrency(cartController.calculateTotal())}";
+                    "Total ${cartController.calculateTotal().convertCurrentcy()}";
               }
               return FilledButton(
                 onPressed: checkoutController.activeBtn.isFalse

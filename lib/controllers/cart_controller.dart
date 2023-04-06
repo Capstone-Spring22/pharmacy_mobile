@@ -134,7 +134,7 @@ class CartController extends GetxController {
     return listCart.singleWhere((element) => element.productId == productId);
   }
 
-  double calculateTotal() {
+  num calculateTotal() {
     double total = 0.0;
     for (var item in listCart) {
       total += item.priceTotal! * item.quantity!;
