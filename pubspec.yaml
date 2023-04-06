@@ -58,6 +58,7 @@ dependencies:
   google_maps_flutter: ^2.2.3
   gradient_widgets: ^0.6.0
   horizontal_card_pager: ^1.1.1
+  icons_launcher: ^2.1.0
   image_picker: ^0.8.7+1
   implicitly_animated_list: ^2.1.1
   intl: ^0.17.0
@@ -85,11 +86,20 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+icons_launcher:
+  image_path: "assets/icons/icon.png"
+  platforms:
+    android:
+      enable: true
+    ios:
+      enable: true
+
 flutter:
   uses-material-design: true
   assets:
     - assets/images/
     - assets/lottie/
+    - assets/icons/
     - dotenv
 
   fonts:
