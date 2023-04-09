@@ -1,8 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:draggable_home/draggable_home.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
@@ -35,6 +33,7 @@ class HomeScreen extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 5),
             child: DrawerButtonNoNeu(),
           ),
+          appBarColor: const Color(0xFFFFFFFF),
           actions: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -48,10 +47,9 @@ class HomeScreen extends StatelessWidget {
             )
           ],
           headerExpandedHeight: 0.5,
-          title: AutoSizeText(
-            "title".tr,
-            maxLines: 1,
-            style: context.textTheme.headlineMedium!.copyWith(fontSize: 30.h),
+          title: Image.asset(
+            'assets/icons/icon.png',
+            height: Get.height * .07,
           ),
           headerWidget: headerWidget(context),
           body: const [ListItemBuilder()],
@@ -69,8 +67,8 @@ class HomeScreen extends StatelessWidget {
           leftWidget: const DrawerButton(),
           midText: "title".tr,
           rightWidget: const CartButton(),
-          titleStyle:
-              context.textTheme.headlineMedium!.copyWith(fontSize: 30.h),
+          // titleStyle:
+          //     context.textTheme.headlineMedium!.copyWith(fontSize: 30.h),
         ),
         GetBuilder<UserController>(
           builder: (userCtl) {

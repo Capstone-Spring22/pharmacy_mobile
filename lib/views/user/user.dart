@@ -15,77 +15,80 @@ class UserScreen extends GetView<UserController> {
 
   @override
   Widget build(BuildContext context) {
-    if (userController.isLoggedIn.value) {
-      return Scaffold(
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: SizedBox(
-              width: double.infinity,
-              child: Column(
-                children: [
-                  const UserAvatar(),
-                  const SizedBox(height: 20),
-                  controller.user.value.name == null
-                      ? AutoSizeText(
-                          "Đặt tên >",
-                          style: context.textTheme.headlineMedium!.copyWith(
-                            decoration: TextDecoration.underline,
-                            decorationColor: Colors.blue,
-                            shadows: [
-                              const Shadow(
-                                color: Colors.blue,
-                                offset: Offset(0, -5),
-                              )
-                            ],
-                            color: Colors.transparent,
+    return Obx(() {
+      if (userController.isLoggedIn.value &&
+          controller.user.value.phoneNo != null) {
+        return Scaffold(
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: SizedBox(
+                width: double.infinity,
+                child: Column(
+                  children: [
+                    const UserAvatar(),
+                    const SizedBox(height: 20),
+                    controller.user.value.name == null
+                        ? AutoSizeText(
+                            "Đặt tên >",
+                            style: context.textTheme.headlineMedium!.copyWith(
+                              decoration: TextDecoration.underline,
+                              decorationColor: Colors.blue,
+                              shadows: [
+                                const Shadow(
+                                  color: Colors.blue,
+                                  offset: Offset(0, -5),
+                                )
+                              ],
+                              color: Colors.transparent,
+                            ),
+                          )
+                        : AutoSizeText(
+                            controller.user.value.name!,
+                            style: context.textTheme.headlineMedium!.copyWith(
+                              decorationColor: Colors.blue,
+                              shadows: [
+                                const Shadow(
+                                  color: Colors.blue,
+                                  offset: Offset(0, -5),
+                                )
+                              ],
+                              color: Colors.transparent,
+                            ),
                           ),
-                        )
-                      : AutoSizeText(
-                          controller.user.value.name!,
-                          style: context.textTheme.headlineMedium!.copyWith(
-                            decorationColor: Colors.blue,
-                            shadows: [
-                              const Shadow(
-                                color: Colors.blue,
-                                offset: Offset(0, -5),
-                              )
-                            ],
-                            color: Colors.transparent,
-                          ),
-                        ),
-                  InfoCard(
-                    icon: Icons.phone,
-                    text: controller.user.value.phoneNo.toString(),
-                  ),
-                  InfoCard(
-                    icon: Icons.email,
-                    text: controller.user.value.email.toString(),
-                  ),
-                  InfoCard(
-                    icon: Icons.cake,
-                    text: DateFormat.yMMMMd().format(DateTime.parse(
-                        controller.detailUser.value.dob.toString())),
-                  ),
-                  const AddressCard(),
-                  GestureDetector(
-                    onTap: () => Get.toNamed('/order_history'),
-                    child: const InfoCard(
-                      icon: Icons.list_alt,
-                      text: "Order History",
+                    InfoCard(
+                      icon: Icons.phone,
+                      text: controller.user.value.phoneNo.toString(),
                     ),
-                  )
-                ],
+                    InfoCard(
+                      icon: Icons.email,
+                      text: controller.user.value.email.toString(),
+                    ),
+                    InfoCard(
+                      icon: Icons.cake,
+                      text: DateFormat.yMMMMd().format(DateTime.parse(
+                          controller.detailUser.value.dob.toString())),
+                    ),
+                    const AddressCard(),
+                    GestureDetector(
+                      onTap: () => Get.toNamed('/order_history'),
+                      child: const InfoCard(
+                        icon: Icons.list_alt,
+                        text: "Order History",
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      );
-    } else {
-      return const Scaffold(
-        body: Center(
-          child: AuthButtonRow(),
-        ),
-      );
-    }
+        );
+      } else {
+        return const Scaffold(
+          body: Center(
+            child: AuthButtonRow(),
+          ),
+        );
+      }
+    });
   }
 }

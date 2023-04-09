@@ -11,16 +11,15 @@ class CodeSent extends StatelessWidget {
   Widget build(BuildContext context) {
     TextEditingController otpCtl = TextEditingController();
 
-    return SizedBox(
-      height: Get.height,
-      child: SingleChildScrollView(
-        // physics: const NeverScrollableScrollPhysics(),
+    return SingleChildScrollView(
+      child: SizedBox(
+        height: Get.height * .7,
         child: Column(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Text(
-              "We've sent an SMS with a verification code to your phone number",
+              "SMS với mã bảo mật OTP đã được gửi",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 20),
             ),
@@ -29,21 +28,21 @@ class CodeSent extends StatelessWidget {
               height: Get.height * 0.2,
             ),
             const Text(
-              "Listening for OTP",
+              "Lắng nghe mã OTP",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             Divider(
                 color: Colors.black.withOpacity(.1), height: Get.height * .05),
             const Text(
-              "OR",
+              "HOẶC",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
 
             Divider(color: Colors.transparent, height: Get.height * .05),
             const Text(
-              "Enter Code Manually",
+              "Điền mã",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 18),
             ),
@@ -53,7 +52,7 @@ class CodeSent extends StatelessWidget {
               controller: otpCtl,
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
-                hintText: "Enter OTP",
+                hintText: "Nhập OTP",
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
                   borderSide:
@@ -70,11 +69,11 @@ class CodeSent extends StatelessWidget {
               height: 16.0,
             ),
             FilledButton(
-              child: const Text("Submit OTP"),
+              child: const Text("Đăng nhập"),
               onPressed: () async {
                 Get.defaultDialog(
-                  title: "Signing you in",
-                  middleText: "Please wait",
+                  title: "Đang đăng nhập",
+                  middleText: "Vui lòng đợi",
                   content: const CircularProgressIndicator.adaptive(),
                 );
                 await phoneAuth

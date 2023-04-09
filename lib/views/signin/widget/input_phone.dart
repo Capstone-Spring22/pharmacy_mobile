@@ -21,7 +21,7 @@ class InputPhone extends StatelessWidget {
           controller: phoneCtl,
           keyboardType: TextInputType.phone,
           decoration: InputDecoration(
-            hintText: "Enter Phone Number",
+            hintText: "Nhập số điện thoại",
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30),
               borderSide:
@@ -45,7 +45,7 @@ class InputPhone extends StatelessWidget {
         Hero(
           tag: 'signinBtn',
           child: FilledButton(
-            child: const Text("Sent OTP"),
+            child: const Text("Gửi mã OTP"),
             onPressed: () {
               phoneAuth.verifyPhoneNumber().then((value) {
                 SignupController ctl = Get.find();

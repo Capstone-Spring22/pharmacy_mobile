@@ -1,8 +1,8 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:get/get.dart';
 
 class PharmacyAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -25,12 +25,38 @@ class PharmacyAppBar extends StatelessWidget implements PreferredSizeWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           leftWidget,
+          // Expanded(
+          //   child: AutoSizeText(
+          //     textAlign: TextAlign.center,
+          //     midText,
+          //     maxLines: 1,
+          //     style: titleStyle ?? context.textTheme.headlineMedium,
+          //   ),
+          // ),
           Expanded(
-            child: AutoSizeText(
-              textAlign: TextAlign.center,
-              midText,
-              maxLines: 1,
-              style: titleStyle ?? context.textTheme.headlineMedium,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Row(
+                children: [
+                  Image.asset(
+                    "assets/icons/icon.png",
+                    height: Get.height * .08,
+                  ),
+                  Expanded(
+                    child: AutoSizeText(
+                      midText,
+                      maxLines: 1,
+                      style: titleStyle ??
+                          TextStyle(
+                            fontFamily: 'Quicksand',
+                            letterSpacing: 2,
+                            fontSize: 30,
+                            color: context.theme.primaryColor,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           rightWidget
