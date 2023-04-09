@@ -327,27 +327,6 @@ class AddressController extends GetxController {
     }
   }
 
-  String setAddressCtrl() {
-    String ward = '';
-    String district = '';
-    String city = '';
-
-    try {
-      city = listCityMap.firstWhere(
-          (element) => element['id'] == selectedCityId.value)['cityName'];
-      district = listDistrictMap.firstWhere((element) =>
-              element['id'] == selectedDistrictId.value)['districtName'] +
-          ',';
-      ward = listWardMap.firstWhere(
-              (element) => element['id'] == selectedWardId.value)['wardName'] +
-          ',';
-    } catch (e) {
-      Get.log(e.toString());
-    }
-
-    return "${addressTextCtl.text} $ward $district $city";
-  }
-
   Future addAddress() async {
     var address = {
       "customerId": userController.user.value.id,
@@ -357,6 +336,7 @@ class AddressController extends GetxController {
       "homeAddress": addressTextCtl.text,
       "isMainAddress": false
     };
+
     AddressService().addAddress(address).then((value) {
       Get.back();
       selectedCityId.value = '79';
@@ -366,7 +346,10 @@ class AddressController extends GetxController {
       searchCityCtrl.clear();
       searchDistrictCtrl.clear();
       searchWardCtrl.clear();
-      Get.snackbar("Thông báo", "Thêm địa chỉ thành công");
+      Get.showSnackbar(const GetSnackBar(
+        message: "Thêm địa chỉ thành công",
+        duration: Duration(seconds: 3),
+      ));
     });
     // isCityLoaded.value = false;
     // isDistrictLoaded.value = false;

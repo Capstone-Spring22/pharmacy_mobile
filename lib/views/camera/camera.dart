@@ -149,6 +149,7 @@ class ProductScannerLoaded extends StatelessWidget {
                   id: product.id!,
                   price: product.price!,
                   priceAfterDiscount: product.priceAfterDiscount!,
+                  unitName: product.productUnitReferences![0].unitName!,
                 ),
               ],
             );

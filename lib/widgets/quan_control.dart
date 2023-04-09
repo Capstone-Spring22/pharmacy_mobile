@@ -22,14 +22,14 @@ class QuantityControl extends GetView<CartController> {
           buttonColor: context.theme.primaryColor,
           cancelTextColor: context.theme.primaryColor,
           // content: QuantityEditSheet(productId: product.id),
-          title: "Edit Quantity",
+          title: "Sửa số lượng",
           barrierDismissible: true,
           content: TextFormField(
             focusNode: focusNode,
             controller: txt,
             keyboardType: TextInputType.phone,
             decoration: InputDecoration(
-              hintText: "Enter Quantity",
+              hintText: "Nhập số lượng",
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
                 borderSide:

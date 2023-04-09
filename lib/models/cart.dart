@@ -8,6 +8,7 @@ class CartItem {
   num? price;
   num? priceAfterDiscount;
   num? priceTotal;
+  String? unitName;
 
   CartItem(
       {this.productId,
@@ -16,7 +17,8 @@ class CartItem {
       this.productImageUrl,
       this.price,
       this.priceAfterDiscount,
-      this.priceTotal});
+      this.priceTotal,
+      this.unitName});
 
   CartItem.fromJson(Map<String, dynamic> json) {
     productId = json['productId'];

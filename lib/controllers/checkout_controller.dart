@@ -175,13 +175,12 @@ class CheckoutController extends GetxController {
 
       await OrderService().postOrder(order).then((value) async {
         if (value == 200) {
-          await OrderService().wipeCart(order.orderId!);
+          await OrderService().wipeCart(cartController.docId!);
           Get.back();
           Get.offAndToNamed(
             '/order_success',
             arguments: order.orderId,
           );
-          await OrderService().wipeCart(cartController.docId!);
         } else {
           Get.back();
           Get.snackbar("Error", "Something went wrong");
@@ -237,7 +236,7 @@ class CheckoutController extends GetxController {
 
           await OrderService().postOrder(order).then((value) async {
             if (value == 200) {
-              await OrderService().wipeCart(order.orderId!);
+              await OrderService().wipeCart(cartController.docId!);
               Get.back();
               Get.offAndToNamed(
                 '/order_success',
@@ -317,7 +316,7 @@ class CheckoutController extends GetxController {
       );
 
       await OrderService().postOrder(order).then((value) async {
-        await OrderService().wipeCart(order.orderId!);
+        await OrderService().wipeCart(cartController.docId!);
         Get.back();
         if (value == 200) {
           Get.offAndToNamed(
@@ -377,7 +376,7 @@ class CheckoutController extends GetxController {
               ));
 
           await OrderService().postOrder(order).then((value) async {
-            await OrderService().wipeCart(order.orderId!);
+            await OrderService().wipeCart(cartController.docId!);
             Get.back();
             if (value == 200) {
               Get.offAndToNamed(

@@ -140,6 +140,19 @@ class ProductService {
     return res.data;
   }
 
+  Future checkProductOnSite(String id) async {
+    final res = await dio.get(
+      '${api}Order/PickUp/Site',
+      queryParameters: {
+        'ProductId': id,
+        'Quantity': 1,
+        'CityId': "79",
+      },
+      options: userController.options,
+    );
+    return res.data;
+  }
+
   Future pickDate() async {
     final dio = appController.dio;
     final api = dotenv.env['API_URL']!;

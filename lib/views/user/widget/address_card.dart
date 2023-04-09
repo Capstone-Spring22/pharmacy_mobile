@@ -10,7 +10,6 @@ class AddressCardCollase extends GetView<UserController> {
 
   @override
   Widget build(BuildContext context) {
-    bool isEmpty = userController.detailUser.value.customerAddressList!.isEmpty;
     return Obx(() => Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           child: Container(
@@ -21,7 +20,8 @@ class AddressCardCollase extends GetView<UserController> {
             child: ListTile(
               leading: const Icon(Icons.location_on),
               title: const Text("Primary Address"),
-              subtitle: isEmpty
+              subtitle: userController
+                      .detailUser.value.customerAddressList!.isEmpty
                   ? const Text("Please add an Address")
                   : Text(controller.detailUser.value.customerAddressList!
                       .singleWhere((element) => element.isMainAddress == true)
@@ -47,25 +47,12 @@ class _AddressCardState extends State<AddressCard> {
     setState(() {
       isCollase = !isCollase;
     });
-
-    // CheckoutController checkoutController = Get.find();
-
-    // checkoutController.scrollController.value?.animateTo(
-    //   checkoutController.scrollController.value!.position.maxScrollExtent,
-    //   duration: const Duration(milliseconds: 200),
-    //   curve: Curves.easeOut,
-    // );
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      // child: AnimatedSwitcher(
-      //   duration: const Duration(milliseconds: 500),
-      //   child:
-      //       isCollase ? const AddressCardCollase() : const AddressCardExtend(),
-      // ),
       child: AnimatedSize(
         duration: const Duration(milliseconds: 300),
         curve: Curves.fastOutSlowIn,

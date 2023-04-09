@@ -41,32 +41,36 @@ class ProductDetailScreen extends GetView<AppController> {
           final product = snap.data;
           if (product != null) {
             return Scaffold(
-              bottomNavigationBar: SizedBox(
-                width: Get.width,
-                height: Get.height * .08,
-                child: isLoad
-                    ? LoadingWidget()
-                    : product.isPrescription!
-                        ? Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: FilledButton(
-                              onPressed: () {
-                                if (userController.isLoggedIn.isTrue) {
-                                  Get.toNamed("/chat");
-                                } else {
-                                  Get.toNamed("/signin");
-                                }
-                              },
-                              child: const Text(
-                                "Prescription Required, Contact us",
-                              ),
-                            ),
-                          )
-                        : AddToCartDetail(
-                            id: product.id!,
-                            price: product.priceAfterDiscount!,
-                          ),
-              ),
+              bottomNavigationBar: product.productUnitReferences!.length > 1
+                  ? null
+                  : SizedBox(
+                      width: Get.width,
+                      height: Get.height * .08,
+                      child: isLoad
+                          ? LoadingWidget()
+                          : product.isPrescription!
+                              ? Padding(
+                                  padding: const EdgeInsets.all(15),
+                                  child: FilledButton(
+                                    onPressed: () {
+                                      if (userController.isLoggedIn.isTrue) {
+                                        Get.toNamed("/chat");
+                                      } else {
+                                        Get.toNamed("/signin");
+                                      }
+                                    },
+                                    child: const Text(
+                                      "Prescription Required, Contact us",
+                                    ),
+                                  ),
+                                )
+                              : AddToCartDetail(
+                                  id: product.id!,
+                                  price: product.priceAfterDiscount!,
+                                  unit: product
+                                      .productUnitReferences![0].unitName!,
+                                ),
+                    ),
               key: drawerKey,
               drawer: const MenuDrawer(),
               endDrawer: const CartDrawer(),
@@ -126,6 +130,34 @@ class ProductDetailScreen extends GetView<AppController> {
                                 ),
                               ),
                               ...infoWidget(context, product),
+                              FutureBuilder(
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const LinearProgressIndicator();
+                                    } else {
+                                      Get.log(snapshot.data.toString());
+                                      final data = snapshot.data;
+                                      return ExpansionTile(
+                                        title: AutoSizeText(
+                                            'Có ${data['totalSite']} nhà thuốc còn sản phẩm này'),
+                                        children: [
+                                          ...data['siteListToPickUps']
+                                              .map<Widget>(
+                                            (e) => ListTile(
+                                              title:
+                                                  AutoSizeText(e['siteName']),
+                                              subtitle: AutoSizeText(
+                                                e['fullyAddress'],
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      );
+                                    }
+                                  },
+                                  future: ProductService()
+                                      .checkProductOnSite(product.id!)),
                               ...descriptionWidgets(detail.descriptionModels!)
                             ],
                           );
@@ -152,27 +184,27 @@ class ProductDetailScreen extends GetView<AppController> {
     return [
       if (desc.effect != 'string')
         ContentInfo(
-          title: "Effect",
+          title: "Công Dụng",
           content: desc.effect!,
         ),
       if (desc.instruction != 'string')
         ContentInfo(
-          title: "Instruction",
+          title: "Hướng dẫn sử dụng",
           content: desc.instruction!,
         ),
       if (desc.sideEffect != 'string')
         ContentInfo(
-          title: "SideEffect",
+          title: "Tác dụng phụ",
           content: desc.sideEffect!,
         ),
       if (desc.contraindications != 'string')
         ContentInfo(
-          title: "Contraindications",
+          title: "Chống chỉ định",
           content: desc.contraindications!,
         ),
       if (desc.preserve != 'string')
         ContentInfo(
-          title: "Preserve",
+          title: "Bảo quản",
           content: desc.preserve!,
         ),
       if (desc.ingredientModel!.isNotEmpty)
@@ -202,6 +234,14 @@ class ProductDetailScreen extends GetView<AppController> {
           ),
         ),
       if (product.productUnitReferences!.length > 1) ListPrice(product),
+      if (product.isPrescription!)
+        Align(
+          alignment: Alignment.center,
+          child: FilledButton(
+            onPressed: () => Get.toNamed("/chat"),
+            child: const Text("Cần có toa thuốc, liên hệ nhà thuốc"),
+          ),
+        )
     ];
   }
 

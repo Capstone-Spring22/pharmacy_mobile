@@ -14,6 +14,7 @@ class CartController extends GetxController {
   final String _collection = 'carts';
 
   RxList<CartItem> listCart = <CartItem>[].obs;
+
   UserController userCtl = Get.find();
 
   String? docId;

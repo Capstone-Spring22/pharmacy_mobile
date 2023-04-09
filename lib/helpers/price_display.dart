@@ -5,7 +5,7 @@ import 'package:pharmacy_mobile/constrains/theme.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
 import 'package:pharmacy_mobile/main.dart';
 import 'package:pharmacy_mobile/models/product.dart';
-import 'package:pharmacy_mobile/views/home/widgets/product_tile.dart';
+import 'package:pharmacy_mobile/views/product_detail/widgets/add_to_cart.dart';
 
 List<Widget> displayPrice(num price, num priceAfterDiscount, String unit) {
   if (price == priceAfterDiscount) {
@@ -77,29 +77,25 @@ class ListPrice extends GetView<CartController> {
               ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                child: Wrap(
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // crossAxisAlignment: CrossAxisAlignment.center,
+                    runAlignment: WrapAlignment.spaceEvenly,
+                    alignment: WrapAlignment.center,
                     children: [
-                      Expanded(
-                        flex: 5,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: displayPrice(
-                            e.price!,
-                            e.priceAfterDiscount!,
-                            e.unitName!,
-                          ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: displayPrice(
+                          e.price!,
+                          e.priceAfterDiscount!,
+                          e.unitName!,
                         ),
                       ),
                       if (!product.isPrescription!)
-                        Expanded(
-                          flex: 2,
-                          child: BuyButton(
-                            id: e.id!,
-                            price: e.price!,
-                            priceAfterDiscount: e.priceAfterDiscount!,
-                          ),
+                        AddToCartDetail(
+                          id: e.id!,
+                          price: product.priceAfterDiscount!,
+                          unit: e.unitName!,
                         ),
                     ]),
               ),

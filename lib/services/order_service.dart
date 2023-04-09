@@ -67,9 +67,10 @@ class OrderService {
     final dio = appController.dio;
     final api = dotenv.env['API_URL']!;
     try {
-      await dio.delete('${api}Cart/$id');
-    } catch (e) {
-      Get.log(e.toString());
+      var res = await dio.delete('${api}Cart/$id');
+      Get.log(res.toString());
+    } on DioError catch (e) {
+      Get.log(e.response.toString());
     }
     cartController.connectToCloudCart(true);
   }

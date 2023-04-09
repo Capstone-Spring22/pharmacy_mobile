@@ -72,13 +72,14 @@ class _ProductTileState extends State<ProductTile>
         ),
         onPressed: widget.fn,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             if (widget.product.imageModel == null) LoadingWidget(),
             if (widget.product.imageModel != null)
               Hero(
                 tag: 'image${widget.product.id}',
                 child: CachedNetworkImage(
-                  height: Get.height * .18,
+                  height: Get.height * .15,
                   width: Get.width * .4,
                   imageUrl: widget.product.imageModel!.imageURL!,
                   placeholder: (context, url) => LoadingWidget(),
@@ -109,6 +110,8 @@ class _ProductTileState extends State<ProductTile>
                     id: widget.product.id!,
                     price: widget.product.price!,
                     priceAfterDiscount: widget.product.priceAfterDiscount!,
+                    unitName:
+                        widget.product.productUnitReferences![0].unitName!,
                   ),
           ],
         ),
@@ -123,9 +126,11 @@ class BuyButton extends StatefulWidget {
     required this.id,
     required this.price,
     required this.priceAfterDiscount,
+    required this.unitName,
   });
 
   final String id;
+  final String unitName;
   final num price;
   final num priceAfterDiscount;
 
@@ -148,8 +153,9 @@ class _BuyButtonState extends State<BuyButton> {
       height: Get.height * .05,
       child: GetX<CartController>(
         builder: (controller) {
-          bool isInCart =
-              controller.listCart.any((e) => e.productId == widget.id);
+          bool isInCart = controller.listCart.any(
+            (e) => e.productId == widget.id,
+          );
           return AnimatedSwitcher(
             duration: const Duration(milliseconds: 200),
             transitionBuilder: (child, animation) => ScaleTransition(
@@ -163,8 +169,9 @@ class _BuyButtonState extends State<BuyButton> {
                       productId: widget.id,
                       quantity: 1,
                       price: widget.priceAfterDiscount,
+                      unitName: widget.unitName,
                     )),
-                    child: const Text("Add to Cart"),
+                    child: const Text("Thêm vào giỏ"),
                   ),
           );
         },

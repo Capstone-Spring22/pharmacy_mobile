@@ -6,20 +6,26 @@ import 'package:pharmacy_mobile/views/product_detail/widgets/quantity.dart';
 
 class AddToCartDetail extends StatelessWidget {
   const AddToCartDetail(
-      {super.key, required this.id, required this.price, this.isMini = false});
+      {super.key,
+      required this.id,
+      required this.price,
+      this.isMini = false,
+      required this.unit});
 
   final String id;
   final num price;
   final bool isMini;
+  final String unit;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.only(bottom: 10),
       child: GetX<CartController>(
         builder: (controller) {
-          bool isInCart =
-              controller.listCart.any((element) => element.productId! == id);
+          bool isInCart = controller.listCart.any(
+            (element) => element.productId! == id,
+          );
           return AnimatedSwitcher(
             duration: const Duration(milliseconds: 200),
             transitionBuilder: (child, animation) => ScaleTransition(
@@ -35,8 +41,9 @@ class AddToCartDetail extends StatelessWidget {
                         productId: id,
                         quantity: 1,
                         price: price,
+                        unitName: unit,
                       )),
-                      child: const Text("Add to Cart"),
+                      child: const Text("Thêm vào giỏ"),
                     ),
                   ),
           );

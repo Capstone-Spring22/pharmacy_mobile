@@ -24,10 +24,11 @@ class UserScreen extends GetView<UserController> {
               child: Column(
                 children: [
                   const UserAvatar(),
+                  const SizedBox(height: 20),
                   controller.user.value.name == null
                       ? AutoSizeText(
                           "Set Name and Info",
-                          style: context.textTheme.headlineSmall!.copyWith(
+                          style: context.textTheme.headlineMedium!.copyWith(
                             decoration: TextDecoration.underline,
                             decorationColor: Colors.blue,
                             shadows: [
@@ -41,7 +42,7 @@ class UserScreen extends GetView<UserController> {
                         )
                       : AutoSizeText(
                           controller.user.value.name!,
-                          style: context.textTheme.headlineSmall!.copyWith(
+                          style: context.textTheme.headlineMedium!.copyWith(
                             decorationColor: Colors.blue,
                             shadows: [
                               const Shadow(
