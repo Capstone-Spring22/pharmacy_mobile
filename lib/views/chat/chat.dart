@@ -12,11 +12,11 @@ class ChatScreen extends GetView<ChatController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Chat'),
+        title: const Text('Liên hệ'),
         actions: [
           TextButton(
               onPressed: () => chatController.createRequestDialog(),
-              child: const Text('Contact Pharmacist'))
+              child: const Text('Liên hệ dược sĩ'))
         ],
       ),
       body: Center(
@@ -34,7 +34,7 @@ class ChatScreen extends GetView<ChatController> {
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 30),
                         child: Text(
-                          "No request sent, if you have any request, please contact pharmacist",
+                          "Chưa có yêu cầu, nếu bạn có yêu cầu, xin đừng ngại liên hệ với chúng tôi",
                         ),
                       ),
                     );

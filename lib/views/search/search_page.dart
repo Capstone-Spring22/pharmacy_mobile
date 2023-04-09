@@ -1,9 +1,11 @@
 import 'package:animations/animations.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/app_controller.dart';
+import 'package:pharmacy_mobile/helpers/loading.dart';
 import 'package:pharmacy_mobile/views/drawer/cart_drawer.dart';
 import 'package:pharmacy_mobile/views/drawer/menu_drawer.dart';
 import 'package:pharmacy_mobile/views/home/widgets/cart_btn.dart';
@@ -93,14 +95,32 @@ class SearchScreen extends GetView<AppController> {
                           Expanded(
                             child: FutureBuilder(
                               builder: (context, snapshot) {
-                                return ListView.builder(
-                                  itemCount: 10,
-                                  itemBuilder: (context, index) {
-                                    return ListTile(
-                                      title: Text("Item $index"),
-                                    );
-                                  },
-                                );
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return LoadingWidget(
+                                    size: 40,
+                                  );
+                                } else {
+                                  final list = snapshot.data;
+                                  return ListView.builder(
+                                    itemCount: list!.length,
+                                    itemBuilder: (context, index) {
+                                      final item = list[index];
+                                      return ListTile(
+                                        leading: CachedNetworkImage(
+                                          imageUrl: item.imageModel!.imageURL!,
+                                          height: Get.height * .2,
+                                          width: Get.width * .2,
+                                          placeholder: (context, url) =>
+                                              LoadingWidget(),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(Icons.error),
+                                        ),
+                                        title: Text("Item $index"),
+                                      );
+                                    },
+                                  );
+                                }
                               },
                               future: ProductService().getListProductByName(
                                 appController.searchCtl.value,

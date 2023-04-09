@@ -60,7 +60,7 @@ class ProductDetailScreen extends GetView<AppController> {
                                       }
                                     },
                                     child: const Text(
-                                      "Prescription Required, Contact us",
+                                      "Cần toa thuốc để mua, xin liên hệ dược sĩ",
                                     ),
                                   ),
                                 )

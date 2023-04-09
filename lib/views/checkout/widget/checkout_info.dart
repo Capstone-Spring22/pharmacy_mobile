@@ -107,12 +107,12 @@ class _UserCheckoutInfoState extends State<UserCheckoutInfo>
           }),
           const Padding(
             padding: EdgeInsets.all(8.0),
-            child: Text("Payment Type:"),
+            child: Text("Hình thức thanh toán"),
           ),
           const PaymentType(),
           const Padding(
             padding: EdgeInsets.all(8.0),
-            child: Text("Order Type:"),
+            child: Text("Loại đơn hàng"),
           ),
           const ToggleCheckout(),
           Obx(() {

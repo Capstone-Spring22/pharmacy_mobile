@@ -70,7 +70,7 @@ class _PickDateState extends State<PickDate> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Pick a Date",
+                          "Chọn ngày nhận",
                           style: context.textTheme.titleMedium,
                         ),
                       ),
@@ -107,7 +107,7 @@ class _PickDateState extends State<PickDate> {
                     ],
                   )
                 : const Center(
-                    child: Text("No Date available"),
+                    child: Text("Không có ngày phù hợp"),
                   ),
       ),
     );

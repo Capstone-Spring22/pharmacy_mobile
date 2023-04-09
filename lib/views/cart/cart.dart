@@ -35,17 +35,22 @@ class CartScreen extends StatelessWidget {
                   child: FilledButton(
                     onPressed: () {
                       if (cartController.listCart.isEmpty) {
-                        Get.snackbar(
-                          "Error",
-                          "Please add products to your cart",
-                          backgroundColor: Colors.red,
-                          colorText: Colors.white,
-                        );
+                        Get.showSnackbar(GetSnackBar(
+                          message: "Hãy thêm sản phẩm vào giỏ",
+                          duration: 3.seconds,
+                          mainButton: IconButton(
+                            onPressed: () {
+                              Get.closeAllSnackbars();
+                            },
+                            icon: const Icon(Icons.close),
+                            color: Colors.white,
+                          ),
+                        ));
                       } else {
                         Get.toNamed("/checkout");
                       }
                     },
-                    child: const Text("Checkout"),
+                    child: const Text("Thanh toán"),
                   ),
                 ),
               )

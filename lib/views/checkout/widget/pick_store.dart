@@ -27,7 +27,7 @@ class PickStore extends StatelessWidget {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "Pick a store",
+                        "Chọn cửa hàng",
                         style: context.textTheme.titleMedium,
                       ),
                     ),
@@ -74,7 +74,7 @@ class PickStore extends StatelessWidget {
                 );
               } else {
                 return const Center(
-                  child: Text("No site available"),
+                  child: Text("Không cửa hàng nào còn hàng"),
                 );
               }
             }

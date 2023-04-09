@@ -29,8 +29,8 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
                 () => addressController.isCityLoaded.value
                     ? IgnorePointer(
                         child: dropdownBox(
-                          disableHint:
-                              const Text('Only available in Ho Chi Minh City'),
+                          disableHint: const Text(
+                              'Hiện chỉ hỗ trợ Thành Phố Hồ Chí Minh'),
                           hint: null,
                           items: addressController.listCityItems,
                           value:
@@ -52,7 +52,7 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
                   return Container();
                 } else if (addressController.isDistrictLoaded.value) {
                   return dropdownBox(
-                    hint: const Text("Select a District"),
+                    hint: const Text("Chọn Quận"),
                     items: addressController.listDistrictItem,
                     value: addressController.selectedDistrictId.value.isNotEmpty
                         ? addressController.selectedDistrictId.value
@@ -74,7 +74,7 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
                   return Container();
                 } else if (addressController.isWardLoaded.value) {
                   return dropdownBox(
-                    hint: const Text("Select a Ward"),
+                    hint: const Text("Chọn Phường/Huyện"),
                     items: addressController.listWardItem,
                     value: addressController.selectedWardId.value.isNotEmpty
                         ? addressController.selectedWardId.value
@@ -102,7 +102,7 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
                     child: Input(
                       inputController: addressController.addressTextCtl,
                       inputType: TextInputType.streetAddress,
-                      title: "Address",
+                      title: "Địa chỉ",
                       onChanged: (v) {
                         addressController.addressTile.value = v;
                       },
@@ -122,7 +122,7 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
                         : () {
                             addressController.addAddress();
                           },
-                    child: const Text("Add Address"),
+                    child: const Text("Thêm Địa chỉ"),
                   ),
                 ),
               )

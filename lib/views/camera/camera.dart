@@ -77,7 +77,7 @@ class _CameraScreenState extends State<CameraScreen> {
                 return AnimatedSwitcher(
                   duration: Duration(milliseconds: flipDuration),
                   child: cameraController.isScanning.value == true
-                      ? const Text("Scan a product")
+                      ? const Text("Quét sản phẩm")
                       : Column(
                           children: [
                             IconButton(
@@ -88,7 +88,7 @@ class _CameraScreenState extends State<CameraScreen> {
                               },
                               icon: const Icon(Icons.camera_alt_sharp),
                             ),
-                            const Text("Scan again")
+                            const Text("Quét lại")
                           ],
                         ),
                 );
@@ -120,7 +120,7 @@ class ProductScannerLoaded extends StatelessWidget {
             return LoadingWidget();
           } else if (snapshot.data == null) {
             return const Center(
-              child: Text("No Item Found, Please Scan again"),
+              child: Text("Không tìm thấy sản phẩm, hãy thử lại"),
             );
           } else {
             final product = snapshot.data;

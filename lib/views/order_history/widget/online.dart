@@ -14,15 +14,15 @@ class OnlineOrderTile extends StatelessWidget {
       steps: const [
         EasyStep(
           icon: Icon(Icons.store),
-          title: 'Pick Store',
+          title: 'Chọn cửa hàng',
         ),
         EasyStep(
           icon: Icon(Icons.date_range),
-          title: 'Pick Date',
+          title: 'Chọn ngày',
         ),
         EasyStep(
           icon: Icon(Icons.access_time_filled_rounded),
-          title: 'Pick Time',
+          title: 'Chọn giờ',
         ),
       ],
     );

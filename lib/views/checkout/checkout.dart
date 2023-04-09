@@ -44,7 +44,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Checkout"),
+        title: const Text("Thanh toán"),
         actions: const [],
       ),
       body: Stack(
@@ -93,10 +93,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             top: Get.height * .82,
             child: Obx(() {
               String txt =
-                  "Total ${cartController.calculateTotal().convertCurrentcy()} + 20.000₫ Shipping";
+                  "Tổng cộng ${cartController.calculateTotal().convertCurrentcy()} + 25.000₫ Phí ship";
               if (checkoutController.checkoutType.value != 0) {
                 txt =
-                    "Total ${cartController.calculateTotal().convertCurrentcy()}";
+                    "Tổng cộng ${cartController.calculateTotal().convertCurrentcy()}";
               }
               return FilledButton(
                 onPressed: checkoutController.activeBtn.isFalse
@@ -127,7 +127,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         }
                       },
                 child: cartController.listCart.isEmpty
-                    ? const Text("Empty Cart")
+                    ? const Text("Giỏ hàng trống")
                     : Text(txt),
               );
             }),

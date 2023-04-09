@@ -12,7 +12,7 @@ class PaymentType extends GetView<CheckoutController> {
       () => ToggleSwitch(
         initialLabelIndex: controller.paymentType.value,
         totalSwitches: 2,
-        labels: const ['Cash', 'VNPay'],
+        labels: const ['Tiền mặt', 'Online VNPay'],
         onToggle: controller.togglePaymentType,
         cornerRadius: 20.0,
         inactiveBgColor: context.theme.secondaryHeaderColor,

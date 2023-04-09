@@ -18,7 +18,6 @@ class CartItemListView extends GetView<CartController> {
       try {
         var productRef = product.productUnitReferences!.singleWhere(
           (productRef) {
-            Get.log("$uid > ${productRef.id} -- ${productRef.unitName}");
             return productRef.id == uid;
           },
         );
@@ -100,7 +99,7 @@ class CartItemListView extends GetView<CartController> {
       } else {
         return const Center(
           child: Text(
-            "Empty",
+            "Giỏ hàng trống",
           ),
         );
       }

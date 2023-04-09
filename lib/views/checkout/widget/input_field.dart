@@ -18,7 +18,7 @@ class InputField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Name",
+          "Tên",
           style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.normal,
@@ -44,7 +44,7 @@ class InputField extends StatelessWidget {
             keyboardType: TextInputType.emailAddress,
             style: const TextStyle(fontSize: 14, color: Colors.black),
             decoration: InputDecoration(
-              label: const Text("Name"),
+              label: const Text("Tên"),
               labelStyle: const TextStyle(color: primaryColor),
               // prefixIcon: Icon(Icons.email),
               filled: true,

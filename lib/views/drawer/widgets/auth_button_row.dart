@@ -17,7 +17,7 @@ class AuthButtonRow extends StatelessWidget {
               tag: 'signinBtn',
               child: PharmacyButton(
                 onPressed: () => Get.toNamed("/signin"),
-                text: "Sign In",
+                text: "Đăng nhập",
               ),
             ),
           ),

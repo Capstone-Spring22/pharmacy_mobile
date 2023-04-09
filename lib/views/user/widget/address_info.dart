@@ -18,14 +18,15 @@ class AddressInfo extends StatelessWidget {
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: const Text("Delete Address"),
-              content: const Text("Are you sure to delete this address?"),
+              title: const Text("Xoá địa chỉ"),
+              content:
+                  const Text("Bạn có chắc chắn muốn xóa địa chỉ này không?"),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text("Cancel"),
+                  child: const Text("Huỷ"),
                 ),
                 TextButton(
                   onPressed: () {
@@ -34,7 +35,7 @@ class AddressInfo extends StatelessWidget {
                       Get.back();
                     });
                   },
-                  child: const Text("Delete"),
+                  child: const Text("Xác nhận xoá"),
                 ),
               ],
             );

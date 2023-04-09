@@ -35,9 +35,9 @@ class _SignInScreenState extends State<SignInScreen> {
           onPressed: () => Get.back(),
           icon: const Icon(CupertinoIcons.back),
         ),
-        midText: "Sign in",
+        midText: "Đăng nhập",
         rightWidget: TextButton(
-          child: const Text("Skip"),
+          child: const Text("Bỏ qua"),
           onPressed: () => result ? Get.offAllNamed("/navhub") : Get.back(),
         ),
       ),

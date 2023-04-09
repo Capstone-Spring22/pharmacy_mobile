@@ -13,7 +13,7 @@ class ToggleCheckout extends StatelessWidget {
       () => ToggleSwitch(
         initialLabelIndex: checkoutController.checkoutType.value,
         totalSwitches: 2,
-        labels: const ['Online Delivery', 'Store Pickup'],
+        labels: const ['Giao hàng Online', 'Nhận tại cửa hàng'],
         onToggle: checkoutController.toggleOrderType,
         cornerRadius: 20.0,
         inactiveBgColor: context.theme.secondaryHeaderColor,

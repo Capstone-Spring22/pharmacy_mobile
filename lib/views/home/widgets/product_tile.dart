@@ -101,7 +101,7 @@ class _ProductTileState extends State<ProductTile>
                 ? Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: AutoSizeText(
-                      "Can't buy without prescription",
+                      "Cần toa thuốc để mua, liên hệ dược sĩ",
                       style: tilePrice.copyWith(color: Colors.blue),
                       maxLines: 2,
                     ),

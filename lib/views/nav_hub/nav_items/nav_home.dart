@@ -23,29 +23,29 @@ class NavHomeItem extends StatelessWidget {
         items: const [
           CNavItem(
             icon: Icon(Icons.home),
-            title: Text("Home"),
+            title: Text("Trang chủ"),
           ),
           CNavItem(
             icon: Icon(
               FontAwesomeIcons.store,
               size: 25,
             ),
-            title: Text("Stores"),
+            title: Text("Cửa hàng"),
           ),
           CNavItem(
             icon: Icon(
               FontAwesomeIcons.camera,
               size: 25,
             ),
-            title: Text("Scan"),
+            title: Text("Quét"),
           ),
           CNavItem(
             icon: Icon(Icons.notifications),
-            title: Text("Notifications"),
+            title: Text("Thông báo"),
           ),
           CNavItem(
             icon: Icon(FontAwesomeIcons.user),
-            title: Text("User"),
+            title: Text("Người dùng"),
           ),
         ],
         currentIndex: ctl.pageIndex.value,

@@ -41,8 +41,8 @@ class _MessageScreenState extends State<MessageScreen> {
       appBar: AppBar(
         title: Text(
           status == 'pending'
-              ? 'Pending Request'
-              : 'Chat with ${chat.pharmacistId}',
+              ? 'Đang chờ phản hồi'
+              : 'Đang nhắn với ${chat.pharmacistId}',
         ),
         actions: [
           IconButton(

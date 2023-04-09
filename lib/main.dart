@@ -125,9 +125,9 @@ class MyApp extends StatelessWidget {
             scheme: FlexScheme.aquaBlue,
           ),
           translations: ApplicationText(),
-          locale: const Locale('en', 'US'),
+          locale: const Locale('vn', 'VN'),
           defaultTransition: Transition.cupertino,
-          title: 'Pharmacy App',
+          title: 'Better Health',
           initialRoute: '/intro',
           unknownRoute: GetPage(
             name: '/navhub',

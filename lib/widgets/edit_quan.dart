@@ -15,7 +15,7 @@ class QuantityEditSheet extends GetView<CartController> {
       controller: txt,
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
-        hintText: "Enter Quantity",
+        hintText: "Nhập số lượng",
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
           borderSide: BorderSide(color: context.theme.highlightColor, width: 1),

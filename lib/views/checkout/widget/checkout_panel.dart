@@ -29,7 +29,7 @@ class _CheckoutInfoPanelState extends State<CheckoutInfoPanel> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "⬆️ Scroll up to checkout",
+                "⬆️ Vuốt lên để tiến hành thanh toán",
                 style: TextStyle(color: Colors.grey.shade700),
               ),
             ],

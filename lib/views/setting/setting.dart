@@ -28,7 +28,7 @@ class SettingPage extends StatelessWidget {
                           Icons.light_mode,
                           color: Colors.white,
                         ),
-                  title: const Text("Switch Theme"),
+                  title: const Text("Đổi theme"),
                   trailing: Switch(
                       value: ctl.isDarkMode.value,
                       onChanged: (v) {

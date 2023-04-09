@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
 import 'package:pharmacy_mobile/main.dart';
@@ -10,6 +11,22 @@ import '../../../controllers/checkout_controller.dart';
 
 class ListCheckout extends StatelessWidget {
   const ListCheckout({super.key});
+
+  String? extractUname(String uid) {
+    for (var product in productController.products) {
+      Get.log(product.name!);
+      Get.log(uid);
+      try {
+        var productRef = product.productUnitReferences!.singleWhere(
+          (productRef) {
+            return productRef.id == uid;
+          },
+        );
+        return productRef.unitName;
+      } catch (e) {}
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,17 +79,23 @@ class ListCheckout extends StatelessWidget {
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                    subtitle: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Text(
-                                            "Quantity: ${ctl.listCart[index].quantity}"),
-                                        Text(
-                                          item.priceAfterDiscount!
-                                              .convertCurrentcy(),
-                                        ),
-                                      ],
+                                    subtitle: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 5,
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                              "Số lượng: ${ctl.listCart[index].quantity} ${extractUname(item.productId!)!}"),
+                                          Expanded(flex: 1, child: Container()),
+                                          Text(
+                                            "Giá: ${item.priceAfterDiscount!.convertCurrentcy()}",
+                                          ),
+                                          Expanded(flex: 3, child: Container()),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),

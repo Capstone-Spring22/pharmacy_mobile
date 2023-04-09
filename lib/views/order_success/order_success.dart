@@ -32,7 +32,7 @@ class OrderSuccessScreen extends StatelessWidget {
               ),
             ),
             Text(
-              "Order ID",
+              "Mã đơn",
               style: context.textTheme.titleLarge,
             ),
             Text(
@@ -40,7 +40,7 @@ class OrderSuccessScreen extends StatelessWidget {
               style: context.textTheme.titleLarge,
             ),
             Text(
-              "has been placed successfully",
+              "đã được đặt thành công",
               style: context.textTheme.titleLarge,
             ),
             SizedBox(
@@ -48,9 +48,17 @@ class OrderSuccessScreen extends StatelessWidget {
               height: Get.height * .05,
               child: FilledButton(
                 onPressed: () => Get.toNamed('/order_detail', arguments: id),
-                child: const Text("View my order"),
+                child: const Text("Xem đơn hàng"),
               ),
-            )
+            ),
+            SizedBox(
+              width: Get.width * .7,
+              height: Get.height * .05,
+              child: FilledButton(
+                onPressed: () => Get.offAllNamed('/navhub'),
+                child: const Text("Về trang chủ"),
+              ),
+            ),
           ],
         ),
       ),

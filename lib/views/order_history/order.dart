@@ -63,14 +63,14 @@ class _OrderScreenState extends State<OrderScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const AutoSizeText("Order History"),
+        title: const AutoSizeText("Lịch sử đơn hàng"),
         actions: const [],
       ),
       body: Center(
           child: Column(
         children: [
           list.isEmpty && !isLoading
-              ? const Text("You don't have any order")
+              ? const Text("Bạn chưa có đơn hàng nào")
               : Expanded(
                   child: RenderList(
                       scrollController: _scrollController, list: list)),
@@ -184,7 +184,7 @@ class RenderList extends StatelessWidget {
                                 children: [
                                   const Text("Địa chỉ đặt hàng:"),
                                   AutoSizeText(
-                                    "${detail.orderDelivery!.homeNumber}",
+                                    "${detail.orderDelivery!.fullyAddress}",
                                     maxLines: 1,
                                   ),
                                 ],

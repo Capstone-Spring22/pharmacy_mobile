@@ -27,7 +27,7 @@ class UserScreen extends GetView<UserController> {
                   const SizedBox(height: 20),
                   controller.user.value.name == null
                       ? AutoSizeText(
-                          "Set Name and Info",
+                          "Đặt tên >",
                           style: context.textTheme.headlineMedium!.copyWith(
                             decoration: TextDecoration.underline,
                             decorationColor: Colors.blue,

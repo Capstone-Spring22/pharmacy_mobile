@@ -311,7 +311,7 @@ class CheckoutController extends GetxController {
           fullname: nameCtl.text,
           phoneNumber: phoneCtl.text,
           email: emailCtl.text,
-          homeAddress: address.fullyAddress,
+          homeAddress: address.homeAddress,
         ),
       );
 
@@ -368,7 +368,7 @@ class CheckoutController extends GetxController {
                 fullname: nameCtl.text,
                 phoneNumber: phoneCtl.text,
                 email: emailCtl.text,
-                homeAddress: address.fullyAddress,
+                homeAddress: address.homeAddress,
               ),
               vnpayInformation: VnpayInformation(
                 vnpTransactionNo: vnpTransactionNo,

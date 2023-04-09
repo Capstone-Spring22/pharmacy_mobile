@@ -43,7 +43,7 @@ class MenuDrawer extends StatelessWidget {
                               },
                               child: controller.user.value.name == null
                                   ? AutoSizeText(
-                                      "Set Name and Info",
+                                      "Đặt tên >",
                                       style: context.textTheme.headlineSmall!
                                           .copyWith(
                                         decoration: TextDecoration.underline,
@@ -83,14 +83,14 @@ class MenuDrawer extends StatelessWidget {
               const SizedBox(height: 12),
               const Divider(color: Colors.white70),
               MenuItem(
-                text: 'Notifications',
+                text: 'Thông báo',
                 icon: Icons.notifications_outlined,
                 onClicked: () {},
               ),
               OpenContainer(
                 closedBuilder: (context, action) {
                   return const MenuItem(
-                    text: 'Medication Remider',
+                    text: 'Nhắc uống thuốc',
                     icon: Icons.alarm,
                   );
                 },
@@ -103,7 +103,7 @@ class MenuDrawer extends StatelessWidget {
               OpenContainer(
                 closedBuilder: (context, action) {
                   return const MenuItem(
-                    text: 'Settings',
+                    text: 'Cài đặt',
                     icon: Icons.settings,
                   );
                 },
@@ -116,7 +116,7 @@ class MenuDrawer extends StatelessWidget {
               OpenContainer(
                 closedBuilder: (context, action) {
                   return const MenuItem(
-                    text: 'Order History',
+                    text: 'Đơn hàng',
                     icon: Icons.list_alt,
                   );
                 },
@@ -144,7 +144,7 @@ class MenuDrawer extends StatelessWidget {
               GetX<UserController>(
                 builder: (controller) => controller.isLoggedIn.value
                     ? MenuItem(
-                        text: "Logout",
+                        text: "Đăng xuất",
                         icon: Icons.logout_outlined,
                         onClicked: () => controller.logout(),
                       )

@@ -69,7 +69,7 @@ class _PickTimeState extends State<PickTime> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Pick a Time",
+                          "Chọn thời gian",
                           style: context.textTheme.titleMedium,
                         ),
                       ),
@@ -106,7 +106,7 @@ class _PickTimeState extends State<PickTime> {
                     ],
                   )
                 : const Center(
-                    child: Text("Pick A Date First"),
+                    child: Text("Xin hãy chọn ngày nhận hàng"),
                   ),
       ),
     );

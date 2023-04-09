@@ -79,7 +79,7 @@ class OrderDetail extends StatelessWidget {
                     ),
                     if (item.orderDelivery != null)
                       AutoSizeText(
-                        "Địa chỉ nhận hàng: ${item.orderDelivery!.homeNumber}",
+                        "Địa chỉ nhận hàng: ${item.orderDelivery!.fullyAddress}",
                         style: context.textTheme.bodyMedium,
                         maxLines: 2,
                       ),
