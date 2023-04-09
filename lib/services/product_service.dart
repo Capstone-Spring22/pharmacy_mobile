@@ -44,19 +44,21 @@ class ProductService {
   }
 
   Future<List<PharmacyProduct>> getListProductByName(String name) async {
-    var response = await dio.get(
-      '${api}Product',
-      queryParameters: {'pageIndex': 1, 'pageItems': 30, 'productName': name},
-    );
     List<PharmacyProduct> listProduct = [];
     try {
+      var response = await dio.get(
+        '${api}Product',
+        queryParameters: {
+          'pageIndex': 1,
+          'pageItems': 1000,
+          'productName': name
+        },
+      );
+
       final list = response.data['items'] as List<dynamic>;
       for (var e in list) {
         final item = PharmacyProduct.fromJson(e);
         listProduct.add(item);
-        if (!list.contains(item)) {
-          list.add(item);
-        }
       }
     } catch (e) {
       log(e.toString());

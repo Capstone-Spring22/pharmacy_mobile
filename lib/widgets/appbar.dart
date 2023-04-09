@@ -37,22 +37,22 @@ class PharmacyAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Image.asset(
                     "assets/icons/icon.png",
-                    height: Get.height * .08,
+                    height: Get.height * .07,
                   ),
                   Expanded(
                     child: AutoSizeText(
                       midText,
                       maxLines: 1,
-                      style: titleStyle ??
-                          TextStyle(
-                            fontFamily: 'Quicksand',
-                            letterSpacing: 2,
-                            fontSize: 30,
-                            color: context.theme.primaryColor,
-                          ),
+                      style: TextStyle(
+                        fontFamily: 'Quicksand',
+                        letterSpacing: 2,
+                        fontSize: 30,
+                        color: context.theme.primaryColor,
+                      ),
                     ),
                   ),
                 ],

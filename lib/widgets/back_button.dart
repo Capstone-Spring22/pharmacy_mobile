@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:pharmacy_mobile/controllers/app_controller.dart';
 
 class PharmacyBackButton extends GetView<AppController> {
-  const PharmacyBackButton({super.key});
+  const PharmacyBackButton({this.fn, super.key});
+
+  final Function? fn;
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +20,9 @@ class PharmacyBackButton extends GetView<AppController> {
         controller.drawerKey.currentState!.closeDrawer();
         controller.drawerKey.currentState!.closeEndDrawer();
         Get.back();
+        if (fn != null) {
+          fn!();
+        }
       },
       child: const Icon(
         CupertinoIcons.back,
