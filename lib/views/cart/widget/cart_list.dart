@@ -65,30 +65,38 @@ class CartItemListView extends GetView<CartController> {
                         style: context.textTheme.titleMedium,
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(
-                          child: AnimatedSwitcher(
-                            key: UniqueKey(),
-                            switchInCurve: Curves.easeIn,
-                            duration: const Duration(milliseconds: 300),
-                            child: AutoSizeText(
-                              item.priceAfterDiscount!.convertCurrentcy(),
-                              style: context.theme.primaryTextTheme.bodyLarge!
-                                  .copyWith(color: Colors.black),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: AnimatedSwitcher(
+                              key: UniqueKey(),
+                              switchInCurve: Curves.easeIn,
+                              duration: const Duration(milliseconds: 300),
+                              child: AutoSizeText(
+                                item.priceAfterDiscount!.convertCurrentcy(),
+                                style: context.theme.primaryTextTheme.bodyLarge!
+                                    .copyWith(color: Colors.black),
+                              ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: QuantityControl(item.productId!),
-                        ),
-                        Expanded(
-                          child: AutoSizeText(
-                            unitName!,
+                          Expanded(
+                            flex: 2,
+                            child: QuantityControl(item.productId!),
                           ),
-                        )
-                      ],
+                          Expanded(
+                            flex: 1,
+                            child: AutoSizeText(
+                              unitName!,
+                              maxLines: 1,
+                              style: context.textTheme.bodyLarge,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ],
                 ),

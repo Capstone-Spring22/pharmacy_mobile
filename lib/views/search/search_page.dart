@@ -45,119 +45,116 @@ class SearchScreen extends GetView<AppController> {
         );
       },
       openBuilder: (context, action) {
-        return WillPopScope(
-          onWillPop: () async {
-            textCtl.clear();
-            controller.searchCtl.value = "";
-            return true;
-          },
-          child: Scaffold(
-            drawer: const MenuDrawer(),
-            endDrawer: const CartDrawer(),
-            appBar: PharmacyAppBar(
-              leftWidget: PharmacyBackButton(
-                fn: () {
-                  textCtl.clear();
-                  controller.searchCtl.value = "";
-                },
-              ),
-              midText: "Tìm kiếm thuốc",
-              rightWidget: const CartButton(),
+        return Scaffold(
+          drawer: const MenuDrawer(),
+          endDrawer: const CartDrawer(),
+          appBar: PharmacyAppBar(
+            leftWidget: PharmacyBackButton(
+              fn: () {
+                textCtl.clear();
+                controller.searchCtl.value = "";
+              },
             ),
-            body: SafeArea(
-              child: Column(
-                children: [
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
-                    child: RoundedSearchInput(
-                      enable: true,
-                      hintText: "Tìm kiếm thuốc",
-                      textController: textCtl,
-                      color: Colors.transparent,
-                    ),
+            midText: "Tìm kiếm thuốc",
+            rightWidget: const CartButton(),
+          ),
+          body: SafeArea(
+            child: Column(
+              children: [
+                Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
+                  child: RoundedSearchInput(
+                    enable: true,
+                    hintText: "Tìm kiếm thuốc",
+                    textController: textCtl,
+                    color: Colors.transparent,
                   ),
-                  Obx(() {
-                    return Expanded(
-                      child: Column(
-                        children: [
-                          if (controller.searchCtl.value.isEmpty)
-                            Expanded(
-                              child: GridView.count(
-                                crossAxisCount: 2,
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                childAspectRatio: .6,
-                                children: productController.trending
-                                    .map(
-                                      (e) => Padding(
-                                        padding: const EdgeInsets.all(18),
-                                        child: ProductTile(
-                                          fn: () => Get.toNamed(
-                                            '/product_detail',
-                                            preventDuplicates: false,
-                                            arguments: e.id,
-                                          ),
-                                          product: e,
+                ),
+                Obx(() {
+                  return Expanded(
+                    child: Column(
+                      children: [
+                        if (controller.searchCtl.value.isEmpty)
+                          Expanded(
+                            child: GridView.count(
+                              crossAxisCount: 2,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              childAspectRatio: .6,
+                              children: productController.trending
+                                  .map(
+                                    (e) => Padding(
+                                      padding: const EdgeInsets.all(18),
+                                      child: ProductTile(
+                                        fn: () => Get.toNamed(
+                                          '/product_detail',
+                                          preventDuplicates: false,
+                                          arguments: e.id,
                                         ),
+                                        product: e,
                                       ),
-                                    )
-                                    .toList(),
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                          ),
+                        if (controller.searchCtl.value.isNotEmpty)
+                          Expanded(
+                            child: FutureBuilder(
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return LoadingWidget(
+                                    size: 40,
+                                  );
+                                } else if (snapshot.hasData &&
+                                    snapshot.data!.isEmpty) {
+                                  return const Center(
+                                    child: Text("Không tìm thấy sản phẩm"),
+                                  );
+                                } else {
+                                  final list = snapshot.data;
+                                  Get.log(list!.length.toString());
+                                  return ListView.builder(
+                                    itemCount: list.length,
+                                    itemBuilder: (context, index) {
+                                      final item = list[index];
+
+                                      return ListTile(
+                                        leading: CachedNetworkImage(
+                                          imageUrl: item.imageModel!.imageURL!,
+                                          height: Get.height * .2,
+                                          width: Get.width * .2,
+                                          placeholder: (context, url) =>
+                                              LoadingWidget(),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(Icons.error),
+                                        ),
+                                        title: Text(item.name!),
+                                        subtitle: Text(
+                                          item.price!.convertCurrentcy(),
+                                        ),
+                                        onTap: () => Get.toNamed(
+                                          '/product_detail',
+                                          preventDuplicates: false,
+                                          arguments: item.id,
+                                        ),
+                                      );
+                                    },
+                                  );
+                                }
+                              },
+                              future: ProductService().getListProductByName(
+                                appController.searchCtl.value,
                               ),
                             ),
-                          if (controller.searchCtl.value.isNotEmpty)
-                            Expanded(
-                              child: FutureBuilder(
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return LoadingWidget(
-                                      size: 40,
-                                    );
-                                  } else {
-                                    final list = snapshot.data;
-                                    Get.log(list!.length.toString());
-                                    return ListView.builder(
-                                      itemCount: list.length,
-                                      itemBuilder: (context, index) {
-                                        final item = list[index];
-                                        return ListTile(
-                                          leading: CachedNetworkImage(
-                                            imageUrl:
-                                                item.imageModel!.imageURL!,
-                                            height: Get.height * .2,
-                                            width: Get.width * .2,
-                                            placeholder: (context, url) =>
-                                                LoadingWidget(),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    const Icon(Icons.error),
-                                          ),
-                                          title: Text(item.name!),
-                                          subtitle: Text(
-                                            item.price!.convertCurrentcy(),
-                                          ),
-                                          onTap: () => Get.toNamed(
-                                            '/product_detail',
-                                            preventDuplicates: false,
-                                            arguments: item.id,
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  }
-                                },
-                                future: ProductService().getListProductByName(
-                                  appController.searchCtl.value,
-                                ),
-                              ),
-                            )
-                        ],
-                      ),
-                    );
-                  })
-                ],
-              ),
+                          )
+                      ],
+                    ),
+                  );
+                })
+              ],
             ),
           ),
         );

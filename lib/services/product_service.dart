@@ -1,9 +1,11 @@
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/checkout_controller.dart';
+import 'package:pharmacy_mobile/models/main_cate.dart';
 import 'package:pharmacy_mobile/models/product.dart';
 import 'package:pharmacy_mobile/models/product_detail.dart';
 import 'package:pharmacy_mobile/models/unit.dart';
@@ -32,6 +34,69 @@ class ProductService {
     } catch (e) {
       log(e.toString());
     }
+    return listProduct;
+  }
+
+  Future<List<MainCategory>> fetchCategory() async {
+    List<MainCategory> listCategory = [];
+    try {
+      var response = await dio.get('${api}MainCategory', queryParameters: {
+        'pageIndex': 1,
+        'pageItems': 10,
+      });
+
+      final list = response.data['items'] as List<dynamic>;
+      for (var e in list) {
+        final item = MainCategory.fromJson(e);
+        listCategory.add(item);
+      }
+    } on DioError catch (e) {
+      Get.log(e.response.toString());
+    }
+
+    return listCategory;
+  }
+
+  Future<List<PharmacyProduct>> fetchHomePageProduct() async {
+    List<PharmacyProduct> listProduct = [];
+    try {
+      var response = await dio.get('${api}Product/HomePage', queryParameters: {
+        'GetProductType': 2,
+        'pageIndex': 1,
+        'pageItems': 10,
+        'isPrescription': false,
+      });
+
+      final list = response.data['items'] as List<dynamic>;
+      for (var e in list) {
+        final item = PharmacyProduct.fromJson(e);
+        listProduct.add(item);
+      }
+    } on DioError catch (e) {
+      Get.log(e.response.toString());
+    }
+
+    return listProduct;
+  }
+
+  Future<List<PharmacyProduct>> fetchProductsByMainCate(String id) async {
+    List<PharmacyProduct> listProduct = [];
+    try {
+      var response = await dio.get('${api}Product', queryParameters: {
+        'pageIndex': 1,
+        'pageItems': 10,
+        'mainCategoryID': id,
+      });
+
+      final list = response.data['items'] as List<dynamic>;
+      for (var e in list) {
+        final item = PharmacyProduct.fromJson(e);
+        listProduct.add(item);
+      }
+    } on DioError catch (e) {
+      Get.log(e.response.toString());
+    }
+
     return listProduct;
   }
 
