@@ -6,8 +6,13 @@ import 'package:intl/intl.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
 import 'package:pharmacy_mobile/main.dart';
+import 'package:pharmacy_mobile/views/drawer/cart_drawer.dart';
+import 'package:pharmacy_mobile/views/drawer/menu_drawer.dart';
+import 'package:pharmacy_mobile/views/home/widgets/cart_btn.dart';
 import 'package:pharmacy_mobile/views/order_detail/models/order_history_detail.dart';
 import 'package:pharmacy_mobile/services/order_service.dart';
+import 'package:pharmacy_mobile/widgets/appbar.dart';
+import 'package:pharmacy_mobile/widgets/back_button.dart';
 import 'package:syncfusion_flutter_barcodes/barcodes.dart';
 
 class OrderDetail extends StatelessWidget {
@@ -17,147 +22,158 @@ class OrderDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     final id = Get.arguments;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Order Detail"),
+      drawer: const MenuDrawer(),
+      endDrawer: const CartDrawer(),
+      appBar: PharmacyAppBar(
+        leftWidget: const PharmacyBackButton(),
+        midText: "Chi tiết đơn hàng",
+        rightWidget: const CartButton(),
       ),
-      body: FutureBuilder(
-        future: OrderService().getOrderHistoryDetail(id),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: LoadingWidget(
-                size: 60,
-              ),
-            );
-          } else {
-            final item = OrderHistoryDetail.fromJson(snapshot.data);
-            DateTime apiDate = DateTime.parse(item.createdDate!);
-            String formattedDate = DateFormat.yMMMMd().format(apiDate);
-            String formattedTime = DateFormat.jm().format(apiDate);
-            return SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: Get.height * .1,
-                      width: double.infinity,
-                      child: SfBarcodeGenerator(
-                        value: id,
-                        showValue: true,
-                      ),
-                    ),
-                    AutoSizeText(
-                      "Ngày đặt: $formattedDate - $formattedTime",
-                      style: context.textTheme.bodyLarge,
-                      maxLines: 2,
-                    ),
-                    AutoSizeText(
-                      "Loại đơn hàng: ${item.orderTypeName!}",
-                      style: context.textTheme.bodyLarge,
-                      maxLines: 2,
-                    ),
-                    AutoSizeText(
-                      "Trạng thái: ${item.orderStatusName!}",
-                      style: context.textTheme.bodyLarge,
-                      maxLines: 2,
-                    ),
-                    AutoSizeText(
-                      "Phương thức thanh toán: ${item.paymentMethod!}",
-                      style: context.textTheme.bodyLarge,
-                      maxLines: 2,
-                    ),
-                    AutoSizeText(
-                      "Trạng thái thanh toán: ${item.isPaid! ? "Đã thanh toán" : "Chưa thanh toán"}",
-                      style: context.textTheme.bodyLarge,
-                      maxLines: 2,
-                    ),
-                    if (item.orderDelivery != null)
-                      AutoSizeText(
-                        "Địa chỉ nhận hàng: ${item.orderDelivery!.fullyAddress}",
-                        style: context.textTheme.bodyLarge,
-                        maxLines: 2,
-                      ),
-                    if (item.orderPickUp != null)
-                      AutoSizeText(
-                        "Địa chỉ nhận hàng: ${productController.listSite.singleWhere((element) => element.id == item.siteId).fullyAddress}",
-                        style: context.textTheme.bodyLarge,
-                        maxLines: 2,
-                      ),
-                    if (item.note!.isNotEmpty)
-                      AutoSizeText(
-                        "Ghi chú: ${item.note!}",
-                        style: context.textTheme.bodyLarge,
-                        maxLines: 2,
-                      ),
-                    AutoSizeText(
-                      "Tổng tiền: ${item.totalPrice!.convertCurrentcy()}",
-                      style: context.textTheme.bodyLarge,
-                      maxLines: 2,
-                    ),
-                    const Text(
-                      "Chi tiết đơn hàng",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    ...item.orderProducts!.map(
-                      (e) => Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: context.theme.primaryColor,
-                            ),
-                            borderRadius: BorderRadius.circular(15),
+      body: SafeArea(
+        child: FutureBuilder(
+          future: OrderService().getOrderHistoryDetail(id),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: LoadingWidget(
+                  size: 60,
+                ),
+              );
+            } else {
+              final item = OrderHistoryDetail.fromJson(snapshot.data);
+              DateTime apiDate = DateTime.parse(item.createdDate!);
+              String formattedDate = DateFormat.yMMMMd().format(apiDate);
+              String formattedTime = DateFormat.jm().format(apiDate);
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        child: SizedBox(
+                          height: Get.height * .1,
+                          width: double.infinity,
+                          child: SfBarcodeGenerator(
+                            value: id,
+                            showValue: true,
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            child: Center(
-                              child: ListTile(
-                                onTap: () => Get.toNamed(
-                                  "/product_detail",
-                                  arguments: e.productId,
-                                ),
-                                leading: CachedNetworkImage(
-                                  imageUrl: e.imageUrl!,
-                                  height: 150,
-                                  width: 80,
-                                  fit: BoxFit.cover,
-                                ),
-                                title: AutoSizeText(
-                                  e.productName!,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: context.textTheme.bodyLarge,
-                                  maxLines: 3,
-                                ),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    AutoSizeText(
-                                      "Số lượng: ${e.quantity!} ${e.unitName}",
-                                      style: context.textTheme.bodyMedium,
-                                      maxLines: 2,
-                                    ),
-                                    AutoSizeText(
-                                      "Tổng tiền: ${e.priceTotal!.convertCurrentcy()}",
-                                    )
-                                  ],
+                        ),
+                      ),
+                      AutoSizeText(
+                        "Ngày đặt: $formattedDate - $formattedTime",
+                        style: context.textTheme.bodyLarge,
+                        maxLines: 2,
+                      ),
+                      AutoSizeText(
+                        "Loại đơn hàng: ${item.orderTypeName!}",
+                        style: context.textTheme.bodyLarge,
+                        maxLines: 2,
+                      ),
+                      AutoSizeText(
+                        "Trạng thái: ${item.orderStatusName!}",
+                        style: context.textTheme.bodyLarge,
+                        maxLines: 2,
+                      ),
+                      AutoSizeText(
+                        "Phương thức thanh toán: ${item.paymentMethod!}",
+                        style: context.textTheme.bodyLarge,
+                        maxLines: 2,
+                      ),
+                      AutoSizeText(
+                        "Trạng thái thanh toán: ${item.isPaid! ? "Đã thanh toán" : "Chưa thanh toán"}",
+                        style: context.textTheme.bodyLarge,
+                        maxLines: 2,
+                      ),
+                      if (item.orderDelivery != null)
+                        AutoSizeText(
+                          "Địa chỉ nhận hàng: ${item.orderDelivery!.fullyAddress}",
+                          style: context.textTheme.bodyLarge,
+                          maxLines: 2,
+                        ),
+                      if (item.orderPickUp != null)
+                        AutoSizeText(
+                          "Địa chỉ nhận hàng: ${productController.listSite.singleWhere((element) => element.id == item.siteId).fullyAddress}",
+                          style: context.textTheme.bodyLarge,
+                          maxLines: 2,
+                        ),
+                      if (item.note!.isNotEmpty)
+                        AutoSizeText(
+                          "Ghi chú: ${item.note!}",
+                          style: context.textTheme.bodyLarge,
+                          maxLines: 2,
+                        ),
+                      AutoSizeText(
+                        "Tổng tiền: ${item.totalPrice!.convertCurrentcy()}",
+                        style: context.textTheme.bodyLarge,
+                        maxLines: 2,
+                      ),
+                      const SizedBox(height: 16),
+                      const Text(
+                        "Chi tiết đơn hàng",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      ...item.orderProducts!.map(
+                        (e) => Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: context.theme.primaryColor,
+                              ),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: Center(
+                                child: ListTile(
+                                  onTap: () => Get.toNamed(
+                                    "/product_detail",
+                                    arguments: e.productId,
+                                  ),
+                                  leading: CachedNetworkImage(
+                                    imageUrl: e.imageUrl!,
+                                    height: 150,
+                                    width: 80,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  title: AutoSizeText(
+                                    e.productName!,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: context.textTheme.bodyLarge,
+                                    maxLines: 3,
+                                  ),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      AutoSizeText(
+                                        "Số lượng: ${e.quantity!} ${e.unitName}",
+                                        style: context.textTheme.bodyMedium,
+                                        maxLines: 2,
+                                      ),
+                                      AutoSizeText(
+                                        "Tổng tiền: ${e.priceTotal!.convertCurrentcy()}",
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            );
-          }
-        },
+              );
+            }
+          },
+        ),
       ),
     );
   }

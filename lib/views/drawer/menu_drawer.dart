@@ -8,7 +8,6 @@ import 'package:pharmacy_mobile/controllers/user_controller.dart';
 import 'package:pharmacy_mobile/debug/screen.dart';
 import 'package:pharmacy_mobile/views/alarm/alarm.dart';
 import 'package:pharmacy_mobile/views/order_history/order.dart';
-import 'package:pharmacy_mobile/views/setting/setting.dart';
 import 'package:pharmacy_mobile/widgets/user_avatar.dart';
 
 import 'widgets/auth_button_row.dart';
@@ -82,11 +81,11 @@ class MenuDrawer extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               const Divider(color: Colors.white70),
-              MenuItem(
-                text: 'Thông báo',
-                icon: Icons.notifications_outlined,
-                onClicked: () {},
-              ),
+              // MenuItem(
+              //   text: 'Thông báo',
+              //   icon: Icons.notifications_outlined,
+              //   onClicked: () {},
+              // ),
               OpenContainer(
                 closedBuilder: (context, action) {
                   return const MenuItem(
@@ -100,19 +99,19 @@ class MenuDrawer extends StatelessWidget {
                   return const AlarmScreen();
                 },
               ),
-              OpenContainer(
-                closedBuilder: (context, action) {
-                  return const MenuItem(
-                    text: 'Cài đặt',
-                    icon: Icons.settings,
-                  );
-                },
-                closedElevation: 0,
-                closedColor: Colors.transparent,
-                openBuilder: (context, action) {
-                  return const SettingPage();
-                },
-              ),
+              // OpenContainer(
+              //   closedBuilder: (context, action) {
+              //     return const MenuItem(
+              //       text: 'Cài đặt',
+              //       icon: Icons.settings,
+              //     );
+              //   },
+              //   closedElevation: 0,
+              //   closedColor: Colors.transparent,
+              //   openBuilder: (context, action) {
+              //     return const SettingPage();
+              //   },
+              // ),
               OpenContainer(
                 closedBuilder: (context, action) {
                   return const MenuItem(

@@ -37,63 +37,69 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double height = Get.height * .7;
+    double height = Get.height * .6;
     double width = Get.width * .8;
     int flipDuration = 600;
-    return Scaffold(
-      appBar: AppBar(
-          // title: Text(cartController.listCart[0].quantity.toString()),
-          ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        // child: QrScannerWidget(),
-        child: Center(
-          child: Column(
-            children: [
-              FlipCard(
-                speed: flipDuration,
-                flipOnTouch: false,
-                controller: cameraController.flipController,
-                direction: FlipDirection.HORIZONTAL,
-                side: CardSide.FRONT,
-                front: SizedBox(
-                  height: height,
-                  width: width,
-                  child: const QrCamera(),
+    return SafeArea(
+      child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          // child: QrScannerWidget(),
+          child: Center(
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Image.asset(
+                  "assets/icons/banner.png",
+                  height: Get.height * .13,
                 ),
-                back: SizedBox(
-                  height: height,
-                  width: width,
-                  child: Obx(() => cameraController.result.value == null
-                      ? Container()
-                      : ProductScannerLoaded(
-                          cameraController.result.value!.code!)),
+                FlipCard(
+                  speed: flipDuration,
+                  flipOnTouch: false,
+                  controller: cameraController.flipController,
+                  direction: FlipDirection.HORIZONTAL,
+                  side: CardSide.FRONT,
+                  front: SizedBox(
+                    height: height,
+                    width: width,
+                    child: const QrCamera(),
+                  ),
+                  back: SizedBox(
+                    height: height,
+                    width: width,
+                    child: Obx(() => cameraController.result.value == null
+                        ? Container()
+                        : ProductScannerLoaded(
+                            cameraController.result.value!.code!)),
+                  ),
                 ),
-              ),
-              // Obx(() => Text(cameraController.isScanning.value == true
-              //     ? "Nope"
-              //     : "Code ${cameraController.result.value!.code}"))
-              Obx(() {
-                return AnimatedSwitcher(
-                  duration: Duration(milliseconds: flipDuration),
-                  child: cameraController.isScanning.value == true
-                      ? const Text("Quét sản phẩm")
-                      : Column(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                cameraController.flipController.toggleCard();
-                                cameraController.isScanning.toggle();
-                                cameraController.qrController!.resumeCamera();
-                              },
-                              icon: const Icon(Icons.camera_alt_sharp),
-                            ),
-                            const Text("Quét lại")
-                          ],
-                        ),
-                );
-              })
-            ],
+
+                // Obx(() => Text(cameraController.isScanning.value == true
+                //     ? "Nope"
+                //     : "Code ${cameraController.result.value!.code}"))
+                Obx(() {
+                  return AnimatedSwitcher(
+                    duration: Duration(milliseconds: flipDuration),
+                    child: cameraController.isScanning.value == true
+                        ? const Text("Quét sản phẩm")
+                        : Column(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  cameraController.flipController.toggleCard();
+                                  cameraController.isScanning.toggle();
+                                  cameraController.qrController!.resumeCamera();
+                                },
+                                color: context.theme.primaryColor,
+                                icon: const Icon(Icons.camera_alt_sharp),
+                              ),
+                              const Text("Quét lại")
+                            ],
+                          ),
+                  );
+                }),
+              ],
+            ),
           ),
         ),
       ),

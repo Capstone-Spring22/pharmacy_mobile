@@ -2,10 +2,14 @@
 
 import 'dart:developer';
 
-import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/views/alarm/widget/alarm_tile.dart';
+import 'package:pharmacy_mobile/views/drawer/cart_drawer.dart';
+import 'package:pharmacy_mobile/views/drawer/menu_drawer.dart';
+import 'package:pharmacy_mobile/widgets/appbar.dart';
+import 'package:pharmacy_mobile/widgets/back_button.dart';
 
 class AlarmScreen extends StatelessWidget {
   const AlarmScreen({super.key});
@@ -14,20 +18,28 @@ class AlarmScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     TimeOfDay time = TimeOfDay.now();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Medication Remider"),
-        actions: [
-          IconButton(
-            onPressed: () {
-              try {
-                Get.toNamed('/reminder_picker', preventDuplicates: false);
-              } catch (e) {
-                log(e.toString());
-              }
-            },
-            icon: const Icon(Icons.add),
-          )
-        ],
+      drawer: const MenuDrawer(),
+      endDrawer: const CartDrawer(),
+      appBar: PharmacyAppBar(
+        leftWidget: const PharmacyBackButton(),
+        midText: "Nhắc uống thuốc",
+        rightWidget: NeumorphicButton(
+          style: NeumorphicStyle(
+            boxShape: const NeumorphicBoxShape.circle(),
+            color: context.theme.canvasColor,
+            shape: NeumorphicShape.flat,
+          ),
+          onPressed: () {
+            try {
+              Get.toNamed('/reminder_picker', preventDuplicates: false);
+            } catch (e) {
+              log(e.toString());
+            }
+          },
+          child: const Icon(
+            Icons.shopping_bag_outlined,
+          ),
+        ),
       ),
       body: SafeArea(
         child: Obx(() => notiController.listAlarms.isNotEmpty
@@ -38,7 +50,7 @@ class AlarmScreen extends StatelessWidget {
                 itemCount: notiController.listAlarms.length,
               )
             : const Center(
-                child: Text("Empty Alarm"),
+                child: Text("Chưa có nhắc nhở nào"),
               )),
       ),
     );
