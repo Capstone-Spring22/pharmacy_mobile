@@ -8,6 +8,7 @@ import 'package:pharmacy_mobile/controllers/checkout_controller.dart';
 import 'package:pharmacy_mobile/models/main_cate.dart';
 import 'package:pharmacy_mobile/models/product.dart';
 import 'package:pharmacy_mobile/models/product_detail.dart';
+import 'package:pharmacy_mobile/models/site.dart';
 import 'package:pharmacy_mobile/models/sub_category.dart';
 import 'package:pharmacy_mobile/models/unit.dart';
 
@@ -291,7 +292,7 @@ class ProductService {
     }
   }
 
-  Future getSite() async {
+  Future<List<PharmacySite>> getSite() async {
     final dio = appController.dio;
     final api = dotenv.env['API_URL']!;
 
@@ -300,6 +301,13 @@ class ProductService {
       'pageItems': 10,
     });
 
-    return res.data;
+    final list = res.data['items'] as List<dynamic>;
+    List<PharmacySite> listSite = [];
+    for (var e in list) {
+      final item = PharmacySite.fromJson(e);
+      listSite.add(item);
+    }
+
+    return listSite;
   }
 }

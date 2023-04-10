@@ -1,9 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/user_controller.dart';
+import 'package:pharmacy_mobile/main.dart';
 import 'package:pharmacy_mobile/views/drawer/widgets/auth_button_row.dart';
 import 'package:pharmacy_mobile/views/user/widget/info_card.dart';
 import 'package:pharmacy_mobile/widgets/user_avatar.dart';
@@ -65,15 +65,14 @@ class UserScreen extends GetView<UserController> {
                     ),
                     InfoCard(
                       icon: Icons.cake,
-                      text: DateFormat.yMMMMd().format(DateTime.parse(
-                          controller.detailUser.value.dob.toString())),
+                      text: controller.detailUser.value.dob!.convertToDate,
                     ),
                     const AddressCard(),
                     GestureDetector(
                       onTap: () => Get.toNamed('/order_history'),
                       child: const InfoCard(
                         icon: Icons.list_alt,
-                        text: "Order History",
+                        text: "Đơn hàng",
                       ),
                     )
                   ],

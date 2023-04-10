@@ -1,14 +1,19 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gradient_widgets/gradient_widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
 import 'package:pharmacy_mobile/main.dart';
+import 'package:pharmacy_mobile/views/drawer/cart_drawer.dart';
+import 'package:pharmacy_mobile/views/drawer/menu_drawer.dart';
+import 'package:pharmacy_mobile/views/home/widgets/cart_btn.dart';
 import 'package:pharmacy_mobile/views/order_detail/models/order_history_detail.dart';
 import 'package:pharmacy_mobile/views/order_history/models/order_history.dart';
 import 'package:pharmacy_mobile/services/order_service.dart';
+import 'package:pharmacy_mobile/widgets/appbar.dart';
+import 'package:pharmacy_mobile/widgets/back_button.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
@@ -62,9 +67,12 @@ class _OrderScreenState extends State<OrderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const AutoSizeText("Lịch sử đơn hàng"),
-        actions: const [],
+      drawer: const MenuDrawer(),
+      endDrawer: const CartDrawer(),
+      appBar: PharmacyAppBar(
+        leftWidget: const PharmacyBackButton(),
+        midText: "Đơn hàng",
+        rightWidget: const CartButton(),
       ),
       body: Center(
           child: Column(
@@ -98,25 +106,31 @@ class RenderList extends StatelessWidget {
       itemBuilder: (context, index) {
         final item = list[index];
         DateTime apiDate = DateTime.parse(item.createdDate!);
-        String formattedDate = DateFormat.yMMMMd().format(apiDate);
+        String formattedDate = item.createdDate!.convertToDate;
         String formattedTime = DateFormat.jm().format(apiDate);
-        var ff = Gradients.coldLinear;
+        var onGoingGradient = Gradients.coldLinear;
+        var finishGradient = Gradients.coralCandyGradient;
         return GestureDetector(
           onTap: () => Get.toNamed('/order_detail', arguments: item.id),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 15),
             child: Container(
               decoration: BoxDecoration(
-                gradient: ff,
+                gradient:
+                    item.orderStatus == "4" ? finishGradient : onGoingGradient,
                 boxShadow: [
                   BoxShadow(
-                    color: ff.colors.first.withOpacity(0.25),
+                    color: item.orderStatus == "4"
+                        ? finishGradient.colors.first.withOpacity(0.25)
+                        : onGoingGradient.colors.first.withOpacity(0.25),
                     spreadRadius: 5,
                     blurRadius: 7,
                     offset: const Offset(3, 0),
                   ),
                   BoxShadow(
-                    color: ff.colors.last.withOpacity(0.25),
+                    color: item.orderStatus == "4"
+                        ? finishGradient.colors.first.withOpacity(0.25)
+                        : onGoingGradient.colors.first.withOpacity(0.25),
                     spreadRadius: 5,
                     blurRadius: 7,
                     offset: const Offset(0, 3),
@@ -125,77 +139,79 @@ class RenderList extends StatelessWidget {
                 borderRadius: BorderRadius.circular(25),
               ),
               height: Get.height * .23,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: AutoSizeText(
-                        "Ngày đặt: $formattedDate - $formattedTime",
-                        style: context.textTheme.bodyMedium,
-                        maxLines: 1,
-                      ),
-                    ),
-                  ),
-                  CupertinoListTile(
-                    title: AutoSizeText(item.orderTypeName!),
-                    subtitle: AutoSizeText(
-                      textAlign: TextAlign.center,
-                      item.orderStatusName!,
-                      style: context.textTheme.bodyMedium,
-                    ),
-                    trailing: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        AutoSizeText(item.totalPrice!.convertCurrentcy()),
-                        AutoSizeText(item.paymentMethod!),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: FutureBuilder(
-                        future: OrderService().getOrderHistoryDetail(item.id!),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return LoadingWidget();
-                          } else {
-                            final detail =
-                                OrderHistoryDetail.fromJson(snapshot.data);
-                            if (detail.orderPickUp != null) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // Text(
-                                  //     "Địa chỉ cửa hàng: ${productController.listSite.singleWhere((element) => element.id == detail.siteId).siteName}"),
-                                  Text(
-                                    "Giờ hẹn lấy hàng: ${detail.orderPickUp!.datePickUp} - ${detail.orderPickUp!.timePickUp}",
-                                  ),
-                                ],
-                              );
-                            } else {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text("Địa chỉ đặt hàng:"),
-                                  AutoSizeText(
-                                    "${detail.orderDelivery!.fullyAddress}",
-                                    maxLines: 1,
-                                  ),
-                                ],
-                              );
-                            }
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: SizedBox(
+                  height: Get.height * .23,
+                  width: double.infinity,
+                  child: FutureBuilder(
+                    future: OrderService().getOrderHistoryDetail(item.id!),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return LoadingWidget();
+                      } else {
+                        final detail =
+                            OrderHistoryDetail.fromJson(snapshot.data);
+                        if (detail.orderPickUp != null) {
+                          for (var element in productController.listSite) {
+                            Get.log(element.id.toString());
                           }
-                        },
-                      ),
-                    ),
-                  )
-                ],
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              AutoSizeText(
+                                "Loại đơn: ${item.orderTypeName}",
+                                style: context.textTheme.bodyMedium,
+                                maxLines: 1,
+                              ),
+                              AutoSizeText(
+                                "Ngày đặt: $formattedDate - $formattedTime",
+                                style: context.textTheme.bodyMedium,
+                                maxLines: 1,
+                              ),
+                              AutoSizeText(
+                                'Tổng tiền ${item.totalPrice!.convertCurrentcy()}',
+                              ),
+                              AutoSizeText(item.paymentMethod!),
+                              Text(
+                                  "Địa chỉ cửa hàng: ${productController.listSite.singleWhere((element) => element.id == detail.siteId).fullyAddress}"),
+                              Text(
+                                "Giờ hẹn lấy hàng: ${detail.orderPickUp!.datePickUp} - ${detail.orderPickUp!.timePickUp}",
+                              ),
+                            ],
+                          );
+                        } else {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              AutoSizeText(
+                                "Loại đơn: ${item.orderTypeName}",
+                                style: context.textTheme.bodyMedium,
+                                maxLines: 1,
+                              ),
+                              AutoSizeText(
+                                "Ngày đặt: $formattedDate - $formattedTime",
+                                style: context.textTheme.bodyMedium,
+                                maxLines: 1,
+                              ),
+                              AutoSizeText(
+                                'Tổng tiền ${item.totalPrice!.convertCurrentcy()}',
+                              ),
+                              AutoSizeText(item.paymentMethod!),
+                              const Text("Địa chỉ đặt hàng:"),
+                              AutoSizeText(
+                                "${detail.orderDelivery!.fullyAddress}",
+                                maxLines: 2,
+                              ),
+                            ],
+                          );
+                        }
+                      }
+                    },
+                  ),
+                ),
               ),
             ),
           ),

@@ -49,37 +49,36 @@ class _CheckProductAvailbilityState extends State<CheckProductAvailbility> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
       child: Row(
         children: [
           Expanded(
-            flex: 1,
+            flex: 2,
             child: EasyStepper(
               activeStep: activeStep,
               lineLength: 70,
               stepShape: StepShape.rRectangle,
               stepBorderRadius: 15,
               borderThickness: 2,
-              padding: 10,
               stepRadius: 28,
               direction: Axis.vertical,
-              finishedStepBorderColor: Colors.deepOrange,
-              finishedStepTextColor: Colors.deepOrange,
-              finishedStepBackgroundColor: Colors.deepOrange,
-              activeStepIconColor: Colors.deepOrange,
+              finishedStepBorderColor: context.theme.primaryColor,
+              finishedStepTextColor: context.theme.primaryColor,
+              finishedStepBackgroundColor: context.theme.primaryColor,
+              activeStepIconColor: context.theme.primaryColor,
               loadingAnimation: 'assets/lottie/loading.json',
               steps: const [
                 EasyStep(
                   icon: Icon(Icons.store),
-                  title: 'Pick Store',
+                  title: 'Chọn cửa hàng',
                 ),
                 EasyStep(
                   icon: Icon(Icons.date_range),
-                  title: 'Pick Date',
+                  title: 'Chọn ngày',
                 ),
                 EasyStep(
                   icon: Icon(Icons.access_time_filled_rounded),
-                  title: 'Pick Time',
+                  title: 'Chọn giờ',
                 ),
               ],
               onStepReached: (index) {
@@ -93,15 +92,18 @@ class _CheckProductAvailbilityState extends State<CheckProductAvailbility> {
             ),
           ),
           Expanded(
-            flex: 3,
+            flex: 8,
             child: SizedBox(
               width: 200,
-              child: SwitchFadeWidget(
-                list: widgetList,
-                key: childKey,
-                onPageChanged: (index) {
-                  setState(() => activeStep = index);
-                },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: SwitchFadeWidget(
+                  list: widgetList,
+                  key: childKey,
+                  onPageChanged: (index) {
+                    setState(() => activeStep = index);
+                  },
+                ),
               ),
             ),
           ),

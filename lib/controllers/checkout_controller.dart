@@ -85,22 +85,22 @@ class CheckoutController extends GetxController {
     listTextField.value = [
       TextFieldProperty(
           icon: Icons.person,
-          label: "Name",
+          label: "Tên",
           txtCtrl: nameCtl,
           type: TextInputType.name),
       TextFieldProperty(
           icon: Icons.phone,
-          label: "Phone Number",
+          label: "Số điện thoại",
           txtCtrl: phoneCtl,
           type: TextInputType.phone),
       TextFieldProperty(
           icon: Icons.email,
-          label: "Email (Optional)",
+          label: "Email (Không yêu cầu)",
           txtCtrl: emailCtl,
           type: TextInputType.emailAddress),
       TextFieldProperty(
           icon: Icons.note,
-          label: "Note (Optional)",
+          label: "Ghi chú (Không yêu cầu)",
           txtCtrl: noteCtl,
           type: TextInputType.multiline),
     ];

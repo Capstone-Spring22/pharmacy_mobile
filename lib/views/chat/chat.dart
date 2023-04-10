@@ -1,7 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/chat_controller.dart';
+import 'package:pharmacy_mobile/views/drawer/cart_drawer.dart';
+import 'package:pharmacy_mobile/views/drawer/menu_drawer.dart';
+import 'package:pharmacy_mobile/widgets/appbar.dart';
+import 'package:pharmacy_mobile/widgets/back_button.dart';
 
 import 'widgets/chat_list.dart';
 
@@ -11,13 +15,23 @@ class ChatScreen extends GetView<ChatController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Liên hệ'),
-        actions: [
-          TextButton(
-              onPressed: () => chatController.createRequestDialog(),
-              child: const Text('Liên hệ dược sĩ'))
-        ],
+      drawer: const MenuDrawer(),
+      endDrawer: const CartDrawer(),
+      appBar: PharmacyAppBar(
+        leftWidget: const PharmacyBackButton(),
+        midText: "Đơn hàng",
+        rightWidget: NeumorphicButton(
+          style: NeumorphicStyle(
+            boxShape: const NeumorphicBoxShape.circle(),
+            color: context.theme.canvasColor,
+            shape: NeumorphicShape.flat,
+          ),
+          onPressed: () => chatController.createRequestDialog(),
+          child: Icon(
+            Icons.add_comment_rounded,
+            color: context.theme.primaryColor,
+          ),
+        ),
       ),
       body: Center(
         child: Column(

@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
 import 'package:pharmacy_mobile/main.dart';
 import 'package:pharmacy_mobile/views/order_detail/models/order_history_detail.dart';
@@ -49,52 +50,52 @@ class OrderDetail extends StatelessWidget {
                     ),
                     AutoSizeText(
                       "Ngày đặt: $formattedDate - $formattedTime",
-                      style: context.textTheme.bodyMedium,
-                      maxLines: 1,
+                      style: context.textTheme.bodyLarge,
+                      maxLines: 2,
                     ),
                     AutoSizeText(
                       "Loại đơn hàng: ${item.orderTypeName!}",
-                      style: context.textTheme.bodyMedium,
-                      maxLines: 1,
+                      style: context.textTheme.bodyLarge,
+                      maxLines: 2,
                     ),
                     AutoSizeText(
                       "Trạng thái: ${item.orderStatusName!}",
-                      style: context.textTheme.bodyMedium,
-                      maxLines: 1,
+                      style: context.textTheme.bodyLarge,
+                      maxLines: 2,
                     ),
                     AutoSizeText(
                       "Phương thức thanh toán: ${item.paymentMethod!}",
-                      style: context.textTheme.bodyMedium,
-                      maxLines: 1,
+                      style: context.textTheme.bodyLarge,
+                      maxLines: 2,
                     ),
                     AutoSizeText(
                       "Trạng thái thanh toán: ${item.isPaid! ? "Đã thanh toán" : "Chưa thanh toán"}",
-                      style: context.textTheme.bodyMedium,
-                      maxLines: 1,
-                    ),
-                    AutoSizeText(
-                      "Tổng tiền: ${item.totalPrice!.convertCurrentcy()}",
-                      style: context.textTheme.bodyMedium,
-                      maxLines: 1,
+                      style: context.textTheme.bodyLarge,
+                      maxLines: 2,
                     ),
                     if (item.orderDelivery != null)
                       AutoSizeText(
                         "Địa chỉ nhận hàng: ${item.orderDelivery!.fullyAddress}",
-                        style: context.textTheme.bodyMedium,
+                        style: context.textTheme.bodyLarge,
                         maxLines: 2,
                       ),
                     if (item.orderPickUp != null)
                       AutoSizeText(
-                        "Địa chỉ cửa hàng: ${item.orderPickUp!.datePickUp}",
-                        style: context.textTheme.bodyMedium,
+                        "Địa chỉ nhận hàng: ${productController.listSite.singleWhere((element) => element.id == item.siteId).fullyAddress}",
+                        style: context.textTheme.bodyLarge,
                         maxLines: 2,
                       ),
                     if (item.note!.isNotEmpty)
                       AutoSizeText(
                         "Ghi chú: ${item.note!}",
-                        style: context.textTheme.bodyMedium,
-                        maxLines: 1,
+                        style: context.textTheme.bodyLarge,
+                        maxLines: 2,
                       ),
+                    AutoSizeText(
+                      "Tổng tiền: ${item.totalPrice!.convertCurrentcy()}",
+                      style: context.textTheme.bodyLarge,
+                      maxLines: 2,
+                    ),
                     const Text(
                       "Chi tiết đơn hàng",
                       style: TextStyle(
@@ -129,8 +130,8 @@ class OrderDetail extends StatelessWidget {
                                 title: AutoSizeText(
                                   e.productName!,
                                   overflow: TextOverflow.ellipsis,
-                                  style: context.textTheme.bodyMedium,
-                                  maxLines: 2,
+                                  style: context.textTheme.bodyLarge,
+                                  maxLines: 3,
                                 ),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,7 +139,7 @@ class OrderDetail extends StatelessWidget {
                                     AutoSizeText(
                                       "Số lượng: ${e.quantity!} ${e.unitName}",
                                       style: context.textTheme.bodyMedium,
-                                      maxLines: 1,
+                                      maxLines: 2,
                                     ),
                                     AutoSizeText(
                                       "Tổng tiền: ${e.priceTotal!.convertCurrentcy()}",

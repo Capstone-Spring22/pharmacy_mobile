@@ -18,6 +18,7 @@ class ProductController extends GetxController {
   void onInit() {
     super.onInit();
     loadProduct(1, 10, false);
+    loadSite();
   }
 
   loadProduct(int index, int count, bool isContinue) async {

@@ -1,5 +1,4 @@
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
-import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +7,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:pharmacy_mobile/constrains/text.dart';
 import 'package:pharmacy_mobile/controllers/app_controller.dart';
@@ -43,6 +43,12 @@ extension PriceConvert on num {
   }
 }
 
+extension DateFormatter on String {
+  String get convertToDate {
+    return DateFormat.yMMMMd('vi_VN').format(DateTime.parse(this));
+  }
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -52,6 +58,7 @@ void main() async {
   await GetStorage.init();
   await AndroidAlarmManager.initialize();
   await dotenv.load(fileName: "dotenv");
+  await initializeDateFormatting('vi_VN', null);
 
   //init app controller
   initController();
@@ -74,12 +81,7 @@ void main() async {
   //   }
   // };
 
-  runApp(
-    DevicePreview(
-      enabled: false,
-      builder: (context) => const MyApp(), // Wrap your app
-    ),
-  );
+  runApp(const MyApp());
 }
 
 void initController() {

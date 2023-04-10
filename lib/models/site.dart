@@ -3,6 +3,7 @@ class PharmacySite {
   String? imageUrl;
   String? siteName;
   String? addressId;
+  String? fullyAddress;
   String? lastUpdate;
   String? description;
   String? contactInfo;
@@ -14,6 +15,7 @@ class PharmacySite {
       this.imageUrl,
       this.siteName,
       this.addressId,
+      this.fullyAddress,
       this.lastUpdate,
       this.description,
       this.contactInfo,
@@ -25,6 +27,7 @@ class PharmacySite {
     imageUrl = json['imageUrl'];
     siteName = json['siteName'];
     addressId = json['addressId'];
+    fullyAddress = json['fullyAddress'];
     lastUpdate = json['lastUpdate'];
     description = json['description'];
     contactInfo = json['contactInfo'];
@@ -38,6 +41,7 @@ class PharmacySite {
     data['imageUrl'] = imageUrl;
     data['siteName'] = siteName;
     data['addressId'] = addressId;
+    data['fullyAddress'] = fullyAddress;
     data['lastUpdate'] = lastUpdate;
     data['description'] = description;
     data['contactInfo'] = contactInfo;
