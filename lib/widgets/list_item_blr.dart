@@ -21,7 +21,7 @@ class ListItemBuilder extends StatelessWidget {
               ? FutureBuilder(
                   future: Future.wait([
                     ProductService().fetchHomePageProduct(),
-                    ProductService().fetchCategory()
+                    ProductService().fetchCategories()
                   ]),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {

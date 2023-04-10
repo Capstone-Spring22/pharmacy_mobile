@@ -19,6 +19,7 @@ import 'package:pharmacy_mobile/debug/screen.dart';
 import 'package:pharmacy_mobile/firebase_options.dart';
 import 'package:pharmacy_mobile/views/address/address.dart';
 import 'package:pharmacy_mobile/views/alarm/alarm_picker.dart';
+import 'package:pharmacy_mobile/views/browse_products/browse_product.dart';
 import 'package:pharmacy_mobile/views/chat/chat.dart';
 import 'package:pharmacy_mobile/views/checkout/checkout.dart';
 import 'package:pharmacy_mobile/views/nav_hub/nav_bar_hub.dart';
@@ -149,6 +150,10 @@ class MyApp extends StatelessWidget {
             GetPage(
               name: '/order_detail',
               page: () => const OrderDetail(),
+            ),
+            GetPage(
+              name: '/browse_product',
+              page: () => const BrowseProductScreen(),
             ),
             GetPage(
               name: '/order_history',

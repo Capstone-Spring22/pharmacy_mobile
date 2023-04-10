@@ -59,7 +59,6 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget headerWidget(BuildContext context) {
-    String welcomeText = setWelcomeText();
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -74,9 +73,9 @@ class HomeScreen extends StatelessWidget {
           builder: (userCtl) {
             String txt = "";
             if (userCtl.user == PharmacyUser().obs) {
-              txt = welcomeText;
+              txt = setWelcomeText();
             } else {
-              txt = "$welcomeText, ${userCtl.user.value.name}";
+              txt = "${setWelcomeText()}, ${userCtl.user.value.name}";
             }
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 5),
@@ -85,7 +84,9 @@ class HomeScreen extends StatelessWidget {
                 animatedTexts: [
                   TypewriterAnimatedText(
                     txt,
-                    textStyle: context.textTheme.headlineSmall!,
+                    textStyle: context.textTheme.headlineSmall!.copyWith(
+                      color: context.theme.primaryColor,
+                    ),
                   )
                 ],
               ),

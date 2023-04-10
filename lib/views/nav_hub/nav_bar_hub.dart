@@ -7,7 +7,6 @@ import 'package:pharmacy_mobile/views/drawer/cart_drawer.dart';
 import 'package:pharmacy_mobile/views/drawer/menu_drawer.dart';
 import 'package:pharmacy_mobile/views/home/home.dart';
 import 'package:pharmacy_mobile/views/nav_hub/nav_items/nav_home.dart';
-import 'package:pharmacy_mobile/views/store/store.dart';
 import 'package:pharmacy_mobile/views/user/user.dart';
 
 class NavBarHub extends GetView<AppController> {
@@ -37,13 +36,13 @@ class NavBarHub extends GetView<AppController> {
     switch (i) {
       case 0:
         return const HomeScreen();
+      // case 1:
+      //   return const StoreScreen();
       case 1:
-        return const StoreScreen();
-      case 2:
         return const CameraScreen();
-      case 3:
-        return const StoreScreen();
-      case 4:
+      // case 3:
+      //   return const StoreScreen();
+      case 2:
         return const UserScreen();
       default:
         return const HomeScreen();

@@ -8,6 +8,7 @@ import 'package:pharmacy_mobile/controllers/checkout_controller.dart';
 import 'package:pharmacy_mobile/models/main_cate.dart';
 import 'package:pharmacy_mobile/models/product.dart';
 import 'package:pharmacy_mobile/models/product_detail.dart';
+import 'package:pharmacy_mobile/models/sub_category.dart';
 import 'package:pharmacy_mobile/models/unit.dart';
 
 class ProductService {
@@ -37,7 +38,32 @@ class ProductService {
     return listProduct;
   }
 
-  Future<List<MainCategory>> fetchCategory() async {
+  Future<List<PharmacyProduct>> getProductsCustomOption(
+      int page, int items, String mainCate, String subMain) async {
+    List<PharmacyProduct> listProduct = [];
+    var response = await dio.get(
+      '${api}Product',
+      queryParameters: {
+        'pageIndex': page,
+        'pageItems': items,
+        'mainCategoryID': mainCate,
+        'subCategoryID': subMain,
+        // 'isPrescription': false,
+      },
+    );
+    // log(response.data.toString());
+    try {
+      final list = response.data['items'] as List<dynamic>;
+      for (var e in list) {
+        listProduct.add(PharmacyProduct.fromJson(e));
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    return listProduct;
+  }
+
+  Future<List<MainCategory>> fetchCategories() async {
     List<MainCategory> listCategory = [];
     try {
       var response = await dio.get('${api}MainCategory', queryParameters: {
@@ -55,6 +81,27 @@ class ProductService {
     }
 
     return listCategory;
+  }
+
+  Future<List<SubCategory>> fetchSubCategoriesById(String id) async {
+    List<SubCategory> listSubCategory = [];
+    try {
+      var response = await dio.get('${api}SubCategory', queryParameters: {
+        'pageIndex': 1,
+        'pageItems': 10,
+        'MainCategoryID': id,
+      });
+
+      final list = response.data['items'] as List<dynamic>;
+      for (var e in list) {
+        final item = SubCategory.fromJson(e);
+        listSubCategory.add(item);
+      }
+    } on DioError catch (e) {
+      Get.log(e.response.toString());
+    }
+
+    return listSubCategory;
   }
 
   Future<List<PharmacyProduct>> fetchHomePageProduct() async {

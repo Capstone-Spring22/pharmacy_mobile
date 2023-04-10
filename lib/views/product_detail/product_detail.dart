@@ -99,13 +99,10 @@ class ProductDetailScreen extends GetView<AppController> {
                             ConnectionState.waiting) {
                           return Column(
                             children: [
-                              Hero(
-                                tag: 'image$pid',
-                                child: CachedNetworkImage(
-                                  height: Get.height * .3,
-                                  imageUrl: product.imageModel!.imageURL!,
-                                  width: double.infinity,
-                                ),
+                              CachedNetworkImage(
+                                height: Get.height * .3,
+                                imageUrl: product.imageModel!.imageURL!,
+                                width: double.infinity,
                               ),
                               ...infoWidget(context, product),
                               LoadingWidget(
@@ -234,7 +231,7 @@ class ProductDetailScreen extends GetView<AppController> {
           ),
         ),
       if (product.productUnitReferences!.length > 1) ListPrice(product),
-      if (product.isPrescription!)
+      if (product.isPrescription! && product.productUnitReferences!.length != 1)
         Align(
           alignment: Alignment.center,
           child: FilledButton(

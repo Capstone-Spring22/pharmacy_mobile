@@ -25,7 +25,7 @@ class ApplicationText extends Translations {
           'title': 'Better Health',
           'welcome_text': 'Place your order select pharmacy recive it',
           'search_home': 'Tìm kiếm',
-          'drug_btn': 'Các loại thuốc',
+          'drug_btn': 'Các loại sản phẩm',
           'prescription_btn': 'Gửi toa thuốc',
           'contact_btn': 'Liên hệ dược sĩ',
           'scroll_down': 'Kéo xuống để mở máy quét/camera',

@@ -2,6 +2,7 @@ import 'package:cnav/cnav.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:pharmacy_mobile/controllers/app_controller.dart';
 
 class NavHomeItem extends StatelessWidget {
@@ -22,27 +23,27 @@ class NavHomeItem extends StatelessWidget {
         isFloating: true,
         items: const [
           CNavItem(
-            icon: Icon(Icons.home),
+            icon: Icon(MdiIcons.home),
             title: Text("Trang chủ"),
           ),
-          CNavItem(
-            icon: Icon(
-              FontAwesomeIcons.store,
-              size: 25,
-            ),
-            title: Text("Cửa hàng"),
-          ),
+          // CNavItem(
+          //   icon: Icon(
+          //     FontAwesomeIcons.store,
+          //     size: 25,
+          //   ),
+          //   title: Text("Cửa hàng"),
+          // ),
           CNavItem(
             icon: Icon(
               FontAwesomeIcons.camera,
               size: 25,
             ),
-            title: Text("Quét"),
+            title: Text("Quét sản phẩm"),
           ),
-          CNavItem(
-            icon: Icon(Icons.notifications),
-            title: Text("Thông báo"),
-          ),
+          // CNavItem(
+          //   icon: Icon(Icons.notifications),
+          //   title: Text("Thông báo"),
+          // ),
           CNavItem(
             icon: Icon(FontAwesomeIcons.user),
             title: Text("Người dùng"),

@@ -42,11 +42,11 @@ class ChatController extends GetxController {
   void createRequestDialog() {
     final txt = TextEditingController();
     Get.defaultDialog(
-      title: 'Create Request',
+      title: 'Bạn cần giúp gì?',
       content: Column(
         children: [Input(inputController: txt)],
       ),
-      textConfirm: 'Send',
+      textConfirm: 'Gửi',
       confirmTextColor: Colors.white,
       onConfirm: () {
         chatController.sendRequest(txt.text);

@@ -21,25 +21,9 @@ class OptionButtonRow extends StatelessWidget {
             Iconcolor: Colors.blue,
             icon: MdiIcons.pill,
             text: "drug_btn".tr,
-            func: () {},
+            func: () => Get.toNamed("/browse_product"),
           ),
         ),
-        // OptionBox(
-        //   color: Colors.yellow[100]!.withOpacity(1),
-        //   image: "assets/images/Image.png",
-        //   text: "prescription_btn".tr,
-        //   func: () {
-        //     Get.offAllNamed(
-        //       '/navhub',
-        //       arguments: "g",
-        //     )!
-        //         .then((value) => Get.toNamed(
-        //               '/order_success',
-        //               arguments: "g",
-        //             ));
-        //   },
-        //   // func: () => Get.toNamed('/order_history'),
-        // ),
         SizedBox(
           width: Get.width * .4,
           child: OptionBox(

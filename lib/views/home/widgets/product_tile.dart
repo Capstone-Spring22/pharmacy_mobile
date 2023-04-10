@@ -76,15 +76,12 @@ class _ProductTileState extends State<ProductTile>
           children: [
             if (widget.product.imageModel == null) LoadingWidget(),
             if (widget.product.imageModel != null)
-              Hero(
-                tag: 'image${widget.product.id}',
-                child: CachedNetworkImage(
-                  height: Get.height * .15,
-                  width: Get.width * .4,
-                  imageUrl: widget.product.imageModel!.imageURL!,
-                  placeholder: (context, url) => LoadingWidget(),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                ),
+              CachedNetworkImage(
+                height: Get.height * .15,
+                width: Get.width * .4,
+                imageUrl: widget.product.imageModel!.imageURL!,
+                placeholder: (context, url) => LoadingWidget(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             Text(
               widget.product.name!,
