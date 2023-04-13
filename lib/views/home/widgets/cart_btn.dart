@@ -13,7 +13,7 @@ class CartButton extends GetView<AppController> {
     return GetX<CartController>(builder: (cartCtrl) {
       return Badge(
         isLabelVisible: cartCtrl.listCart.isNotEmpty,
-        label: Text(cartCtrl.listCart.length.toString()),
+        label: Text(cartCtrl.listCart.groupProductsByName().length.toString()),
         child: NeumorphicButton(
           style: NeumorphicStyle(
             boxShape: const NeumorphicBoxShape.circle(),

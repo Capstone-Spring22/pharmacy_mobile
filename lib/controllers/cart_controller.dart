@@ -8,6 +8,26 @@ import 'package:pharmacy_mobile/controllers/user_controller.dart';
 import 'package:pharmacy_mobile/models/cart.dart';
 import 'package:pharmacy_mobile/services/cart_service.dart';
 
+extension groupCartItems on List<CartItem> {
+  List<List<CartItem>> groupProductsByName() {
+    List<List<CartItem>> groupedProducts = [];
+    String currentName = '';
+
+    try {
+      for (var cartItem in cartController.listCart) {
+        if (cartItem.productName != currentName) {
+          currentName = cartItem.productName!;
+          groupedProducts.add([cartItem]);
+        } else {
+          groupedProducts.last.add(cartItem);
+        }
+      }
+    } catch (e) {}
+
+    return groupedProducts;
+  }
+}
+
 class CartController extends GetxController {
   static CartController instance = Get.find();
 

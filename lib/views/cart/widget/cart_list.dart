@@ -6,6 +6,7 @@ import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
 import 'package:pharmacy_mobile/main.dart';
+import 'package:pharmacy_mobile/models/cart.dart';
 import 'package:pharmacy_mobile/widgets/quan_control.dart';
 
 class CartItemListView extends GetView<CartController> {
@@ -29,75 +30,98 @@ class CartItemListView extends GetView<CartController> {
   Widget build(BuildContext context) {
     return GetX<CartController>(builder: (controller) {
       if (controller.listCart.isNotEmpty) {
+        List<List<CartItem>> tempList =
+            controller.listCart.value.groupProductsByName();
+
         return ListView.builder(
           shrinkWrap: true,
-          itemCount: controller.listCart.length,
+          itemCount: tempList.length,
           itemBuilder: (context, index) {
-            final item = controller.listCart[index];
+            final item = tempList[index];
 
-            final unitName = extractUname(item.productId!);
-            return GestureDetector(
-              onTap: () => Get.toNamed(
-                '/product_detail',
-                arguments: item.productId,
-                preventDuplicates: false,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    if (item.productImageUrl == null) LoadingWidget(),
-                    if (item.productImageUrl != null)
-                      CachedNetworkImage(
-                        imageUrl: item.productImageUrl!,
-                        placeholder: (context, url) => LoadingWidget(),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
-                      ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Text(
-                        item.productName.toString(),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: context.textTheme.titleMedium,
-                      ),
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: AnimatedSwitcher(
-                              key: UniqueKey(),
-                              switchInCurve: Curves.easeIn,
-                              duration: const Duration(milliseconds: 300),
-                              child: AutoSizeText(
-                                (item.priceAfterDiscount ?? item.price)!
-                                    .convertCurrentcy(),
-                                style: context.theme.primaryTextTheme.bodyLarge!
-                                    .copyWith(color: Colors.black),
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: context.theme.primaryColor),
+                ),
+                child: GestureDetector(
+                  onTap: () => Get.toNamed(
+                    '/product_detail',
+                    arguments: item[0].productId,
+                    preventDuplicates: false,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      children: [
+                        if (item[0].productImageUrl == null) LoadingWidget(),
+                        if (item[0].productImageUrl != null)
+                          CachedNetworkImage(
+                            imageUrl: item[0].productImageUrl!,
+                            placeholder: (context, url) => LoadingWidget(),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                          ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: Text(
+                            item[0].productName.toString(),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: context.textTheme.titleMedium,
+                          ),
+                        ),
+                        ...item.map(
+                          (e) {
+                            final unitName = extractUname(e.productId!);
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 3),
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(),
+                                    ),
+                                    Expanded(
+                                      flex: 4,
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: AutoSizeText(
+                                          (e.priceAfterDiscount ?? e.price)!
+                                              .convertCurrentcy(),
+                                          style: context
+                                              .theme.primaryTextTheme.bodyLarge!
+                                              .copyWith(color: Colors.black),
+                                          maxLines: 1,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 4,
+                                      child: QuantityControl(e.productId!),
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: AutoSizeText(
+                                        unitName!,
+                                        maxLines: 1,
+                                        style: context.textTheme.bodyLarge,
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: QuantityControl(item.productId!),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: AutoSizeText(
-                              unitName!,
-                              maxLines: 1,
-                              style: context.textTheme.bodyLarge,
-                            ),
-                          )
-                        ],
-                      ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             );

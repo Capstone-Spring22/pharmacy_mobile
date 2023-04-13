@@ -33,7 +33,10 @@ class ProductDetailScreen extends GetView<AppController> {
 
   @override
   Widget build(BuildContext context) {
-    String pid = Get.arguments;
+    String pid = '';
+    try {
+      pid = Get.arguments;
+    } catch (e) {}
     GlobalKey<ScaffoldState> drawerKey = GlobalKey();
     return FutureBuilder(
         future: productController.getProductById(pid),
@@ -111,7 +114,8 @@ class ProductDetailScreen extends GetView<AppController> {
                               )
                             ],
                           );
-                        } else if (snapshot.data is String) {
+                        } else if (snapshot.data is String ||
+                            snapshot.data == null) {
                           return const Text("Empty Error");
                         } else {
                           final detail = snapshot.data;

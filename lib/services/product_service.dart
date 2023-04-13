@@ -201,10 +201,10 @@ class ProductService {
   }
 
   Future<PharmacyDetail?> getProductDetail(String id) async {
-    var response = await dio.get(
-      '${api}Product/View/$id',
-    );
     try {
+      var response = await dio.get(
+        '${api}Product/View/$id',
+      );
       return PharmacyDetail.fromJson(response.data);
     } catch (e) {
       log(e.toString());

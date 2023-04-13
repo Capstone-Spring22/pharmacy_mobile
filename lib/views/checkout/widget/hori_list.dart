@@ -18,8 +18,10 @@ class HorizontalList extends StatefulWidget {
 
 class _HorizontalListState extends State<HorizontalList> {
   int index = 0;
+
   @override
   Widget build(BuildContext context) {
+    final tempList = widget.ctl.listCart.groupProductsByName();
     final item = widget.ctl.listCart[index];
     return SizedBox(
       height: Get.height * .2,
@@ -36,9 +38,9 @@ class _HorizontalListState extends State<HorizontalList> {
                 });
               }
             },
-            items: widget.ctl.listCart.map((e) {
+            items: tempList.map((e) {
               return ImageCarditem(
-                e.productImageUrl!,
+                e[0].productImageUrl!,
                 h: Get.width * 0.25,
                 w: Get.width * 0.25,
                 context: context,

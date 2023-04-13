@@ -39,47 +39,24 @@ class MenuDrawer extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Column(
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                appController.pageIndex.value = 4;
-                                appController.drawerKey.currentState!
-                                    .closeDrawer();
-                                // Get.log(controller.user.value.toString());
-                              },
-                              child: controller.user.value!.name == null
-                                  ? AutoSizeText(
-                                      "Đặt tên >",
-                                      style: context.textTheme.headlineSmall!
-                                          .copyWith(
-                                        decoration: TextDecoration.underline,
-                                        decorationColor: Colors.blue,
-                                        shadows: [
-                                          const Shadow(
-                                            color: Colors.blue,
-                                            offset: Offset(0, -5),
-                                          )
-                                        ],
-                                        color: Colors.transparent,
-                                      ),
-                                    )
-                                  : AutoSizeText(
-                                      controller.user.value!.name!,
-                                      style: context.textTheme.headlineSmall!
-                                          .copyWith(
-                                        decoration: TextDecoration.underline,
-                                        decorationColor: Colors.blue,
-                                        shadows: [
-                                          const Shadow(
-                                            color: Colors.blue,
-                                            offset: Offset(0, -5),
-                                          )
-                                        ],
-                                        color: Colors.transparent,
-                                      ),
-                                    ),
+                            AutoSizeText(
+                              controller.user.value!.name!,
+                              style: context.textTheme.headlineSmall!.copyWith(
+                                decoration: TextDecoration.underline,
+                                decorationColor: Colors.blue,
+                                shadows: [
+                                  const Shadow(
+                                    color: Colors.blue,
+                                    offset: Offset(0, -5),
+                                  )
+                                ],
+                                color: Colors.transparent,
+                              ),
                             ),
-                            Text(controller.formatPhoneNumber(
-                                controller.user.value!.phoneNo!)),
+                            Text(
+                              controller.formatPhoneNumber(
+                                  controller.user.value!.phoneNo!),
+                            ),
                           ],
                         ),
                       )

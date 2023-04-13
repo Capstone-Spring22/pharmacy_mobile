@@ -41,7 +41,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     CheckoutController checkoutController = Get.find();
-
+    checkoutController.isCollase.value = false;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Thanh toán"),
