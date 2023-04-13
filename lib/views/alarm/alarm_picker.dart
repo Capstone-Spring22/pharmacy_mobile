@@ -147,9 +147,7 @@ class _AlarmPickerState extends State<AlarmPicker> {
                                 currentType = value!;
                               });
                             },
-                            onSaved: (value) {
-                              Get.log(value.toString());
-                            },
+                            onSaved: (value) {},
                             value: ff[0],
                           ),
                         ],

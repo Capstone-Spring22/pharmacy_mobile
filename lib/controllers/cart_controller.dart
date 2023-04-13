@@ -35,11 +35,9 @@ class CartController extends GetxController {
     if (isLogged) {
       docId = await CartService().getCartId();
       if (docId != null) {
-        Get.log("have docId");
         listCart.clear();
         listCart.bindStream(firebaseStreamCart(docId!));
       } else if (docId == "useUserId") {
-        Get.log("No docId");
         // listCart.clear();
         // while (userController.user.value.id == null) {
         //   await Future.delayed(const Duration(milliseconds: 500));
@@ -94,6 +92,8 @@ class CartController extends GetxController {
     CartService().postCart(addMap);
   }
 
+  void saveToMockLocal(CartItem item) {}
+
   void increaseQuan(String productId) {
     var cartItem = getCartItem(productId);
     var addMap = createMap(cartItem, cartItem.quantity! + 1);
@@ -138,7 +138,8 @@ class CartController extends GetxController {
   num calculateTotal() {
     double total = 0.0;
     for (var item in listCart) {
-      total += item.priceTotal! * item.quantity!;
+      total += item.priceTotal!;
+      // total += item.priceTotal! * item.quantity!;
     }
     return total;
   }

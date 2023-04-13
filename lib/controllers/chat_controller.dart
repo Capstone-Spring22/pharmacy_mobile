@@ -1,5 +1,6 @@
 // ignore_for_file: unused_local_variable, library_private_types_in_public_api
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,11 +8,12 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:get/get.dart' hide FormData, MultipartFile;
+import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 
 import 'package:image_picker/image_picker.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/models/message.dart';
+import 'package:pharmacy_mobile/models/pharmacy_user.dart';
 import 'package:pharmacy_mobile/widgets/input.dart';
 
 class ChatController extends GetxController {
@@ -31,7 +33,7 @@ class ChatController extends GetxController {
         chats.clear();
       } else {
         ever(userController.user, (u) {
-          if (u.id != null) {
+          if (u is PharmacyUser) {
             _getChats(u.id!);
           }
         });
@@ -69,7 +71,7 @@ class ChatController extends GetxController {
 
   Future sendRequest(String request) async {
     const pharmacistId = '';
-    final patientId = userController.user.value.id;
+    final patientId = userController.user.value!.id;
     final timestamp = Timestamp.now();
     const status = 'pending';
     const lastMessage = 'lastMessage';
@@ -127,40 +129,49 @@ class MessageController extends GetxController {
 
   final String chatId = Get.arguments['id'];
 
-  Future<void> pickImage() async {
+  static Future<String> pickImage() async {
     final ImagePicker picker = ImagePicker();
+    String url = '';
     XFile? image;
     //show a dialog asking the user to pick an image or take a photo
-    Get.defaultDialog(
-      title: 'Pick your image',
-      middleText: 'Pick an image or take a photo',
+    await Get.defaultDialog(
+      title: 'Chọn ảnh',
+      middleText: 'Lấy ảnh từ thư viện hoặc chụp ảnh mới',
       actions: [
         // Pick an image.
         TextButton(
           onPressed: () async {
-            confirmImageSent(
-                await picker.pickImage(source: ImageSource.gallery), 'image');
+            image = await picker.pickImage(source: ImageSource.gallery);
+            if (image != null) {
+              url = (await confirmImageSent(image, 'image'))!;
+              Get.back();
+            }
           },
-          child: const Text('Pick an image'),
+          child: const Text('Thư viện ảnh'),
         ),
         // Capture a photo.
         TextButton(
           onPressed: () async {
-            confirmImageSent(
-                await picker.pickImage(source: ImageSource.camera), 'photo');
+            image = await picker.pickImage(source: ImageSource.camera);
+            if (image != null) {
+              url = (await confirmImageSent(image, 'photo'))!;
+              Get.back();
+            }
           },
-          child: const Text('Capture a photo'),
+          child: const Text('Chụp ảnh mới'),
         ),
       ],
     );
+    return url;
   }
 
-  void confirmImageSent(XFile? image, String type) {
+  static Future<String?> confirmImageSent(XFile? image, String type) async {
+    String? url;
     if (image != null) {
-      Get.back();
-      Get.dialog(
+      Completer<String?> completer = Completer<String?>(); // Create a completer
+      await Get.dialog(
         AlertDialog(
-          title: const Text('Confirm'),
+          title: const Text('Chọn ảnh này'),
           content: SizedBox(
             height: Get.height * .3,
             child: Column(
@@ -170,47 +181,52 @@ class MessageController extends GetxController {
                   File(image.path),
                   height: 180,
                 ),
-                const Text('Are you sure you want to send this image?'),
+                const Text(
+                    'Bạn có chắc muốn dùng ảnh này? Bạn có thể thay đổi lại bất cứ lúc nào.'),
               ],
             ),
           ),
           actions: [
             TextButton(
               onPressed: () {
-                Get.back();
+                Navigator.of(Get.overlayContext!).pop(); // Close the dialog
+                completer.complete(null); // Complete the completer with null
               },
               child: const Text('No'),
             ),
             TextButton(
               onPressed: () async {
-                Get.back();
+                Navigator.of(Get.overlayContext!).pop(); // Close the dialog
                 final ImagePicker picker = ImagePicker();
                 if (type == 'image') {
-                  confirmImageSent(
+                  await confirmImageSent(
                       await picker.pickImage(source: ImageSource.gallery),
                       'image');
                 } else {
-                  confirmImageSent(
+                  await confirmImageSent(
                       await picker.pickImage(source: ImageSource.gallery),
                       'photo');
                 }
               },
-              child: const Text('Pick Another'),
+              child: const Text('Chọn ảnh khác'),
             ),
             TextButton(
-              onPressed: () {
-                Get.back();
-                uploadImage(image);
+              onPressed: () async {
+                Navigator.of(Get.overlayContext!).pop(); // Close the dialog
+                url = await uploadImage(image);
+                completer.complete(url); // Complete the completer with the url
               },
-              child: const Text('Yes'),
+              child: const Text('Xác nhận'),
             ),
           ],
         ),
       );
-    } else {}
+      return completer.future; // Return the future of the completer
+    }
+    return url;
   }
 
-  Future uploadImage(XFile imageFile) async {
+  static Future<String> uploadImage(XFile imageFile) async {
     final dio = appController.dio;
     final api = dotenv.env['API_URL']!;
 
@@ -221,10 +237,11 @@ class MessageController extends GetxController {
 
     RxInt sent = 0.obs;
     RxInt total = 0.obs;
+    Response? res;
 
     Get.dialog(
       Obx(() => AlertDialog(
-            title: const Text('Uploading Image'),
+            title: const Text('Đang tải ảnh lên'),
             content: SizedBox(
               height: Get.height * .3,
               child: Column(
@@ -234,7 +251,7 @@ class MessageController extends GetxController {
                     File(imageFile.path),
                     height: 180,
                   ),
-                  const Text('Please wait while your image is uploaded'),
+                  const Text('Xin đợi khi đang tải ảnh lên'),
                   LinearProgressIndicator(
                     value: total.value == 0 ? 0 : sent.value / total.value,
                   ),
@@ -247,7 +264,7 @@ class MessageController extends GetxController {
           )),
     );
 
-    var res = await dio.post(
+    res = await dio.post(
       '${api}Utility/UploadFile',
       data: formData,
       onSendProgress: (int s, int t) {
@@ -256,13 +273,10 @@ class MessageController extends GetxController {
       },
     );
 
-    await Future.delayed(const Duration(milliseconds: 500));
-
-    if (res.statusCode == 200) {
-      sendImageUrl(res.data);
-    }
+    await Future.delayed(const Duration(milliseconds: 200));
 
     Get.back();
+    return res.data;
   }
 
   Future<void> fetchMessages(String chatId) async {
@@ -281,7 +295,7 @@ class MessageController extends GetxController {
     final timestamp = Timestamp.now();
     final chatMessage = ChatMessage(
       message: url,
-      senderId: userController.user.value.id!,
+      senderId: userController.user.value!.id!,
       timestamp: timestamp,
       type: 'image',
     );
@@ -306,7 +320,7 @@ class MessageController extends GetxController {
     final timestamp = Timestamp.now();
     final chatMessage = ChatMessage(
       message: txt.text,
-      senderId: userController.user.value.id!,
+      senderId: userController.user.value!.id!,
       timestamp: timestamp,
       type: 'text',
     );

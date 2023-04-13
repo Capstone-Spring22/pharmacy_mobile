@@ -40,10 +40,10 @@ class QuantityControlDetail extends GetView<CartController> {
             ),
           ),
           onConfirm: () {
-            // controller.updateQuantity(
-            //   product.id!,
-            //   num.parse(txt.text),
-            // );
+            controller.customQuan(
+              productId,
+              num.parse(txt.text),
+            );
             Get.back();
           },
           onCancel: () {},

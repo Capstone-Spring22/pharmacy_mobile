@@ -153,9 +153,6 @@ class RenderList extends StatelessWidget {
                         final detail =
                             OrderHistoryDetail.fromJson(snapshot.data);
                         if (detail.orderPickUp != null) {
-                          for (var element in productController.listSite) {
-                            Get.log(element.id.toString());
-                          }
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

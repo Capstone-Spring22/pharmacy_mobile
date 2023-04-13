@@ -17,9 +17,13 @@ class PharmacyBackButton extends GetView<AppController> {
         shape: NeumorphicShape.flat,
       ),
       onPressed: () {
-        controller.drawerKey.currentState!.closeDrawer();
-        controller.drawerKey.currentState!.closeEndDrawer();
-        Get.back();
+        if (Get.previousRoute == '/order_success') {
+          Get.offAllNamed('/navhub');
+        } else {
+          controller.drawerKey.currentState!.closeDrawer();
+          controller.drawerKey.currentState!.closeEndDrawer();
+          Get.back();
+        }
         if (fn != null) {
           fn!();
         }

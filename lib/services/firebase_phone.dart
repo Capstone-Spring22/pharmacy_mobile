@@ -10,6 +10,7 @@ class PhoneAuth {
 
   Future<void> verifyPhoneNumber() async {
     verificationCompleted(AuthCredential credential) async {
+      Get.log("verification Completed: $credential");
       await _auth.signInWithCredential(credential);
     }
 
@@ -19,13 +20,16 @@ class PhoneAuth {
           content: Text("Phone Verification Failed ${exception.message}")));
     }
 
-    codeSent(String verificationId, int? forceResendingToken) async =>
-        _verificationId = verificationId;
+    codeSent(String verificationId, int? forceResendingToken) async {
+      Get.log("code Sent: $verificationId");
+      _verificationId = verificationId;
+    }
 
     codeAutoRetrievalTimeout(String verificationId) =>
         _verificationId = verificationId;
 
     await _auth.verifyPhoneNumber(
+      // autoRetrievedSmsCodeForTesting: "123123",
       phoneNumber: toE164(_phoneNumber.substring(1)),
       timeout: const Duration(seconds: 60),
       verificationCompleted: verificationCompleted,

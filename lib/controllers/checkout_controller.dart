@@ -77,7 +77,7 @@ class CheckoutController extends GetxController {
       }
     });
 
-    if (user.name != null) {
+    if (user!.name != null) {
       nameCtl.text = user.name!;
     }
     phoneCtl.text = user.phoneNo!;
@@ -278,7 +278,7 @@ class CheckoutController extends GetxController {
       ));
     }
 
-    final address = detailUser.customerAddressList!
+    final address = detailUser!.customerAddressList!
         .singleWhere((element) => element.isMainAddress == true);
 
     num shipping = 25000;
@@ -319,8 +319,9 @@ class CheckoutController extends GetxController {
         await OrderService().wipeCart(cartController.docId!);
         Get.back();
         if (value == 200) {
-          Get.offAndToNamed(
+          Get.offNamedUntil(
             '/order_success',
+            (route) => route.settings.name == '/navhub',
             arguments: order.orderId,
           );
         } else {

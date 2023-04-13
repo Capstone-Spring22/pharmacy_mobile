@@ -21,9 +21,9 @@ class AddressCardCollase extends GetView<UserController> {
               leading: const Icon(Icons.location_on),
               title: const Text("Địa chỉ chính"),
               subtitle: userController
-                      .detailUser.value.customerAddressList!.isEmpty
+                      .detailUser.value!.customerAddressList!.isEmpty
                   ? const Text("Không có địa chỉ, hãy thêm địa chỉ")
-                  : Text(controller.detailUser.value.customerAddressList!
+                  : Text(controller.detailUser.value!.customerAddressList!
                       .singleWhere((element) => element.isMainAddress == true)
                       .fullyAddress!),
               trailing: const Icon(Icons.more_horiz),
@@ -109,7 +109,7 @@ class AddressCardExtend extends GetView<UserController> {
                         ),
                       ],
                     ),
-                    ...controller.detailUser.value.customerAddressList!
+                    ...controller.detailUser.value!.customerAddressList!
                         .map((e) => AddressInfo(address: e, key: UniqueKey()))
                         .toList()
                   ],

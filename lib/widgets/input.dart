@@ -11,7 +11,9 @@ class Input extends StatelessWidget {
   final String? hint;
   final Function(String)? onSubmit;
   final bool centerText;
+  final bool readOnly;
   final TextInputAction? inputAction;
+  final int? maxLines;
   const Input(
       {Key? key,
       required this.inputController,
@@ -22,7 +24,9 @@ class Input extends StatelessWidget {
       this.enabled = true,
       this.hint,
       this.inputAction,
+      this.maxLines = 1,
       this.centerText = false,
+      this.readOnly = false,
       this.onSubmit})
       : super(key: key);
 
@@ -55,6 +59,9 @@ class Input extends StatelessWidget {
               onChanged: onChanged,
               keyboardType: inputType ?? TextInputType.text,
               style: context.textTheme.bodyLarge,
+              expands: maxLines == null,
+              readOnly: readOnly,
+              maxLines: maxLines,
               decoration: InputDecoration(
                 label: title != null ? Text(title!) : null,
                 labelStyle: context.textTheme.bodyLarge,

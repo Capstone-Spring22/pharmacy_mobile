@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide Response;
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/models/detail_user.dart';
 import 'package:pharmacy_mobile/models/pharmacy_user.dart';
@@ -10,8 +10,8 @@ import 'package:pharmacy_mobile/services/user_service.dart';
 class UserController extends GetxController {
   static UserController instance = Get.find();
 
-  Rx<PharmacyUser> user = PharmacyUser().obs;
-  Rx<DetailUser> detailUser = DetailUser().obs;
+  Rx<PharmacyUser?> user = null.obs;
+  Rx<DetailUser?> detailUser = null.obs;
 
   RxBool isLoggedIn = false.obs;
 
@@ -27,46 +27,86 @@ class UserController extends GetxController {
   }
 
   _setUser(User? firebaseUser) async {
-    isLoggedIn.value = firebaseUser != null;
     try {
-      if (firebaseUser != null && user == PharmacyUser().obs) {
+      if (firebaseUser != null) {
         var firebaseToken = await firebaseUser.getIdToken();
-        user.value = await loginToken(firebaseToken);
+        var result = await loginToken(firebaseToken);
 
-        detailUser.value = await UserService().getUserDetail(user.value.id!);
-
-        options = Options(
-          headers: {
-            'Authorization': 'Bearer ${userController.user.value.token}'
-          },
-        );
+        if (result is PharmacyUser) {
+          user = result.obs;
+          user.refresh();
+          var userDetailRes =
+              await UserService().getUserDetail(user.value!.id!);
+          if (userDetailRes is DetailUser) {
+            detailUser = userDetailRes.obs;
+            detailUser.refresh();
+          }
+          options = Options(
+            headers: {
+              'Authorization': 'Bearer ${userController.user.value!.token}'
+            },
+          );
+        } else {
+          if (appController.isAppInitialized) {
+            Get.defaultDialog(
+                title: "Tài khoản không tồn tại",
+                middleText: "Di chuyển đến trang đăng kí?",
+                onConfirm: () {
+                  Get.offNamed('/signup', arguments: {
+                    'token': firebaseToken,
+                  });
+                },
+                textConfirm: 'Đăng kí',
+                onCancel: () {
+                  appController.setPage(0);
+                  appController.drawerKey.currentState!.closeDrawer();
+                  Get.offNamedUntil('/navhub', (route) => route.isFirst);
+                },
+                textCancel: "Hủy");
+          } else {
+            appController.isAppInitialized = true;
+          }
+        }
       } else {
-        user = PharmacyUser().obs;
+        user = null.obs;
+        detailUser = null.obs;
         options = null;
       }
     } catch (e) {
-      Get.log(e.toString());
+      Get.log("Error set user: $e");
     }
+
+    isLoggedIn.value = firebaseUser is User &&
+        user.value is PharmacyUser &&
+        detailUser.value is DetailUser;
   }
 
   Future refeshUser() async {
-    detailUser.value = await UserService().getUserDetail(user.value.id!);
+    detailUser.value = await UserService().getUserDetail(user.value!.id!);
   }
 
   String formatPhoneNumber(String phoneNumber) {
     return phoneNumber.padLeft(10, '0');
   }
 
-  Future<PharmacyUser> loginToken(String token) async {
+  Future loginToken(String token) async {
     final api = dotenv.env['API_URL']!;
     final dio = appController.dio;
-
-    var res = await dio
-        .post("${api}Member/Customer/Login", data: {"firebaseToken": token});
+    Response? res;
+    try {
+      res = await dio
+          .post("${api}Member/Customer/Login", data: {"firebaseToken": token});
+      Get.log(res.statusCode.toString());
+    } on DioError catch (e) {
+      if (e.response!.statusCode == 404) {
+        return;
+      }
+    }
 
     appController.drawerKey.currentState!.closeDrawer();
+    Get.log("Current rotue: ${Get.currentRoute}");
     Get.back();
-    return PharmacyUser.fromMap(res.data);
+    return PharmacyUser.fromMap(res!.data);
   }
 
   Future logout() async {
@@ -77,8 +117,8 @@ class UserController extends GetxController {
   }
 
   void resetState() {
-    user = PharmacyUser().obs;
-    detailUser = DetailUser().obs;
+    user = null.obs;
+    detailUser = null.obs;
     isLoggedIn = false.obs;
     options = null;
     cartController

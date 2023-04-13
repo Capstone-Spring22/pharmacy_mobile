@@ -13,8 +13,6 @@ class CartItemListView extends GetView<CartController> {
 
   String? extractUname(String uid) {
     for (var product in productController.products) {
-      Get.log(product.name!);
-      Get.log(uid);
       try {
         var productRef = product.productUnitReferences!.singleWhere(
           (productRef) {
@@ -36,7 +34,7 @@ class CartItemListView extends GetView<CartController> {
           itemCount: controller.listCart.length,
           itemBuilder: (context, index) {
             final item = controller.listCart[index];
-            Get.log(item.productId!);
+
             final unitName = extractUname(item.productId!);
             return GestureDetector(
               onTap: () => Get.toNamed(

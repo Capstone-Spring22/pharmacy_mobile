@@ -14,8 +14,6 @@ class ListCheckout extends StatelessWidget {
 
   String? extractUname(String uid) {
     for (var product in productController.products) {
-      Get.log(product.name!);
-      Get.log(uid);
       try {
         var productRef = product.productUnitReferences!.singleWhere(
           (productRef) {

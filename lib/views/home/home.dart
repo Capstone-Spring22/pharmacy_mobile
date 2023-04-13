@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
 import 'package:pharmacy_mobile/controllers/user_controller.dart';
+import 'package:pharmacy_mobile/models/detail_user.dart';
 import 'package:pharmacy_mobile/models/pharmacy_user.dart';
 import 'package:pharmacy_mobile/views/camera/camera.dart';
 import 'package:pharmacy_mobile/views/home/widgets/cart_btn.dart';
@@ -69,13 +70,15 @@ class HomeScreen extends StatelessWidget {
           // titleStyle:
           //     context.textTheme.headlineMedium!.copyWith(fontSize: 30.h),
         ),
-        GetBuilder<UserController>(
+        GetX<UserController>(
           builder: (userCtl) {
             String txt = "";
-            if (userCtl.user == PharmacyUser().obs) {
-              txt = setWelcomeText();
+            if (userCtl.user.value is PharmacyUser &&
+                userCtl.isLoggedIn.isTrue &&
+                userCtl.detailUser.value is DetailUser) {
+              txt = "${setWelcomeText()}, ${userCtl.user.value!.name}";
             } else {
-              txt = "${setWelcomeText()}, ${userCtl.user.value.name}";
+              txt = setWelcomeText();
             }
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 5),

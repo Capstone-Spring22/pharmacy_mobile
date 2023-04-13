@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:pharmacy_mobile/constrains/controller.dart';
 
 import '../../../services/firebase_phone.dart';
 
@@ -81,6 +82,8 @@ class CodeSent extends StatelessWidget {
                     .then((value) {
                   Get.back();
                   Get.back();
+                  // Get.back();
+                  // Get.back();
                 });
               },
             ),

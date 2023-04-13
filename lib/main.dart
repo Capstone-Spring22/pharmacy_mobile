@@ -43,9 +43,19 @@ extension PriceConvert on num {
   }
 }
 
+extension DateToDateFormat on DateTime {
+  String get convertToDate {
+    return DateFormat.yMMMMd('vi_VN').format(this);
+  }
+}
+
 extension DateFormatter on String {
   String get convertToDate {
     return DateFormat.yMMMMd('vi_VN').format(DateTime.parse(this));
+  }
+
+  String get convertToOriginalPhone {
+    return replaceFirst("+84", "0");
   }
 }
 

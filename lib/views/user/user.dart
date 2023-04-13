@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/user_controller.dart';
 import 'package:pharmacy_mobile/main.dart';
+import 'package:pharmacy_mobile/models/detail_user.dart';
+import 'package:pharmacy_mobile/models/pharmacy_user.dart';
 import 'package:pharmacy_mobile/views/drawer/widgets/auth_button_row.dart';
 import 'package:pharmacy_mobile/views/user/widget/info_card.dart';
 import 'package:pharmacy_mobile/widgets/user_avatar.dart';
@@ -17,7 +19,8 @@ class UserScreen extends GetView<UserController> {
   Widget build(BuildContext context) {
     return Obx(() {
       if (userController.isLoggedIn.value &&
-          controller.user.value.phoneNo != null) {
+          controller.user.value is PharmacyUser &&
+          controller.detailUser.value is DetailUser) {
         return Scaffold(
           body: SafeArea(
             child: SingleChildScrollView(
@@ -27,7 +30,7 @@ class UserScreen extends GetView<UserController> {
                   children: [
                     const UserAvatar(),
                     const SizedBox(height: 20),
-                    controller.user.value.name == null
+                    controller.user.value!.name == null
                         ? AutoSizeText(
                             "Đặt tên >",
                             style: context.textTheme.headlineMedium!.copyWith(
@@ -43,7 +46,7 @@ class UserScreen extends GetView<UserController> {
                             ),
                           )
                         : AutoSizeText(
-                            controller.user.value.name!,
+                            controller.user.value!.name!,
                             style: context.textTheme.headlineMedium!.copyWith(
                               decorationColor: Colors.blue,
                               shadows: [
@@ -57,15 +60,15 @@ class UserScreen extends GetView<UserController> {
                           ),
                     InfoCard(
                       icon: Icons.phone,
-                      text: controller.user.value.phoneNo.toString(),
+                      text: controller.user.value!.phoneNo.toString(),
                     ),
                     InfoCard(
                       icon: Icons.email,
-                      text: controller.user.value.email.toString(),
+                      text: controller.user.value!.email.toString(),
                     ),
                     InfoCard(
                       icon: Icons.cake,
-                      text: controller.detailUser.value.dob!.convertToDate,
+                      text: controller.detailUser.value!.dob!.convertToDate,
                     ),
                     const AddressCard(),
                     GestureDetector(

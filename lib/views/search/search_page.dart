@@ -115,9 +115,9 @@ class SearchScreen extends GetView<AppController> {
                                   );
                                 } else {
                                   final list = snapshot.data;
-                                  Get.log(list!.length.toString());
+
                                   return ListView.builder(
-                                    itemCount: list.length,
+                                    itemCount: list!.length,
                                     itemBuilder: (context, index) {
                                       final item = list[index];
 

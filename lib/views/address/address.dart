@@ -7,7 +7,9 @@ import 'package:pharmacy_mobile/models/detail_user.dart';
 import 'package:pharmacy_mobile/widgets/input.dart';
 
 class AddressSelectionScreen extends StatefulWidget {
-  const AddressSelectionScreen({super.key});
+  const AddressSelectionScreen({super.key, this.isForCreateUser = false});
+
+  final bool isForCreateUser;
 
   @override
   State<AddressSelectionScreen> createState() => _AddressSelectionScreenState();
@@ -120,7 +122,8 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
                             addressController.addressTile.value.isEmpty
                         ? null
                         : () {
-                            addressController.addAddress();
+                            addressController
+                                .addAddress(widget.isForCreateUser);
                           },
                     child: const Text("Thêm Địa chỉ"),
                   ),
@@ -282,26 +285,29 @@ class AddressController extends GetxController {
     ever(userController.detailUser, addListUserAddress);
   }
 
-  void addListUserAddress(DetailUser user) {
-    int index = 0;
-    listUserAddress.clear();
-    if (user.customerAddressList != null) {
-      for (var element in user.customerAddressList!) {
-        listUserAddress.add(element.id!);
-        if (element.isMainAddress == true) {
-          selectedAddressid.value = element.id!;
-          index = listUserAddress.indexOf(element.id);
+  void addListUserAddress(DetailUser? user) {
+    if (user is DetailUser) {
+      int index = 0;
+      listUserAddress.clear();
+      if (user.customerAddressList != null) {
+        for (var element in user.customerAddressList!) {
+          listUserAddress.add(element.id!);
+          if (element.isMainAddress == true) {
+            selectedAddressid.value = element.id!;
+            index = listUserAddress.indexOf(element.id);
+          }
         }
+        userController.detailUser.value!.customerAddressList!.insert(
+            0, userController.detailUser.value!.customerAddressList![index]);
+        userController.detailUser.value!.customerAddressList!
+            .removeAt(index + 1);
       }
-      userController.detailUser.value.customerAddressList!.insert(
-          0, userController.detailUser.value.customerAddressList![index]);
-      userController.detailUser.value.customerAddressList!.removeAt(index + 1);
     }
   }
 
   Future switchMainAddress(String id) async {
     addressController.selectedAddressid.value = id;
-    final address = userController.detailUser.value.customerAddressList!
+    final address = userController.detailUser.value!.customerAddressList!
         .singleWhere((element) => element.id == id);
     var map = {
       "customerAddressId": address.id,
@@ -327,9 +333,9 @@ class AddressController extends GetxController {
     }
   }
 
-  Future addAddress() async {
+  Future addAddress(bool isForCreateUser) async {
     var address = {
-      "customerId": userController.user.value.id,
+      "customerId": isForCreateUser ? '' : userController.user.value!.id,
       "cityId": selectedCityId.value,
       "districtId": selectedDistrictId.value,
       "wardId": selectedWardId.value,
@@ -337,20 +343,37 @@ class AddressController extends GetxController {
       "isMainAddress": false
     };
 
-    AddressService().addAddress(address).then((value) {
-      Get.back();
-      selectedCityId.value = '79';
-      selectedDistrictId.value = '';
-      selectedWardId.value = '';
-      addressTextCtl.clear();
-      searchCityCtrl.clear();
-      searchDistrictCtrl.clear();
-      searchWardCtrl.clear();
-      Get.showSnackbar(const GetSnackBar(
-        message: "Thêm địa chỉ thành công",
-        duration: Duration(seconds: 3),
-      ));
-    });
+    var addAddress = {
+      'cityId': selectedCityId.value,
+      'cityName': listCityMap.firstWhere(
+          (element) => element['id'] == selectedCityId.value)['cityName'],
+      'districtId': selectedDistrictId.value,
+      'districtName': listDistrictMap.firstWhere((element) =>
+          element['id'] == selectedDistrictId.value)['districtName'],
+      'wardId': selectedWardId.value,
+      'wardName': listWardMap.firstWhere(
+          (element) => element['id'] == selectedWardId.value)['wardName'],
+      'homeAddress': addressTextCtl.text,
+    };
+
+    if (isForCreateUser) {
+      Get.back(result: addAddress);
+    } else {
+      AddressService().addAddress(address).then((value) {
+        Get.back();
+        selectedCityId.value = '79';
+        selectedDistrictId.value = '';
+        selectedWardId.value = '';
+        addressTextCtl.clear();
+        searchCityCtrl.clear();
+        searchDistrictCtrl.clear();
+        searchWardCtrl.clear();
+        Get.showSnackbar(const GetSnackBar(
+          message: "Thêm địa chỉ thành công",
+          duration: Duration(seconds: 3),
+        ));
+      });
+    }
     // isCityLoaded.value = false;
     // isDistrictLoaded.value = false;
     // isWardLoaded.value = false;
@@ -450,7 +473,6 @@ class AddressController extends GetxController {
     } catch (e) {
       Get.log("Ward Error: $e");
     }
-    // selectedCityId.value = ((res.body) as List<dynamic>)[0]['id'];
     isWardLoaded.value = true;
   }
 

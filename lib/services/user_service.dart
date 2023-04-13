@@ -6,9 +6,13 @@ class UserService {
   final api = dotenv.env['API_URL']!;
   final dio = appController.dio;
 
-  Future<DetailUser> getUserDetail(String id) async {
-    final res = await dio.get('${api}Customer/$id');
+  Future getUserDetail(String id) async {
+    try {
+      final res = await dio.get('${api}Customer/$id');
 
-    return DetailUser.fromJson(res.data);
+      return DetailUser.fromJson(res.data);
+    } catch (e) {
+      return;
+    }
   }
 }

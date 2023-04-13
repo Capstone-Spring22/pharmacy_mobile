@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/user_controller.dart';
 import 'package:pharmacy_mobile/debug/screen.dart';
+import 'package:pharmacy_mobile/models/detail_user.dart';
+import 'package:pharmacy_mobile/models/pharmacy_user.dart';
 import 'package:pharmacy_mobile/views/alarm/alarm.dart';
 import 'package:pharmacy_mobile/views/order_history/order.dart';
 import 'package:pharmacy_mobile/widgets/user_avatar.dart';
@@ -29,7 +31,9 @@ class MenuDrawer extends StatelessWidget {
                 child: const UserAvatar(),
               ),
               GetX<UserController>(
-                builder: (controller) => controller.isLoggedIn.value
+                builder: (controller) => controller.user.value
+                            is PharmacyUser &&
+                        controller.detailUser.value is DetailUser
                     ? Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Column(
@@ -39,8 +43,9 @@ class MenuDrawer extends StatelessWidget {
                                 appController.pageIndex.value = 4;
                                 appController.drawerKey.currentState!
                                     .closeDrawer();
+                                // Get.log(controller.user.value.toString());
                               },
-                              child: controller.user.value.name == null
+                              child: controller.user.value!.name == null
                                   ? AutoSizeText(
                                       "Đặt tên >",
                                       style: context.textTheme.headlineSmall!
@@ -57,7 +62,7 @@ class MenuDrawer extends StatelessWidget {
                                       ),
                                     )
                                   : AutoSizeText(
-                                      controller.user.value.name!,
+                                      controller.user.value!.name!,
                                       style: context.textTheme.headlineSmall!
                                           .copyWith(
                                         decoration: TextDecoration.underline,
@@ -73,7 +78,7 @@ class MenuDrawer extends StatelessWidget {
                                     ),
                             ),
                             Text(controller.formatPhoneNumber(
-                                controller.user.value.phoneNo!)),
+                                controller.user.value!.phoneNo!)),
                           ],
                         ),
                       )
@@ -81,11 +86,11 @@ class MenuDrawer extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               const Divider(color: Colors.white70),
-              // MenuItem(
-              //   text: 'Thông báo',
-              //   icon: Icons.notifications_outlined,
-              //   onClicked: () {},
-              // ),
+              MenuItem(
+                text: 'Thông báo',
+                icon: Icons.notifications_outlined,
+                onClicked: () => Get.toNamed('/signup'),
+              ),
               OpenContainer(
                 closedBuilder: (context, action) {
                   return const MenuItem(

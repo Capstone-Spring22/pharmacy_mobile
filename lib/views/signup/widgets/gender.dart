@@ -41,7 +41,7 @@ class _GenderSelectState extends State<GenderSelect> {
                       widget.isMale ? Colors.blue : context.theme.disabledColor,
                 ),
                 Text(
-                  "Male",
+                  "Nam",
                   style: context.textTheme.labelLarge!.copyWith(
                     color: widget.isMale
                         ? Colors.blue
@@ -75,7 +75,7 @@ class _GenderSelectState extends State<GenderSelect> {
                       widget.isMale ? context.theme.disabledColor : Colors.pink,
                 ),
                 Text(
-                  "Female",
+                  "Nữ",
                   style: context.textTheme.labelLarge!.copyWith(
                     color: widget.isMale
                         ? context.theme.disabledColor

@@ -105,11 +105,11 @@ class ProductService {
     return listSubCategory;
   }
 
-  Future<List<PharmacyProduct>> fetchHomePageProduct() async {
+  Future<List<PharmacyProduct>> fetchHomePageProduct(int typeId) async {
     List<PharmacyProduct> listProduct = [];
     try {
       var response = await dio.get('${api}Product/HomePage', queryParameters: {
-        'GetProductType': 2,
+        'GetProductType': typeId,
         'pageIndex': 1,
         'pageItems': 10,
         'isPrescription': false,

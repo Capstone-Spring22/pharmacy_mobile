@@ -133,7 +133,6 @@ class ProductDetailScreen extends GetView<AppController> {
                                         ConnectionState.waiting) {
                                       return const LinearProgressIndicator();
                                     } else {
-                                      Get.log(snapshot.data.toString());
                                       final data = snapshot.data;
                                       return ExpansionTile(
                                         title: AutoSizeText(

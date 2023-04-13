@@ -20,8 +20,9 @@ class ListItemBuilder extends StatelessWidget {
           child: controller.isFinishLoading.value
               ? FutureBuilder(
                   future: Future.wait([
-                    ProductService().fetchHomePageProduct(),
-                    ProductService().fetchCategories()
+                    ProductService().fetchHomePageProduct(1),
+                    ProductService().fetchCategories(),
+                    ProductService().fetchHomePageProduct(2),
                   ]),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -32,6 +33,8 @@ class ListItemBuilder extends StatelessWidget {
                     } else {
                       final listHotItems =
                           snapshot.data![0] as List<PharmacyProduct>;
+                      final listFastSell =
+                          snapshot.data![2] as List<PharmacyProduct>;
                       final listCategory =
                           snapshot.data![1] as List<MainCategory>;
                       return Column(
@@ -58,6 +61,34 @@ class ListItemBuilder extends StatelessWidget {
                                             listHotItems[hotItemIndex].id,
                                       ),
                                       product: listHotItems[hotItemIndex],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          DetailContent(
+                            haveDivider: false,
+                            title: "Sản phẩm mới",
+                            content: SizedBox(
+                              height: Get.height * .38,
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: listFastSell.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, fastSellingIndex) =>
+                                    SizedBox(
+                                  width: Get.width * .45,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ProductTile(
+                                      fn: () => Get.toNamed(
+                                        '/product_detail',
+                                        preventDuplicates: false,
+                                        arguments:
+                                            listFastSell[fastSellingIndex].id,
+                                      ),
+                                      product: listFastSell[fastSellingIndex],
                                     ),
                                   ),
                                 ),

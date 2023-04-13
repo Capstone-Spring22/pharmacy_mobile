@@ -17,6 +17,9 @@ class CartService {
         data: item,
         options: userController.options,
       );
+      if (userController.isLoggedIn.isTrue) {
+        cartController.connectToCloudCart(true);
+      }
     } on DioError catch (e) {
       Get.log("Error at post cart: $e");
       if (e.message != null) {

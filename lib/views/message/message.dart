@@ -94,8 +94,9 @@ class _MessageScreenState extends State<MessageScreen> {
             child: Row(
               children: [
                 IconButton(
-                    onPressed: () {
-                      messageController.pickImage();
+                    onPressed: () async {
+                      var imgUrl = await MessageController.pickImage();
+                      messageController.sendImageUrl(imgUrl);
                     },
                     icon: const Icon(Icons.photo)),
                 Expanded(
