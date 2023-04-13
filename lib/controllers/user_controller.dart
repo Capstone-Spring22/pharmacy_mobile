@@ -47,7 +47,9 @@ class UserController extends GetxController {
             },
           );
         } else {
-          if (appController.isAppInitialized) {
+          Get.log(Get.previousRoute);
+          Get.log("Current Route: ${Get.currentRoute}");
+          if (Get.currentRoute == '/signin') {
             Get.defaultDialog(
                 title: "Tài khoản không tồn tại",
                 middleText: "Di chuyển đến trang đăng kí?",
@@ -63,8 +65,6 @@ class UserController extends GetxController {
                   Get.offNamedUntil('/navhub', (route) => route.isFirst);
                 },
                 textCancel: "Hủy");
-          } else {
-            appController.isAppInitialized = true;
           }
         }
       } else {

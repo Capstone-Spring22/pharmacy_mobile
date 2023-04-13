@@ -30,7 +30,6 @@ class AppController extends GetxController {
   RxString debugText = "".obs;
 
   Dio dio = Dio();
-  bool isAppInitialized = false;
 
   late CacheStore cacheStore;
   late CacheOptions cacheOptions;

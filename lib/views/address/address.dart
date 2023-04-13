@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
+import 'package:pharmacy_mobile/helpers/snack.dart';
 import 'package:pharmacy_mobile/models/detail_user.dart';
 import 'package:pharmacy_mobile/widgets/input.dart';
 
@@ -357,6 +358,13 @@ class AddressController extends GetxController {
     };
 
     if (isForCreateUser) {
+      selectedCityId.value = '79';
+      selectedDistrictId.value = '';
+      selectedWardId.value = '';
+      addressTextCtl.clear();
+      searchCityCtrl.clear();
+      searchDistrictCtrl.clear();
+      searchWardCtrl.clear();
       Get.back(result: addAddress);
     } else {
       AddressService().addAddress(address).then((value) {
@@ -368,15 +376,13 @@ class AddressController extends GetxController {
         searchCityCtrl.clear();
         searchDistrictCtrl.clear();
         searchWardCtrl.clear();
-        Get.showSnackbar(const GetSnackBar(
-          message: "Thêm địa chỉ thành công",
-          duration: Duration(seconds: 3),
-        ));
+        showSnack(
+          'Thành công',
+          "Thêm địa chỉ thành công",
+          SnackType.success,
+        );
       });
     }
-    // isCityLoaded.value = false;
-    // isDistrictLoaded.value = false;
-    // isWardLoaded.value = false;
   }
 
   String removeSpecialCharacters(String text) {

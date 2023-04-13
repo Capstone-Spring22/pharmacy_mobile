@@ -15,6 +15,8 @@ import 'package:pharmacy_mobile/widgets/back_button.dart';
 import 'package:pharmacy_mobile/widgets/input.dart';
 import 'package:pharmacy_mobile/widgets/scroll_behavior.dart';
 
+import '../../helpers/snack.dart';
+import '../../services/user_service.dart';
 import '../../widgets/button.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -25,11 +27,13 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  TextEditingController name = TextEditingController();
+  TextEditingController nameCtl = TextEditingController();
   TextEditingController phoneCtl = TextEditingController();
   TextEditingController mailCtl = TextEditingController();
   TextEditingController dobCtl = TextEditingController();
   TextEditingController addressCtl = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
 
   late Map<String, dynamic> tokenMap;
 
@@ -78,6 +82,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     bool result = true;
+    RegExp numberPattern = RegExp(r'\d');
+    RegExp specialCharPattern = RegExp(r'[!@#$%^&*(),.?":{}|<>]');
     try {
       final box = GetStorage();
       result = box.read("isFirst");
@@ -107,8 +113,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
                     child: Form(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      key: _formKey,
                       child: SizedBox(
-                        height: Get.height * 0.6,
+                        height: Get.height * 0.65,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -178,16 +186,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ],
                             ),
                             Input(
-                              inputController: name,
+                              isFormField: true,
+                              validator: (p0) => p0!.isEmpty
+                                  ? "Không được để trống"
+                                  : (numberPattern.hasMatch(p0) ||
+                                          specialCharPattern.hasMatch(p0))
+                                      ? "Không được chứa ký tự đặc biệt hoặc số"
+                                      : null,
+                              inputController: nameCtl,
                               title: "Họ và tên",
                               onChanged: (p0) => userMap['fullname'] = p0,
                             ),
                             Input(
+                              isFormField: true,
+                              validator: (p0) =>
+                                  p0!.isEmpty ? "Không được để trống" : null,
                               inputController: phoneCtl,
                               title: "Số điện thoại",
                               enabled: false,
                             ),
                             Input(
+                              isFormField: true,
+                              validator: (p0) => p0!.isNotEmpty
+                                  ? p0.isEmail
+                                      ? null
+                                      : "Email không hợp lệ"
+                                  : null,
                               inputController: mailCtl,
                               title: "Email (không bắt buộc)",
                               onChanged: (p0) {
@@ -215,6 +239,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 });
                               }),
                               child: Input(
+                                isFormField: true,
+                                validator: (p0) =>
+                                    p0!.isEmpty ? "Không được để trống" : null,
                                 inputController: dobCtl,
                                 title: "Sinh nhật",
                                 enabled: false,
@@ -235,20 +262,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   context: Get.context!,
                                   builder: (context) =>
                                       const AddressSelectionScreen(
-                                          isForCreateUser: true),
+                                    isForCreateUser: true,
+                                  ),
                                 ).then((value) {
-                                  setState(() {
-                                    addressCtl.text =
-                                        "${value['homeAddress']}, ${value['wardName']}, ${value['districtName']}, ${value['cityName']}";
-                                    userMap['homeAddress'] =
-                                        value['homeAddress'];
-                                    userMap['wardId'] = value['wardId'];
-                                    userMap['districtId'] = value['districtId'];
-                                    userMap['cityId'] = value['cityId'];
-                                  });
+                                  if (value != null) {
+                                    setState(() {
+                                      addressCtl.text =
+                                          "${value['homeAddress']}, ${value['wardName']}, ${value['districtName']}, ${value['cityName']}";
+                                      userMap['homeAddress'] =
+                                          value['homeAddress'];
+                                      userMap['wardId'] = value['wardId'];
+                                      userMap['districtId'] =
+                                          value['districtId'];
+                                      userMap['cityId'] = value['cityId'];
+                                    });
+                                  }
                                 });
                               },
                               child: Input(
+                                isFormField: true,
+                                validator: (p0) =>
+                                    p0!.isEmpty ? "Không được để trống" : null,
                                 title: "Địa chỉ",
                                 inputController: addressCtl,
                                 enabled: false,
@@ -275,11 +309,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         width: 300.w,
                         height: 40.h,
                         child: PharmacyButton(
-                          onPressed: () {
-                            // Get.back();
-                            // SignupController controller = Get.find();
-                            // controller.codeSent.value = false;
-                            Get.log(userMap.toString());
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              Get.log(userMap.toString());
+                              var res =
+                                  await UserService().registerUser(userMap);
+                              if (res == 200) {
+                                showSnack(
+                                  "Đăng kí thành công",
+                                  "Đăng nhập để tiếp tục",
+                                  SnackType.success,
+                                );
+                                Get.offNamed('/signin');
+                              }
+                            }
                           },
                           text: "Đăng kí",
                         ),

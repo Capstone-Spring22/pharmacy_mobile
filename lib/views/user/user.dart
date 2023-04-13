@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
@@ -17,6 +18,10 @@ class UserScreen extends GetView<UserController> {
 
   @override
   Widget build(BuildContext context) {
+    Get.log('User: ${controller.user.value}');
+    Get.log('Bool: ${userController.isLoggedIn.value}');
+    Get.log('Detail: ${controller.detailUser.value}');
+    Get.log('Firebase: ${FirebaseAuth.instance.currentUser}');
     return Obx(() {
       if (userController.isLoggedIn.value &&
           controller.user.value is PharmacyUser &&
