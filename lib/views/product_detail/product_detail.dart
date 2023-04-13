@@ -216,8 +216,11 @@ class ProductDetailScreen extends GetView<AppController> {
           content: desc.preserve!,
         ),
       if (desc.ingredientModel!.isNotEmpty)
-        IngredientsText(
-          ingre: desc.ingredientModel!,
+        Align(
+          alignment: Alignment.centerLeft,
+          child: IngredientsText(
+            ingre: desc.ingredientModel!,
+          ),
         )
     ];
   }

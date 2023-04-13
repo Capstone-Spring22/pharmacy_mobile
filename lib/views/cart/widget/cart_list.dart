@@ -75,7 +75,8 @@ class CartItemListView extends GetView<CartController> {
                               switchInCurve: Curves.easeIn,
                               duration: const Duration(milliseconds: 300),
                               child: AutoSizeText(
-                                item.priceAfterDiscount!.convertCurrentcy(),
+                                (item.priceAfterDiscount ?? item.price)!
+                                    .convertCurrentcy(),
                                 style: context.theme.primaryTextTheme.bodyLarge!
                                     .copyWith(color: Colors.black),
                               ),
