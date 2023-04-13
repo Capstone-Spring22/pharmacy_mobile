@@ -14,6 +14,8 @@ class ChatScreen extends GetView<ChatController> {
 
   @override
   Widget build(BuildContext context) {
+    ChatController chatController = Get.find();
+    chatController.getChats(userController.user.value!.id!);
     return Scaffold(
       drawer: const MenuDrawer(),
       endDrawer: const CartDrawer(),

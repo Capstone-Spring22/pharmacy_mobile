@@ -1,11 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/chat_controller.dart';
 import 'package:pharmacy_mobile/models/message.dart';
 import 'package:pharmacy_mobile/views/message/widgets/message_bubble.dart';
 import 'package:pharmacy_mobile/widgets/input.dart';
+
+import '../../widgets/appbar.dart';
+import '../../widgets/back_button.dart';
+import '../drawer/cart_drawer.dart';
+import '../drawer/menu_drawer.dart';
 
 class MessageScreen extends StatefulWidget {
   const MessageScreen({super.key});
@@ -36,25 +41,25 @@ class _MessageScreenState extends State<MessageScreen> {
         chatController.chats.singleWhere((element) => element.id == chatid);
     final status = chat.status;
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () {}),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterTop,
-      appBar: AppBar(
-        title: Text(
-          status == 'pending'
-              ? 'Đang chờ phản hồi'
-              : 'Đang nhắn với ${chat.pharmacistId}',
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              // Get.defaultDialog(
-              //   title: 'Increase Font Size',
-              //   content: const IncreaseFont(),
-              // );
-            },
-            icon: const Icon(Icons.more_vert),
+      drawer: const MenuDrawer(),
+      endDrawer: const CartDrawer(),
+      appBar: PharmacyAppBar(
+        leftWidget: const PharmacyBackButton(),
+        midText: status == 'pending'
+            ? 'Đang chờ phản hồi'
+            : 'Đang nhắn với ${chat.pharmacistId}',
+        rightWidget: NeumorphicButton(
+          style: NeumorphicStyle(
+            boxShape: const NeumorphicBoxShape.circle(),
+            color: context.theme.canvasColor,
+            shape: NeumorphicShape.flat,
           ),
-        ],
+          onPressed: () => chatController.createRequestDialog(),
+          child: Icon(
+            Icons.more_vert,
+            color: context.theme.primaryColor,
+          ),
+        ),
       ),
       body: Column(
         children: [
@@ -96,7 +101,9 @@ class _MessageScreenState extends State<MessageScreen> {
                 IconButton(
                     onPressed: () async {
                       var imgUrl = await MessageController.pickImage();
-                      messageController.sendImageUrl(imgUrl);
+                      if (imgUrl.isImageFileName) {
+                        messageController.sendImageUrl(imgUrl);
+                      }
                     },
                     icon: const Icon(Icons.photo)),
                 Expanded(

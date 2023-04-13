@@ -3,14 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
+import 'package:pharmacy_mobile/helpers/loading.dart';
 import 'package:pharmacy_mobile/helpers/snack.dart';
 import 'package:pharmacy_mobile/models/detail_user.dart';
 import 'package:pharmacy_mobile/widgets/input.dart';
 
 class AddressSelectionScreen extends StatefulWidget {
-  const AddressSelectionScreen({super.key, this.isForCreateUser = false});
+  const AddressSelectionScreen(
+      {super.key, this.isForCreateUser = false, this.id = ""});
 
   final bool isForCreateUser;
+  final String id;
 
   @override
   State<AddressSelectionScreen> createState() => _AddressSelectionScreenState();
@@ -114,22 +117,101 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
                 },
               ),
               Obx(
-                () => SizedBox(
-                  width: Get.width * .8,
-                  child: FilledButton(
-                    onPressed: addressController.selectedCityId.isEmpty ||
-                            addressController.selectedDistrictId.isEmpty ||
-                            addressController.selectedWardId.isEmpty ||
-                            addressController.addressTile.value.isEmpty
-                        ? null
-                        : () {
-                            addressController
-                                .addAddress(widget.isForCreateUser);
+                () => Column(
+                  children: [
+                    SizedBox(
+                      width: Get.width * .8,
+                      child: FilledButton(
+                        onPressed: addressController.selectedCityId.isEmpty ||
+                                addressController.selectedDistrictId.isEmpty ||
+                                addressController.selectedWardId.isEmpty ||
+                                addressController.addressTile.value.isEmpty
+                            ? null
+                            : () async {
+                                if (addressController.isEditAddress.isTrue) {
+                                  Get.dialog(Center(
+                                    child: LoadingWidget(),
+                                  ));
+                                  await addressController.updateAddress();
+
+                                  addressController.closeEditAddress();
+                                  Get.back();
+                                  Get.back();
+                                } else {
+                                  addressController
+                                      .addAddress(widget.isForCreateUser);
+                                }
+                              },
+                        child: Text(addressController.isEditAddress.isTrue
+                            ? "Cập nhập địa chỉ"
+                            : "Thêm Địa chỉ"),
+                      ),
+                    ),
+                    if (addressController.isEditAddress.isTrue)
+                      SizedBox(
+                        width: Get.width * .8,
+                        child: FilledButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.red),
+                          ),
+                          onPressed: () {
+                            Get.log(userController
+                                .detailUser.value!.customerAddressList!.length
+                                .toString());
+                            if (userController.detailUser.value!
+                                    .customerAddressList!.length >
+                                1) {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text("Xoá địa chỉ"),
+                                    content: const Text(
+                                        "Bạn có chắc chắn muốn xóa địa chỉ này không?"),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Get.back();
+                                        },
+                                        child: const Text("Huỷ"),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          try {
+                                            AddressService()
+                                                .removeAddress(widget.id)
+                                                .then((value) {
+                                              addressController
+                                                  .closeEditAddress();
+                                              userController.refeshUser();
+                                              addressController.isEditAddress
+                                                  .toggle();
+                                              Get.back();
+                                              Get.back();
+                                            });
+                                          } catch (e) {}
+                                        },
+                                        child: const Text("Xác nhận xoá"),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            } else {
+                              showSnack(
+                                "Thông báo",
+                                "Không thể xóa địa chỉ cuối cùng của bạn",
+                                SnackType.info,
+                              );
+                            }
                           },
-                    child: const Text("Thêm Địa chỉ"),
-                  ),
+                          child: const Text("Xóa địa chỉ"),
+                        ),
+                      ),
+                  ],
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -247,6 +329,8 @@ class AddressService {
 class AddressController extends GetxController {
   static AddressController instance = Get.find();
 
+  RxBool isEditAddress = false.obs;
+
   RxString selectedAddressid = "".obs;
 
   //City
@@ -306,6 +390,21 @@ class AddressController extends GetxController {
     }
   }
 
+  void openEditAddress(String cityId, String districtId, String wardId,
+      String address, String id) {
+    selectedCityId.value = cityId;
+    selectedDistrictId.value = districtId;
+    selectedWardId.value = wardId;
+    addressTextCtl.text = address;
+  }
+
+  void closeEditAddress() {
+    selectedCityId.value = "79";
+    selectedDistrictId.value = "";
+    selectedWardId.value = "";
+    addressTextCtl.text = "";
+  }
+
   Future switchMainAddress(String id) async {
     addressController.selectedAddressid.value = id;
     final address = userController.detailUser.value!.customerAddressList!
@@ -328,6 +427,38 @@ class AddressController extends GetxController {
       );
       if (response.statusCode == 200) {
         userController.refeshUser();
+      }
+    } catch (e) {
+      Get.log(e.toString());
+    }
+  }
+
+  Future updateAddress() async {
+    final address = userController.detailUser.value!.customerAddressList!
+        .singleWhere((element) => element.id == selectedAddressid.value);
+    var map = {
+      "customerAddressId": address.id,
+      "cityId": selectedCityId.value,
+      "districtId": selectedDistrictId.value,
+      "wardId": selectedWardId.value,
+      "homeAddress": addressTextCtl.text,
+      "isMainAddress": true,
+    };
+    try {
+      final dio = appController.dio;
+      final api = dotenv.env['API_URL']!;
+      var response = await dio.put(
+        '${api}CustomerAddress',
+        data: map,
+        options: userController.options,
+      );
+      if (response.statusCode == 200) {
+        await userController.refeshUser();
+        selectedAddressid.value = userController
+            .detailUser.value!.customerAddressList!
+            .singleWhere((element) => element.isMainAddress == true)
+            .id!;
+        closeEditAddress();
       }
     } catch (e) {
       Get.log(e.toString());

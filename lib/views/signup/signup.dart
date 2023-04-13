@@ -249,7 +249,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                             GestureDetector(
                               onTap: () async {
-                                Get.put(AddressController());
                                 showModalBottomSheet(
                                   useSafeArea: true,
                                   enableDrag: true,

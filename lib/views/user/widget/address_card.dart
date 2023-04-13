@@ -44,9 +44,27 @@ class _AddressCardState extends State<AddressCard> {
   bool isCollase = true;
 
   void onTap() {
+    for (var element in userController.detailUser.value!.customerAddressList!) {
+      Get.log(element.toString());
+    }
     setState(() {
       isCollase = !isCollase;
     });
+  }
+
+  @override
+  void initState() {
+    try {
+      addressController.selectedAddressid.value = userController
+          .detailUser.value!.customerAddressList!
+          .singleWhere((element) => element.isMainAddress == true)
+          .id!;
+
+      Get.log(addressController.selectedAddressid.value.toString());
+    } catch (e) {
+      Get.log('Không có địa chỉ chính');
+    }
+    super.initState();
   }
 
   @override
@@ -91,7 +109,6 @@ class AddressCardExtend extends GetView<UserController> {
                         IconButton(
                           icon: const Icon(Icons.add),
                           onPressed: () {
-                            Get.put(AddressController());
                             showModalBottomSheet(
                               useSafeArea: true,
                               enableDrag: true,
@@ -107,11 +124,17 @@ class AddressCardExtend extends GetView<UserController> {
                             );
                           },
                         ),
+                        IconButton(
+                          onPressed: () =>
+                              addressController.isEditAddress.toggle(),
+                          icon: const Icon(Icons.edit),
+                        ),
                       ],
                     ),
                     ...controller.detailUser.value!.customerAddressList!
                         .map((e) => AddressInfo(address: e, key: UniqueKey()))
                         .toList()
+                        .reversed
                   ],
                 ),
               ),

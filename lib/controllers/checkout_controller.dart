@@ -16,7 +16,7 @@ class CheckoutController extends GetxController {
 
   final nameCtl = TextEditingController();
   final phoneCtl = TextEditingController();
-  final address = TextEditingController();
+  final addressCtl = TextEditingController();
   final emailCtl = TextEditingController();
   final noteCtl = TextEditingController();
 
@@ -52,6 +52,7 @@ class CheckoutController extends GetxController {
   @override
   void onInit() {
     final user = userController.user.value;
+    final detailUser = userController.detailUser.value;
 
     ever(checkoutType, (type) {
       if (type == 0) {
@@ -81,6 +82,7 @@ class CheckoutController extends GetxController {
       nameCtl.text = user.name!;
     }
     phoneCtl.text = user.phoneNo!;
+    emailCtl.text = detailUser!.email ?? "";
 
     listTextField.value = [
       TextFieldProperty(

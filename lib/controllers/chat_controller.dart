@@ -34,7 +34,7 @@ class ChatController extends GetxController {
       } else {
         ever(userController.user, (u) {
           if (u is PharmacyUser) {
-            _getChats(u.id!);
+            getChats(u.id!);
           }
         });
       }
@@ -57,16 +57,20 @@ class ChatController extends GetxController {
     );
   }
 
-  Future<void> _getChats(String patientId) async {
-    _firestore
-        .collection('chats')
-        .where('patientId', isEqualTo: patientId)
-        .orderBy('timestamp', descending: true)
-        .snapshots()
-        .map((event) {
-      chats.value = event.docs.map((doc) => Chat.fromSnapshot(doc)).toList();
-    });
-    isLoading.value = false;
+  Future<void> getChats(String patientId) async {
+    try {
+      _firestore
+          .collection('chats')
+          .where('patientId', isEqualTo: patientId)
+          .orderBy('timestamp', descending: true)
+          .snapshots()
+          .map((event) {
+        chats.value = event.docs.map((doc) => Chat.fromSnapshot(doc)).toList();
+      });
+      isLoading.value = false;
+    } catch (e) {
+      Get.log(e.toString());
+    }
   }
 
   Future sendRequest(String request) async {

@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/user_controller.dart';
@@ -18,10 +18,6 @@ class UserScreen extends GetView<UserController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.log('User: ${controller.user.value}');
-    Get.log('Bool: ${userController.isLoggedIn.value}');
-    Get.log('Detail: ${controller.detailUser.value}');
-    Get.log('Firebase: ${FirebaseAuth.instance.currentUser}');
     return Obx(() {
       if (userController.isLoggedIn.value &&
           controller.user.value is PharmacyUser &&
@@ -33,56 +29,12 @@ class UserScreen extends GetView<UserController> {
                 width: double.infinity,
                 child: Column(
                   children: [
-                    const UserAvatar(),
-                    const SizedBox(height: 20),
-                    controller.user.value!.name == null
-                        ? AutoSizeText(
-                            "Đặt tên >",
-                            style: context.textTheme.headlineMedium!.copyWith(
-                              decoration: TextDecoration.underline,
-                              decorationColor: Colors.blue,
-                              shadows: [
-                                const Shadow(
-                                  color: Colors.blue,
-                                  offset: Offset(0, -5),
-                                )
-                              ],
-                              color: Colors.transparent,
-                            ),
-                          )
-                        : AutoSizeText(
-                            controller.user.value!.name!,
-                            style: context.textTheme.headlineMedium!.copyWith(
-                              decorationColor: Colors.blue,
-                              shadows: [
-                                const Shadow(
-                                  color: Colors.blue,
-                                  offset: Offset(0, -5),
-                                )
-                              ],
-                              color: Colors.transparent,
-                            ),
-                          ),
-                    InfoCard(
-                      icon: Icons.phone,
-                      text: controller.user.value!.phoneNo.toString(),
-                    ),
-                    InfoCard(
-                      icon: Icons.email,
-                      text: controller.user.value!.email.toString(),
-                    ),
-                    InfoCard(
-                      icon: Icons.cake,
-                      text: controller.detailUser.value!.dob!.convertToDate,
-                    ),
-                    const AddressCard(),
-                    GestureDetector(
-                      onTap: () => Get.toNamed('/order_history'),
-                      child: const InfoCard(
-                        icon: Icons.list_alt,
-                        text: "Đơn hàng",
-                      ),
-                    )
+                    const UserAvatar().animate().flipH(),
+                    for (int i = 0; i < _buildUserCard(context).length; i++)
+                      _buildUserCard(context)[i]
+                          .animate()
+                          .slideY(delay: Duration(milliseconds: 100 * i))
+                          .fadeIn(delay: Duration(milliseconds: 100 * i))
                   ],
                 ),
               ),
@@ -97,5 +49,59 @@ class UserScreen extends GetView<UserController> {
         );
       }
     });
+  }
+
+  List<Widget> _buildUserCard(BuildContext context) {
+    return [
+      const SizedBox(height: 20),
+      controller.user.value!.name == null
+          ? AutoSizeText(
+              "Đặt tên >",
+              style: context.textTheme.headlineMedium!.copyWith(
+                decoration: TextDecoration.underline,
+                decorationColor: Colors.blue,
+                shadows: [
+                  const Shadow(
+                    color: Colors.blue,
+                    offset: Offset(0, -5),
+                  )
+                ],
+                color: Colors.transparent,
+              ),
+            )
+          : AutoSizeText(
+              controller.user.value!.name!,
+              style: context.textTheme.headlineMedium!.copyWith(
+                decorationColor: Colors.blue,
+                shadows: [
+                  const Shadow(
+                    color: Colors.blue,
+                    offset: Offset(0, -5),
+                  )
+                ],
+                color: Colors.transparent,
+              ),
+            ),
+      InfoCard(
+        icon: Icons.phone,
+        text: controller.user.value!.phoneNo.toString(),
+      ),
+      InfoCard(
+        icon: Icons.email,
+        text: controller.user.value!.email.toString(),
+      ),
+      InfoCard(
+        icon: Icons.cake,
+        text: controller.detailUser.value!.dob!.convertToDate,
+      ),
+      GestureDetector(
+        onTap: () => Get.toNamed('/order_history'),
+        child: const InfoCard(
+          icon: Icons.list_alt,
+          text: "Đơn hàng",
+        ),
+      ),
+      const AddressCard(),
+    ];
   }
 }

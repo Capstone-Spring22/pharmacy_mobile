@@ -13,35 +13,7 @@ class AddressInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => addressController.switchMainAddress(address.id!),
-      onLongPress: () {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text("Xoá địa chỉ"),
-              content:
-                  const Text("Bạn có chắc chắn muốn xóa địa chỉ này không?"),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Huỷ"),
-                ),
-                TextButton(
-                  onPressed: () {
-                    AddressService().removeAddress(address.id!).then((value) {
-                      userController.refeshUser();
-                      Get.back();
-                    });
-                  },
-                  child: const Text("Xác nhận xoá"),
-                ),
-              ],
-            );
-          },
-        );
-      },
+      onLongPress: () {},
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Row(
@@ -49,13 +21,45 @@ class AddressInfo extends StatelessWidget {
             Expanded(
               child: Text(address.fullyAddress!),
             ),
-            Obx(() => Radio(
+            Obx(() {
+              if (addressController.isEditAddress.isTrue) {
+                return IconButton(
+                  onPressed: () {
+                    addressController.openEditAddress(
+                      address.cityId!,
+                      address.districtId!,
+                      address.wardId!,
+                      address.homeAddress!,
+                      address.id!,
+                    );
+                    showModalBottomSheet(
+                      useSafeArea: true,
+                      enableDrag: true,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(42.0),
+                          topRight: Radius.circular(42.0),
+                        ),
+                      ),
+                      context: Get.context!,
+                      builder: (context) =>
+                          AddressSelectionScreen(id: address.id!),
+                    ).then((value) {
+                      addressController.closeEditAddress();
+                    });
+                  },
+                  icon: const Icon(Icons.edit),
+                );
+              } else {
+                return Radio(
                   value: address.id,
                   groupValue: addressController.selectedAddressid.value,
                   onChanged: (value) {
                     addressController.switchMainAddress(value!);
                   },
-                )),
+                );
+              }
+            }),
           ],
         ),
       ),
