@@ -36,6 +36,7 @@ class ProductDetailScreen extends GetView<AppController> {
     String pid = '';
     try {
       pid = Get.arguments;
+      Get.log(pid);
     } catch (e) {}
     GlobalKey<ScaffoldState> drawerKey = GlobalKey();
     return FutureBuilder(

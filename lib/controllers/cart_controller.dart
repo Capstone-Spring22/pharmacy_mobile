@@ -13,8 +13,14 @@ extension groupCartItems on List<CartItem> {
     List<List<CartItem>> groupedProducts = [];
     String currentName = '';
 
+    var tempList = cartController.listCart.value;
+
     try {
-      for (var cartItem in cartController.listCart) {
+      tempList.sort((a, b) => a.productName!.compareTo(b.productName!));
+    } catch (e) {}
+
+    try {
+      for (var cartItem in tempList) {
         if (cartItem.productName != currentName) {
           currentName = cartItem.productName!;
           groupedProducts.add([cartItem]);
