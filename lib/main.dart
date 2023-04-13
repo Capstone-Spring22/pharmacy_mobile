@@ -1,4 +1,5 @@
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
@@ -66,6 +67,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await GetStorage.init();
+  FirebaseFirestore.instance.settings.persistenceEnabled;
   await AndroidAlarmManager.initialize();
   await dotenv.load(fileName: "dotenv");
   await initializeDateFormatting('vi_VN', null);

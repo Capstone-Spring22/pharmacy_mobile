@@ -112,6 +112,7 @@ class UserController extends GetxController {
   Future logout() async {
     await FirebaseAuth.instance.signOut();
     resetState();
+    cartController.listCart.clear();
     appController.drawerKey.currentState!.closeDrawer();
     Get.back();
   }

@@ -72,7 +72,7 @@ class OrderService {
     } on DioError catch (e) {
       Get.log(e.response.toString());
     }
-    cartController.connectToCloudCart(true);
+    // cartController.connectToCloudCart(true);
   }
 
   Future getOrderHistoryDetail(String id) async {

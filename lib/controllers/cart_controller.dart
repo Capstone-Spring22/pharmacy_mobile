@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/user_controller.dart';
 import 'package:pharmacy_mobile/models/cart.dart';
@@ -24,6 +25,8 @@ class CartController extends GetxController {
 
   RxString ff = "".obs;
 
+  final debouncer = Debouncer(delay: 300.milliseconds);
+
   @override
   void onInit() {
     ever(userController.isLoggedIn, connectToCloudCart);
@@ -35,7 +38,8 @@ class CartController extends GetxController {
     if (isLogged) {
       docId = await CartService().getCartId();
       if (docId != null) {
-        listCart.clear();
+        Get.log('connectToCloudCart: $docId');
+        // listCart.clear();
         listCart.bindStream(firebaseStreamCart(docId!));
       } else if (docId == "useUserId") {
         // listCart.clear();
@@ -64,49 +68,53 @@ class CartController extends GetxController {
       yield await CartService().getListCartItem();
     }
   }
-
-  Stream<List<CartItem>> firebaseStreamCartUseWhere(String userId) async* {
-    // Subscribe to the Firestore document snapshots
-    var snapshots = _db
-        .collection(_collection)
-        .where('customerid', isEqualTo: userId)
-        .snapshots();
-
-    // Wait for the first snapshot to be available
-    var initialSnapshot = await snapshots.first;
-
-    // Emit the initial list of cart items
-    yield await CartService().getListCartItem();
-
-    // Subscribe to future snapshot updates
-    await for (var snapshot in snapshots.skip(1)) {
-      // Emit the updated list of cart items
-      yield await CartService().getListCartItem();
-    }
-  }
-
   //////////////////////////////////////////////////
 
   void addToCart(CartItem item) {
     var addMap = createMap(item, 1);
+    addProductToMockLocal(item);
     CartService().postCart(addMap);
   }
 
-  void saveToMockLocal(CartItem item) {}
+  void updateQuantityToMockLocal(String id, num quantity) {
+    int index = listCart.indexWhere((element) => element.productId == id);
+    if (index != -1) {
+      listCart[index].quantity = quantity;
+      listCart.refresh();
+    }
+  }
+
+  void addProductToMockLocal(CartItem item) {
+    listCart.add(item);
+  }
 
   void increaseQuan(String productId) {
     var cartItem = getCartItem(productId);
-    var addMap = createMap(cartItem, cartItem.quantity! + 1);
-    CartService().postCart(addMap);
+    num quan = cartItem.quantity! + 1;
+    updateQuantityToMockLocal(productId, quan);
+    var addMap = createMap(cartItem, quan);
+    debouncer.cancel();
+    debouncer.call(() => CartService().postCart(addMap));
+    // CartService().postCart(addMap);
+  }
+
+  void removeFromMockLocal(String productId) {
+    cartController.listCart
+        .removeWhere((element) => element.productId == productId);
   }
 
   void decreaseQuan(String productId) {
+    debouncer.cancel();
     var cartItem = getCartItem(productId);
     var quan = cartItem.quantity!;
     if (quan > 1) {
-      var addMap = createMap(cartItem, quan - 1);
-      CartService().postCart(addMap);
+      num quanLocal = quan - 1;
+      updateQuantityToMockLocal(productId, quanLocal);
+      var addMap = createMap(cartItem, quanLocal);
+      debouncer.call(() => CartService().postCart(addMap));
+      // CartService().postCart(addMap);
     } else {
+      removeFromMockLocal(productId);
       CartService().removeCart(productId, docId!);
     }
   }
@@ -114,6 +122,7 @@ class CartController extends GetxController {
   void customQuan(String productId, num quan) {
     if (quan >= 1) {
       var cartItem = getCartItem(productId);
+      updateQuantityToMockLocal(productId, quan);
       var addMap = createMap(cartItem, quan);
       CartService().postCart(addMap);
     } else {

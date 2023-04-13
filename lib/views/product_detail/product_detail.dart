@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
@@ -154,7 +155,18 @@ class ProductDetailScreen extends GetView<AppController> {
                                   },
                                   future: ProductService()
                                       .checkProductOnSite(product.id!)),
-                              ...descriptionWidgets(detail.descriptionModels!)
+                              for (int i = 0;
+                                  i <
+                                      descriptionWidgets(
+                                              detail.descriptionModels!)
+                                          .length;
+                                  i++)
+                                descriptionWidgets(detail.descriptionModels!)[i]
+                                    .animate()
+                                    .slideX(
+                                        delay: Duration(milliseconds: i * 150))
+                                    .fade(
+                                        delay: Duration(milliseconds: i * 150))
                             ],
                           );
                         }
@@ -176,7 +188,7 @@ class ProductDetailScreen extends GetView<AppController> {
         });
   }
 
-  List descriptionWidgets(DescriptionModels desc) {
+  List<Widget> descriptionWidgets(DescriptionModels desc) {
     return [
       if (desc.effect != 'string')
         ContentInfo(
