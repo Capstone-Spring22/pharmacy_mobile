@@ -5,12 +5,13 @@ import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class LoadingWidget extends StatelessWidget {
-  LoadingWidget({this.size = 30, super.key});
-  double size;
+  const LoadingWidget({this.size = 30, this.color, super.key});
+  final double size;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     return LoadingAnimationWidget.dotsTriangle(
-        color: context.theme.primaryColor, size: size);
+        color: color ?? context.theme.primaryColor, size: size);
   }
 }

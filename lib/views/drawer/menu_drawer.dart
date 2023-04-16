@@ -1,10 +1,8 @@
 import 'package:animations/animations.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
-import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/user_controller.dart';
 import 'package:pharmacy_mobile/debug/screen.dart';
 import 'package:pharmacy_mobile/models/detail_user.dart';
@@ -108,14 +106,6 @@ class MenuDrawer extends StatelessWidget {
                   return const OrderScreen();
                 },
               ),
-              if (FirebaseAuth.instance.currentUser != null)
-                InkWell(
-                  onTap: () => userController.logout(),
-                  child: const MenuItem(
-                    text: 'Logout Firebase',
-                    icon: Icons.settings,
-                  ),
-                ),
               if (kDebugMode)
                 OpenContainer(
                   closedBuilder: (context, action) {

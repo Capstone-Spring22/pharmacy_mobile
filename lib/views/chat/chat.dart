@@ -1,6 +1,5 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
-import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/chat_controller.dart';
 import 'package:pharmacy_mobile/views/drawer/cart_drawer.dart';
 import 'package:pharmacy_mobile/views/drawer/menu_drawer.dart';
@@ -15,13 +14,12 @@ class ChatScreen extends GetView<ChatController> {
   @override
   Widget build(BuildContext context) {
     ChatController chatController = Get.find();
-    chatController.getChats(userController.user.value!.id!);
     return Scaffold(
       drawer: const MenuDrawer(),
       endDrawer: const CartDrawer(),
       appBar: PharmacyAppBar(
         leftWidget: const PharmacyBackButton(),
-        midText: "Đơn hàng",
+        midText: "Liên hệ",
         rightWidget: NeumorphicButton(
           style: NeumorphicStyle(
             boxShape: const NeumorphicBoxShape.circle(),
@@ -43,9 +41,7 @@ class ChatScreen extends GetView<ChatController> {
                 () {
                   final messages = chatController.chats;
 
-                  if (chatController.isLoading.isTrue) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (messages.isEmpty) {
+                  if (messages.isEmpty) {
                     return const Center(
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 30),

@@ -67,23 +67,25 @@ class _BrowseProductScreenState extends State<BrowseProductScreen>
   }
 
   _loadProducts(int page, int items) async {
-    setState(() {
-      isLoadingProducts = true;
-    });
+    try {
+      setState(() {
+        isLoadingProducts = true;
+      });
 
-    products = await ProductService().getProductsCustomOption(
-      1,
-      10,
-      selectedCategory.value.isEmpty
-          ? ""
-          : selectedCategory.value.split("-")[1].trim(),
-      selectedSubCategory.value.isEmpty
-          ? ""
-          : selectedSubCategory.value.split("-")[1].trim(),
-    );
-    setState(() {
-      isLoadingProducts = false;
-    });
+      products = await ProductService().getProductsCustomOption(
+        1,
+        10,
+        selectedCategory.value.isEmpty
+            ? ""
+            : selectedCategory.value.split("-")[1].trim(),
+        selectedSubCategory.value.isEmpty
+            ? ""
+            : selectedSubCategory.value.split("-")[1].trim(),
+      );
+      setState(() {
+        isLoadingProducts = false;
+      });
+    } catch (e) {}
   }
 
   _loadCategories() async {
@@ -264,7 +266,11 @@ class _BrowseProductScreenState extends State<BrowseProductScreen>
                                                   width: Get.width * .43,
                                                   height: Get.height * .37,
                                                   child: ProductTile(
-                                                    fn: () {},
+                                                    fn: () => Get.toNamed(
+                                                      '/product_detail',
+                                                      preventDuplicates: false,
+                                                      arguments: product.id,
+                                                    ),
                                                     product: product,
                                                   ),
                                                 ))

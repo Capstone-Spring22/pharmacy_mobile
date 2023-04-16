@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
+import 'package:pharmacy_mobile/models/detail_user.dart';
 import 'package:pharmacy_mobile/models/order.dart';
 import 'package:pharmacy_mobile/views/checkout/checkout.dart';
 import 'package:pharmacy_mobile/services/order_service.dart';
@@ -47,6 +48,8 @@ class CheckoutController extends GetxController {
     panelHeight.value = d;
   }
 
+  RxBool loading = false.obs;
+
   RxList<TextFieldProperty> listTextField = <TextFieldProperty>[].obs;
 
   @override
@@ -59,7 +62,7 @@ class CheckoutController extends GetxController {
         selectSite.value = "";
         selectDate.value = "";
         selectTime.value = "";
-        activeBtn.value = true;
+        setBtnActive(userController.detailUser.value!);
       } else {
         activeBtn.value = false;
         everAll([selectDate, selectSite, selectTime], (value) {
@@ -107,6 +110,19 @@ class CheckoutController extends GetxController {
           type: TextInputType.multiline),
     ];
     super.onInit();
+  }
+
+  void setBtnActive(DetailUser u) async {
+    loading.value = true;
+    final uAddress = u.customerAddressList
+        ?.singleWhere((element) => element.isMainAddress == true);
+    final i = await OrderService()
+        .checkSiteListAvailable(uAddress!.cityId!, uAddress.districtId!);
+    Get.log('Check SITE: $i');
+    if (checkoutType.value == 0) {
+      i > 0 ? activeBtn.value = true : activeBtn.value = false;
+    }
+    loading.value = false;
   }
 
   void launchMaps(String address) async {

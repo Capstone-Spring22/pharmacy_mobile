@@ -18,6 +18,7 @@ class UserScreen extends GetView<UserController> {
 
   @override
   Widget build(BuildContext context) {
+    Get.log(userController.user.value!.token.toString());
     return Obx(() {
       if (userController.isLoggedIn.value &&
           controller.user.value is PharmacyUser &&
@@ -33,8 +34,8 @@ class UserScreen extends GetView<UserController> {
                     for (int i = 0; i < _buildUserCard(context).length; i++)
                       _buildUserCard(context)[i]
                           .animate()
-                          .slideY(delay: Duration(milliseconds: 100 * i))
-                          .fadeIn(delay: Duration(milliseconds: 100 * i))
+                          .slideY(delay: Duration(milliseconds: 10 * i))
+                          .fadeIn(delay: Duration(milliseconds: 10 * i))
                   ],
                 ),
               ),

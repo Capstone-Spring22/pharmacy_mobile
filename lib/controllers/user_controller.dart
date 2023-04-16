@@ -39,6 +39,7 @@ class UserController extends GetxController {
               await UserService().getUserDetail(user.value!.id!);
           if (userDetailRes is DetailUser) {
             detailUser = userDetailRes.obs;
+
             detailUser.refresh();
           }
           options = Options(

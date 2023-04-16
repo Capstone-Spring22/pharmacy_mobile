@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
+import 'package:pharmacy_mobile/controllers/checkout_controller.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
 import 'package:pharmacy_mobile/helpers/snack.dart';
 import 'package:pharmacy_mobile/models/detail_user.dart';
@@ -129,7 +130,7 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
                             ? null
                             : () async {
                                 if (addressController.isEditAddress.isTrue) {
-                                  Get.dialog(Center(
+                                  Get.dialog(const Center(
                                     child: LoadingWidget(),
                                   ));
                                   await addressController.updateAddress();
@@ -426,7 +427,14 @@ class AddressController extends GetxController {
         options: userController.options,
       );
       if (response.statusCode == 200) {
-        userController.refeshUser();
+        userController.refeshUser().then((value) {
+          try {
+            CheckoutController checkoutController = Get.find();
+            checkoutController.setBtnActive(userController.detailUser.value!);
+          } catch (e) {
+            Get.log("check Site: $e");
+          }
+        });
       }
     } catch (e) {
       Get.log(e.toString());

@@ -85,4 +85,23 @@ class OrderService {
       Get.log("Error: $e");
     }
   }
+
+  Future<num> checkSiteListAvailable(String cityId, String districtId) async {
+    final dio = appController.dio;
+    final api = dotenv.env['API_URL']!;
+    try {
+      var res = await dio.get('${api}Site', queryParameters: {
+        'pageIndex': 1,
+        'pageItems': 10,
+        'CityID': cityId,
+        'DistrictID': districtId,
+        'IsDelivery': true,
+      });
+      Get.log('data: ${res.data}');
+      return res.data['totalRecord'] as num;
+    } catch (e) {
+      Get.log("Error: $e");
+    }
+    return 0;
+  }
 }

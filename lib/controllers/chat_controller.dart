@@ -28,16 +28,19 @@ class ChatController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _auth.authStateChanges().listen((user) {
-      if (user == null) {
-        chats.clear();
-      } else {
-        ever(userController.user, (u) {
-          if (u is PharmacyUser) {
-            getChats(u.id!);
-          }
-        });
-      }
+
+    _fetchChat();
+  }
+
+  _fetchChat() async {
+    while (userController.user.value is! PharmacyUser) {
+      Get.log("wait for user");
+      await Future.delayed(const Duration(milliseconds: 100));
+    }
+    Get.log("Fetch Chat");
+    chats.bindStream(chatStream(userController.user.value!.id!));
+    ever(userController.user, (u) {
+      chats.bindStream(chatStream(userController.user.value!.id!));
     });
   }
 
@@ -57,19 +60,26 @@ class ChatController extends GetxController {
     );
   }
 
-  Future<void> getChats(String patientId) async {
-    try {
-      _firestore
-          .collection('chats')
-          .where('patientId', isEqualTo: patientId)
-          .orderBy('timestamp', descending: true)
-          .snapshots()
-          .map((event) {
-        chats.value = event.docs.map((doc) => Chat.fromSnapshot(doc)).toList();
-      });
-      isLoading.value = false;
-    } catch (e) {
-      Get.log(e.toString());
+  Stream<List<Chat>> chatStream(String patientId) async* {
+    var snapshots = _firestore
+        .collection("chats")
+        .where(
+          'patientId',
+          isEqualTo: patientId,
+        )
+        .orderBy('timestamp', descending: true)
+        .snapshots();
+
+    // Wait for the first snapshot to be available
+    var initialSnapshot = await snapshots.first;
+
+    // Emit the initial list of chat room
+    yield initialSnapshot.docs.map((doc) => Chat.fromSnapshot(doc)).toList();
+
+    // Subscribe to future snapshot updates
+    await for (var snapshot in snapshots.skip(1)) {
+      // Emit the updated list of chat room
+      yield snapshot.docs.map((doc) => Chat.fromSnapshot(doc)).toList();
     }
   }
 

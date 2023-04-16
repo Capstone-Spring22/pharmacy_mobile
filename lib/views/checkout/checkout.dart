@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 
 import 'package:pharmacy_mobile/controllers/checkout_controller.dart';
+import 'package:pharmacy_mobile/helpers/loading.dart';
 import 'package:pharmacy_mobile/main.dart';
 import 'package:pharmacy_mobile/views/checkout/widget/checkout_panel.dart';
 import 'package:pharmacy_mobile/views/checkout/widget/list_checkout.dart';
@@ -41,11 +42,23 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     CheckoutController checkoutController = Get.find();
+    checkoutController.setBtnActive(userController.detailUser.value!);
     checkoutController.isCollase.value = false;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Thanh toán"),
-        actions: const [],
+        actions: [
+          Obx(() {
+            final ad = userController.detailUser.value?.customerAddressList
+                ?.singleWhere((element) => element.isMainAddress == true);
+            return IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () {
+                Get.log('Address: ${ad?.fullyAddress ?? 'null'}');
+              },
+            );
+          })
+        ],
       ),
       body: Stack(
         children: [
@@ -126,9 +139,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           );
                         }
                       },
-                child: cartController.listCart.isEmpty
-                    ? const Text("Giỏ hàng trống")
-                    : Text(txt),
+                child: checkoutController.loading.value
+                    ? const LoadingWidget(
+                        color: Colors.white,
+                      )
+                    : checkoutController.activeBtn.isTrue
+                        ? Text(txt)
+                        : checkoutController.checkoutType.value != 0
+                            ? const Text("Chọn chi nhánh nhận hàng")
+                            : const Text("Khu vực này chưa được hỗ trợ"),
               );
             }),
           )

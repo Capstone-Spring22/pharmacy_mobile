@@ -127,7 +127,9 @@ class AddressCardExtend extends GetView<UserController> {
                         IconButton(
                           onPressed: () =>
                               addressController.isEditAddress.toggle(),
-                          icon: const Icon(Icons.edit),
+                          icon: Icon(addressController.isEditAddress.value
+                              ? Icons.check
+                              : Icons.edit),
                         ),
                       ],
                     ),
