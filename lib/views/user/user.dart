@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
@@ -18,7 +17,6 @@ class UserScreen extends GetView<UserController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.log(userController.user.value!.token.toString());
     return Obx(() {
       if (userController.isLoggedIn.value &&
           controller.user.value is PharmacyUser &&
@@ -54,52 +52,27 @@ class UserScreen extends GetView<UserController> {
 
   List<Widget> _buildUserCard(BuildContext context) {
     return [
-      const SizedBox(height: 20),
-      controller.user.value!.name == null
-          ? AutoSizeText(
-              "Đặt tên >",
-              style: context.textTheme.headlineMedium!.copyWith(
-                decoration: TextDecoration.underline,
-                decorationColor: Colors.blue,
-                shadows: [
-                  const Shadow(
-                    color: Colors.blue,
-                    offset: Offset(0, -5),
-                  )
-                ],
-                color: Colors.transparent,
-              ),
-            )
-          : AutoSizeText(
-              controller.user.value!.name!,
-              style: context.textTheme.headlineMedium!.copyWith(
-                decorationColor: Colors.blue,
-                shadows: [
-                  const Shadow(
-                    color: Colors.blue,
-                    offset: Offset(0, -5),
-                  )
-                ],
-                color: Colors.transparent,
-              ),
-            ),
       InfoCard(
         icon: Icons.phone,
         text: controller.user.value!.phoneNo.toString(),
+        color: const Color(0xff8d7aee),
       ),
       InfoCard(
         icon: Icons.email,
         text: controller.user.value!.email.toString(),
+        color: const Color(0xfff468b7),
       ),
       InfoCard(
         icon: Icons.cake,
         text: controller.detailUser.value!.dob!.convertToDate,
+        color: const Color(0xffffc85b),
       ),
       GestureDetector(
         onTap: () => Get.toNamed('/order_history'),
         child: const InfoCard(
           icon: Icons.list_alt,
           text: "Đơn hàng",
+          color: Color(0xff5dd1d3),
         ),
       ),
       const AddressCard(),

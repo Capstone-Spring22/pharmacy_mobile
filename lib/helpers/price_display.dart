@@ -69,12 +69,20 @@ class ListPrice extends GetView<CartController> {
       children: [
         ...product.productUnitReferences!.map(
           (e) => Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(10),
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(color: context.theme.primaryColor),
-              ),
+                  borderRadius: BorderRadius.circular(15),
+                  // border: Border.all(color: context.theme.primaryColor),
+                  color: Colors.white,
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color(0xfff6f5f8),
+                      spreadRadius: 10,
+                      blurRadius: 10,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ]),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Wrap(

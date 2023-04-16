@@ -52,7 +52,7 @@ class ProductDetailScreen extends GetView<AppController> {
                       width: Get.width,
                       height: Get.height * .08,
                       child: isLoad
-                          ? LoadingWidget()
+                          ? const LoadingWidget()
                           : product.isPrescription!
                               ? Padding(
                                   padding: const EdgeInsets.all(15),
@@ -110,7 +110,7 @@ class ProductDetailScreen extends GetView<AppController> {
                                 width: double.infinity,
                               ),
                               ...infoWidget(context, product),
-                              LoadingWidget(
+                              const LoadingWidget(
                                 size: 60,
                               )
                             ],
@@ -133,33 +133,53 @@ class ProductDetailScreen extends GetView<AppController> {
                                 ),
                               ),
                               ...infoWidget(context, product),
-                              FutureBuilder(
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return const LinearProgressIndicator();
-                                    } else {
-                                      final data = snapshot.data;
-                                      return ExpansionTile(
-                                        title: AutoSizeText(
-                                            'Có ${data['totalSite']} nhà thuốc còn sản phẩm này'),
-                                        children: [
-                                          ...data['siteListToPickUps']
-                                              .map<Widget>(
-                                            (e) => ListTile(
-                                              title:
-                                                  AutoSizeText(e['siteName']),
-                                              subtitle: AutoSizeText(
-                                                e['fullyAddress'],
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      );
-                                    }
-                                  },
-                                  future: ProductService()
-                                      .checkProductOnSite(product.id!)),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 8),
+                                child: FutureBuilder(
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const LinearProgressIndicator();
+                                      } else {
+                                        final data = snapshot.data;
+                                        return Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              // border: Border.all(color: context.theme.primaryColor),
+                                              color: Colors.white,
+                                              boxShadow: const [
+                                                BoxShadow(
+                                                  color: Color(0xfff6f5f8),
+                                                  spreadRadius: 10,
+                                                  blurRadius: 10,
+                                                  offset: Offset(0,
+                                                      3), // changes position of shadow
+                                                ),
+                                              ]),
+                                          child: ExpansionTile(
+                                            title: AutoSizeText(
+                                                'Có ${data['totalSite']} nhà thuốc còn sản phẩm này'),
+                                            children: [
+                                              ...data['siteListToPickUps']
+                                                  .map<Widget>(
+                                                (e) => ListTile(
+                                                  title: AutoSizeText(
+                                                      e['siteName']),
+                                                  subtitle: AutoSizeText(
+                                                    e['fullyAddress'],
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    future: ProductService()
+                                        .checkProductOnSite(product.id!)),
+                              ),
                               for (int i = 0;
                                   i <
                                       descriptionWidgets(
@@ -182,7 +202,7 @@ class ProductDetailScreen extends GetView<AppController> {
               ),
             );
           } else {
-            return Scaffold(
+            return const Scaffold(
               body: Center(
                 child: LoadingWidget(
                   size: 100,

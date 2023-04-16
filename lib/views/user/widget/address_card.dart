@@ -6,7 +6,9 @@ import 'package:pharmacy_mobile/views/address/address.dart';
 import 'package:pharmacy_mobile/views/user/widget/address_info.dart';
 
 class AddressCardCollase extends GetView<UserController> {
-  const AddressCardCollase({super.key});
+  const AddressCardCollase({this.textColor = Colors.black, super.key});
+
+  final Color textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +16,17 @@ class AddressCardCollase extends GetView<UserController> {
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: context.theme.primaryColor),
-            ),
+                borderRadius: BorderRadius.circular(10),
+                // border: Border.all(color: context.theme.primaryColor),
+                color: Colors.white,
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color(0xfff6f5f8),
+                    spreadRadius: 10,
+                    blurRadius: 10,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ]),
             child: ListTile(
               leading: const Icon(Icons.location_on),
               title: const Text("Địa chỉ chính"),
@@ -34,7 +44,9 @@ class AddressCardCollase extends GetView<UserController> {
 }
 
 class AddressCard extends StatefulWidget {
-  const AddressCard({super.key});
+  const AddressCard({super.key, this.textColor = Colors.black});
+
+  final Color textColor;
 
   @override
   State<AddressCard> createState() => _AddressCardState();
@@ -93,9 +105,17 @@ class AddressCardExtend extends GetView<UserController> {
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: context.theme.primaryColor),
-            ),
+                borderRadius: BorderRadius.circular(10),
+                // border: Border.all(color: context.theme.primaryColor),
+                color: Colors.white,
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color(0xfff6f5f8),
+                    spreadRadius: 10,
+                    blurRadius: 10,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ]),
             child: ListTile(
               leading: const Icon(Icons.location_on),
               title: SizedBox(

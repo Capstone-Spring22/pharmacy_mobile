@@ -80,19 +80,6 @@ class MenuDrawer extends StatelessWidget {
                   return const AlarmScreen();
                 },
               ),
-              // OpenContainer(
-              //   closedBuilder: (context, action) {
-              //     return const MenuItem(
-              //       text: 'Cài đặt',
-              //       icon: Icons.settings,
-              //     );
-              //   },
-              //   closedElevation: 0,
-              //   closedColor: Colors.transparent,
-              //   openBuilder: (context, action) {
-              //     return const SettingPage();
-              //   },
-              // ),
               OpenContainer(
                 closedBuilder: (context, action) {
                   return const MenuItem(
