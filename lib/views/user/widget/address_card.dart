@@ -28,15 +28,30 @@ class AddressCardCollase extends GetView<UserController> {
                   ),
                 ]),
             child: ListTile(
-              leading: const Icon(Icons.location_on),
-              title: const Text("Địa chỉ chính"),
+              leading: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(25)),
+                  color: Color(0xFFAA77FF),
+                ),
+                child: const Icon(
+                  Icons.pin_drop,
+                  color: Colors.white,
+                ),
+              ),
+              title: Row(
+                children: const [
+                  Text("Địa chỉ chính"),
+                  Spacer(),
+                  Icon(Icons.more_horiz)
+                ],
+              ),
               subtitle: userController
                       .detailUser.value!.customerAddressList!.isEmpty
                   ? const Text("Không có địa chỉ, hãy thêm địa chỉ")
                   : Text(controller.detailUser.value!.customerAddressList!
                       .singleWhere((element) => element.isMainAddress == true)
                       .fullyAddress!),
-              trailing: const Icon(Icons.more_horiz),
             ),
           ),
         ));
@@ -117,7 +132,17 @@ class AddressCardExtend extends GetView<UserController> {
                   ),
                 ]),
             child: ListTile(
-              leading: const Icon(Icons.location_on),
+              leading: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(25)),
+                  color: Color(0xFFAA77FF),
+                ),
+                child: const Icon(
+                  Icons.pin_drop,
+                  color: Colors.white,
+                ),
+              ),
               title: SizedBox(
                 width: double.infinity,
                 child: Column(

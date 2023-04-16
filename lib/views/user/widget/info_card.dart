@@ -28,7 +28,7 @@ class InfoCard extends StatelessWidget {
               ),
             ]),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          padding: const EdgeInsets.symmetric(vertical: 10),
           child: ListTile(
             leading: Container(
               padding: const EdgeInsets.all(10),

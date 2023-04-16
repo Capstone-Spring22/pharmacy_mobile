@@ -61,53 +61,71 @@ class ListCheckout extends StatelessWidget {
                             preventDuplicates: false,
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            child: ListTile(
-                              leading: item[0].productImageUrl == null
-                                  ? LoadingWidget()
-                                  : CachedNetworkImage(
-                                      height: Get.height * .1,
-                                      width: Get.width * .15,
-                                      imageUrl: item[0].productImageUrl!,
-                                      placeholder: (context, url) =>
-                                          LoadingWidget(),
-                                      errorWidget: (context, url, error) =>
-                                          const Icon(Icons.error),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 15),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Color(0xfff6f5f8),
+                                    spreadRadius: 10,
+                                    blurRadius: 10,
+                                    offset: Offset(
+                                      0,
+                                      3,
                                     ),
-                              title: Text(
-                                item[0].productName!,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              subtitle: Column(
-                                children: [
-                                  ...item.map(
-                                    (e) => Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 5,
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                              "Số lượng: ${e.quantity} ${extractUname(e.productId!)!}"),
-                                          const Spacer(),
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              "Giá: ${e.priceAfterDiscount!.convertCurrentcy()}",
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 3,
-                                            child: Container(),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  )
+                                  ),
                                 ],
+                              ),
+                              child: ListTile(
+                                leading: item[0].productImageUrl == null
+                                    ? const LoadingWidget()
+                                    : CachedNetworkImage(
+                                        height: Get.height * .1,
+                                        width: Get.width * .15,
+                                        imageUrl: item[0].productImageUrl!,
+                                        placeholder: (context, url) =>
+                                            const LoadingWidget(),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
+                                      ),
+                                title: Text(
+                                  item[0].productName!,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                subtitle: Column(
+                                  children: [
+                                    ...item.map(
+                                      (e) => Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 5,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                                "Số lượng: ${e.quantity} ${extractUname(e.productId!)!}"),
+                                            const Spacer(),
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                "Giá: ${e.priceAfterDiscount!.convertCurrentcy()}",
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 3,
+                                              child: Container(),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),

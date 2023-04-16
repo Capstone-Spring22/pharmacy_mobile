@@ -62,24 +62,36 @@ class _PickDateState extends State<PickDate> {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 25),
         child: _isLoading
-            ? LoadingWidget()
+            ? const LoadingWidget()
             : (data as List<dynamic>).isNotEmpty
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Chọn ngày nhận",
-                          style: context.textTheme.titleMedium,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Chọn ngày nhận",
+                            style: context.textTheme.titleMedium,
+                          ),
                         ),
                       ),
                       Container(
                         height: Get.height * 0.3,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: context.theme.primaryColor),
-                        ),
+                            borderRadius: BorderRadius.circular(10),
+                            // border: Border.all(color: context.theme.primaryColor),
+                            color: Colors.white,
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color(0xfff6f5f8),
+                                spreadRadius: 10,
+                                blurRadius: 10,
+                                offset:
+                                    Offset(0, 3), // changes position of shadow
+                              ),
+                            ]),
                         child: ListView.builder(
                           controller: scrollController,
                           // shrinkWrap: true,

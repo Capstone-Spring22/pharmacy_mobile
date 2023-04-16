@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/controllers/user_controller.dart';
-import 'package:pharmacy_mobile/debug/screen.dart';
 import 'package:pharmacy_mobile/models/detail_user.dart';
 import 'package:pharmacy_mobile/models/pharmacy_user.dart';
 import 'package:pharmacy_mobile/views/alarm/alarm.dart';
@@ -94,17 +93,26 @@ class MenuDrawer extends StatelessWidget {
                 },
               ),
               if (kDebugMode)
-                OpenContainer(
-                  closedBuilder: (context, action) {
-                    return const MenuItem(
-                      text: 'Debug Screen',
-                      icon: Icons.bug_report_sharp,
-                    );
-                  },
-                  closedElevation: 0,
-                  closedColor: Colors.transparent,
-                  openBuilder: (context, action) {
-                    return const DebugScreen();
+                // OpenContainer(
+                //   closedBuilder: (context, action) {
+                //     return const MenuItem(
+                //       text: 'Debug Screen',
+                //       icon: Icons.bug_report_sharp,
+                //     );
+                //   },
+                //   closedElevation: 0,
+                //   closedColor: Colors.transparent,
+                //   openBuilder: (context, action) {
+                //     return const DebugScreen();
+                //   },
+                // ),
+                MenuItem(
+                  text: 'Debug Screen',
+                  icon: Icons.bug_report_sharp,
+                  onClicked: () {
+                    try {
+                      throw const FormatException();
+                    } catch (e) {}
                   },
                 ),
               const Spacer(),

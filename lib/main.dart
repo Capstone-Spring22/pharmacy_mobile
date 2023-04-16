@@ -23,6 +23,7 @@ import 'package:pharmacy_mobile/views/alarm/alarm_picker.dart';
 import 'package:pharmacy_mobile/views/browse_products/browse_product.dart';
 import 'package:pharmacy_mobile/views/chat/chat.dart';
 import 'package:pharmacy_mobile/views/checkout/checkout.dart';
+import 'package:pharmacy_mobile/views/error/error.dart';
 import 'package:pharmacy_mobile/views/nav_hub/nav_bar_hub.dart';
 import 'package:pharmacy_mobile/views/product_detail/product_detail.dart';
 import 'package:pharmacy_mobile/views/setting/setting.dart';
@@ -62,10 +63,24 @@ extension DateFormatter on String {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
+    return ErrorScreen(errorDetails: errorDetails);
+  };
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+
+  // FlutterError.onError = (errorDetails) {
+  //   FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  // };
+  // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
+  // PlatformDispatcher.instance.onError = (error, stack) {
+  //   FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+  //   return true;
+  // };
   await GetStorage.init();
   FirebaseFirestore.instance.settings.persistenceEnabled;
   await AndroidAlarmManager.initialize();
@@ -74,6 +89,12 @@ void main() async {
 
   //init app controller
   initController();
+
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    systemNavigationBarColor: Colors.white, // navigation bar color
+    statusBarColor: Colors.white, // status bar color
+    statusBarIconBrightness: Brightness.dark,
+  ));
 
   // FlutterError.onError = (FlutterErrorDetails details) {
   //   List<String> errorList = [

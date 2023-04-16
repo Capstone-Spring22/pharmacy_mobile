@@ -16,6 +16,7 @@ class Input extends StatelessWidget {
   final int? maxLines;
   final bool isFormField;
   final String? Function(String?)? validator;
+  final double? horiPadding;
   const Input(
       {Key? key,
       required this.inputController,
@@ -28,6 +29,7 @@ class Input extends StatelessWidget {
       this.validator,
       this.isFormField = false,
       this.inputAction,
+      this.horiPadding,
       this.maxLines = 1,
       this.centerText = false,
       this.readOnly = false,
@@ -37,7 +39,7 @@ class Input extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.symmetric(horizontal: horiPadding ?? 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

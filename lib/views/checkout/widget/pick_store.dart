@@ -16,7 +16,7 @@ class PickStore extends StatelessWidget {
         child: FutureBuilder(
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return LoadingWidget();
+              return const LoadingWidget();
             } else {
               final data = snapshot.data;
               if (data['totalSite'] > 0) {
@@ -24,18 +24,31 @@ class PickStore extends StatelessWidget {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Chọn cửa hàng",
-                        style: context.textTheme.titleMedium,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Chọn cửa hàng",
+                          style: context.textTheme.titleMedium,
+                        ),
                       ),
                     ),
                     Container(
+                      height: Get.height * .3,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: context.theme.primaryColor),
-                      ),
+                          borderRadius: BorderRadius.circular(10),
+                          // border: Border.all(color: context.theme.primaryColor),
+                          color: Colors.white,
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Color(0xfff6f5f8),
+                              spreadRadius: 10,
+                              blurRadius: 10,
+                              offset:
+                                  Offset(0, 3), // changes position of shadow
+                            ),
+                          ]),
                       child: ListView.builder(
                         shrinkWrap: true,
                         itemCount: sites.length,

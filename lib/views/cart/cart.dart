@@ -13,23 +13,10 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      // appBar: AppBar(
-      //   elevation: 0,
-      //   title: AutoSizeText(
-      //     textAlign: TextAlign.center,
-      //     "cart_title".tr,
-      //     maxLines: 1,
-      //     style: context.textTheme.headlineMedium,
-      //   ),
-      //   centerTitle: true,
-      //   backgroundColor: Colors.transparent,
-      // ),
       appBar: PharmacyAppBar(
         leftWidget: const PharmacyBackButton(),
         midText: "title".tr,
         rightWidget: const CartButton(),
-        // titleStyle:
-        //     context.textTheme.headlineMedium!.copyWith(fontSize: 30.h),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),

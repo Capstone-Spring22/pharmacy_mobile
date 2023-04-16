@@ -9,6 +9,7 @@ class CartDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       width: Get.width * 0.8,
+      // backgroundColor: Colors.transparent,
       child: const CartScreen(),
     );
   }

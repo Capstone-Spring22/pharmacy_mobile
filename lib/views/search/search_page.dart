@@ -1,5 +1,4 @@
 import 'package:animations/animations.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -7,12 +6,11 @@ import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/app_controller.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
-import 'package:pharmacy_mobile/main.dart';
 import 'package:pharmacy_mobile/views/drawer/cart_drawer.dart';
 import 'package:pharmacy_mobile/views/drawer/menu_drawer.dart';
 import 'package:pharmacy_mobile/views/home/widgets/cart_btn.dart';
-import 'package:pharmacy_mobile/views/home/widgets/product_tile.dart';
 import 'package:pharmacy_mobile/services/product_service.dart';
+import 'package:pharmacy_mobile/views/search/widget/search_item.dart';
 import 'package:pharmacy_mobile/widgets/appbar.dart';
 import 'package:pharmacy_mobile/widgets/back_button.dart';
 
@@ -76,28 +74,8 @@ class SearchScreen extends GetView<AppController> {
                     child: Column(
                       children: [
                         if (controller.searchCtl.value.isEmpty)
-                          Expanded(
-                            child: GridView.count(
-                              crossAxisCount: 2,
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              childAspectRatio: .6,
-                              children: productController.trending
-                                  .map(
-                                    (e) => Padding(
-                                      padding: const EdgeInsets.all(18),
-                                      child: ProductTile(
-                                        fn: () => Get.toNamed(
-                                          '/product_detail',
-                                          preventDuplicates: false,
-                                          arguments: e.id,
-                                        ),
-                                        product: e,
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
-                            ),
+                          const Center(
+                            child: Text("Nhập tên thuốc cần tìm"),
                           ),
                         if (controller.searchCtl.value.isNotEmpty)
                           Expanded(
@@ -105,7 +83,7 @@ class SearchScreen extends GetView<AppController> {
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
-                                  return LoadingWidget(
+                                  return const LoadingWidget(
                                     size: 40,
                                   );
                                 } else if (snapshot.hasData &&
@@ -121,25 +99,10 @@ class SearchScreen extends GetView<AppController> {
                                     itemBuilder: (context, index) {
                                       final item = list[index];
 
-                                      return ListTile(
-                                        leading: CachedNetworkImage(
-                                          imageUrl: item.imageModel!.imageURL!,
-                                          height: Get.height * .2,
-                                          width: Get.width * .2,
-                                          placeholder: (context, url) =>
-                                              LoadingWidget(),
-                                          errorWidget: (context, url, error) =>
-                                              const Icon(Icons.error),
-                                        ),
-                                        title: Text(item.name!),
-                                        subtitle: Text(
-                                          item.price!.convertCurrentcy(),
-                                        ),
-                                        onTap: () => Get.toNamed(
-                                          '/product_detail',
-                                          preventDuplicates: false,
-                                          arguments: item.id,
-                                        ),
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10, horizontal: 15),
+                                        child: SearchItem(item: item),
                                       );
                                     },
                                   );

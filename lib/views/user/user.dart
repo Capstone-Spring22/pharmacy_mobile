@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
@@ -29,6 +30,34 @@ class UserScreen extends GetView<UserController> {
                 child: Column(
                   children: [
                     const UserAvatar().animate().flipH(),
+                    controller.user.value!.name == null
+                        ? AutoSizeText(
+                            "Đặt tên >",
+                            style: context.textTheme.headlineMedium!.copyWith(
+                              decoration: TextDecoration.underline,
+                              decorationColor: Colors.blue,
+                              shadows: [
+                                const Shadow(
+                                  color: Colors.blue,
+                                  offset: Offset(0, -5),
+                                )
+                              ],
+                              color: Colors.transparent,
+                            ),
+                          )
+                        : AutoSizeText(
+                            controller.user.value!.name!,
+                            style: context.textTheme.headlineMedium!.copyWith(
+                              decorationColor: Colors.blue,
+                              shadows: [
+                                const Shadow(
+                                  color: Colors.blue,
+                                  offset: Offset(0, -5),
+                                )
+                              ],
+                              color: Colors.transparent,
+                            ),
+                          ),
                     for (int i = 0; i < _buildUserCard(context).length; i++)
                       _buildUserCard(context)[i]
                           .animate()
