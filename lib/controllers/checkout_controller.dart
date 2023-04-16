@@ -159,7 +159,7 @@ class CheckoutController extends GetxController {
     }
 
     Get.dialog(
-      Center(
+      const Center(
         child: LoadingWidget(),
       ),
     );
@@ -302,7 +302,7 @@ class CheckoutController extends GetxController {
     num shipping = 25000;
 
     Get.dialog(
-      Center(
+      const Center(
         child: LoadingWidget(),
       ),
     );

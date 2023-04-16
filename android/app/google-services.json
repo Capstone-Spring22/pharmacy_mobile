@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "24071304025-cefm21fbt2ucmm0arfh5pa5ot8a2fvuk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.valkdokk.pharmacy_customer",
+            "certificate_hash": "9859f7e66171e1cd2400a6c1486a5bd649c11960"
+          }
+        },
+        {
+          "client_id": "24071304025-vnho0udi28evqu0v6vs293squ4r85mer.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.valkdokk.pharmacy_customer",
+            "certificate_hash": "164de7be596c8d11e53a3e931acd516b94970e74"
+          }
+        },
+        {
           "client_id": "24071304025-82jq4sok2jpgjicgd9eimdeso59idkf5.apps.googleusercontent.com",
           "client_type": 3
         }

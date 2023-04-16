@@ -41,7 +41,10 @@ class HomeScreen extends StatelessWidget {
               child: GetX<CartController>(builder: (cartCtrl) {
                 return Badge(
                   isLabelVisible: cartCtrl.listCart.isNotEmpty,
-                  label: Text(cartCtrl.listCart.length.toString()),
+                  label: Text(cartCtrl.listCart
+                      .groupProductsByName()
+                      .length
+                      .toString()),
                   child: const CartButtonNoNeu(),
                 );
               }),

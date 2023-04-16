@@ -61,11 +61,11 @@ class MenuDrawer extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               const Divider(color: Colors.white70),
-              MenuItem(
-                text: 'Thông báo',
-                icon: Icons.notifications_outlined,
-                onClicked: () => Get.toNamed('/signup'),
-              ),
+              // MenuItem(
+              //   text: 'Thông báo',
+              //   icon: Icons.notifications_outlined,
+              //   onClicked: () => Get.toNamed('/signup'),
+              // ),
               OpenContainer(
                 closedBuilder: (context, action) {
                   return const MenuItem(
@@ -106,16 +106,16 @@ class MenuDrawer extends StatelessWidget {
                 //     return const DebugScreen();
                 //   },
                 // ),
-                MenuItem(
-                  text: 'Debug Screen',
-                  icon: Icons.bug_report_sharp,
-                  onClicked: () {
-                    try {
-                      throw const FormatException();
-                    } catch (e) {}
-                  },
-                ),
-              const Spacer(),
+                // MenuItem(
+                //   text: null!,
+                //   icon: Icons.bug_report_sharp,
+                //   onClicked: () {
+                //     try {
+                //       throw const FormatException();
+                //     } catch (e) {}
+                //   },
+                // ),
+                const Spacer(),
               GetX<UserController>(
                 builder: (controller) => controller.isLoggedIn.value
                     ? MenuItem(
