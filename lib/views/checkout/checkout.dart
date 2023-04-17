@@ -47,18 +47,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Thanh toán"),
-        actions: [
-          Obx(() {
-            final ad = userController.detailUser.value?.customerAddressList
-                ?.singleWhere((element) => element.isMainAddress == true);
-            return IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: () {
-                Get.log('Address: ${ad?.fullyAddress ?? 'null'}');
-              },
-            );
-          })
-        ],
       ),
       body: Stack(
         children: [

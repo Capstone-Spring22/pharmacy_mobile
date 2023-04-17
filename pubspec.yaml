@@ -86,6 +86,8 @@ dependencies:
 dev_dependencies:
   change_app_package_name: ^1.1.0
   flutter_lints: ^2.0.0
+  integration_test:
+    sdk: flutter
   flutter_test:
     sdk: flutter
 
