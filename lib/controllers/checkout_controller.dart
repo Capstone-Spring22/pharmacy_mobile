@@ -125,28 +125,34 @@ class CheckoutController extends GetxController {
     super.onInit();
   }
 
-  String? validatePoint(String input) {
+  String? validatePoint() {
     int point = 0;
     try {
-      point = int.parse(input);
+      point = int.parse(pointCtl.text);
     } catch (e) {}
 
     final userPoint = userController.point;
 
+    final totalPrice = cartController.calculateTotalNonDiscount();
+
     if (point > userPoint) {
+      pointUsed.value = 0;
       return "Số điểm không đủ, tối đa ${userController.point} điểm";
-    } else if (point > cartController.calculateTotalNonDiscount()) {
+    }
+    if (point * 1000 > totalPrice) {
+      pointUsed.value = 0;
       return "Số điểm không được lớn hơn tổng tiền";
     }
     return null;
   }
 
-  void calculateUsedPoint(String input) {
+  void calculateUsedPoint() {
     final point = userController.point;
 
     final total = cartController.calculateTotalNonDiscount();
 
-    if (validatePoint(input) == null) {
+    final input = pointCtl.text;
+    if (validatePoint() == null) {
       if (input.isNumericOnly) {
         try {
           pointUsed.value = int.parse(input);
@@ -261,21 +267,19 @@ class CheckoutController extends GetxController {
         siteId: selectSite.value,
       );
 
-      Get.log(order.toString());
-      // TODO : restore this
-      // await OrderService().postOrder(order).then((value) async {
-      //   if (value == 200) {
-      //     await OrderService().wipeCart(cartController.docId!);
-      //     Get.back();
-      //     Get.offAndToNamed(
-      //       '/order_success',
-      //       arguments: order.orderId,
-      //     );
-      //   } else {
-      //     Get.back();
-      //     Get.snackbar("Error", "Something went wrong");
-      //   }
-      // });
+      await OrderService().postOrder(order).then((value) async {
+        if (value == 200) {
+          await OrderService().wipeCart(cartController.docId!);
+          Get.back();
+          Get.offAndToNamed(
+            '/order_success',
+            arguments: order.orderId,
+          );
+        } else {
+          Get.back();
+          Get.snackbar("Error", "Something went wrong");
+        }
+      });
     } else {
       // Online Bank Pickup
       Get.toNamed('/vnpay')!.then((value) async {
@@ -327,21 +331,19 @@ class CheckoutController extends GetxController {
                 vnpPayDate: vnpPayDate,
               ));
 
-          Get.log(order.toString());
-          // TODO : restore this
-          // await OrderService().postOrder(order).then((value) async {
-          //   if (value == 200) {
-          //     await OrderService().wipeCart(cartController.docId!);
-          //     Get.back();
-          //     Get.offAndToNamed(
-          //       '/order_success',
-          //       arguments: order.orderId,
-          //     );
-          //   } else {
-          //     Get.back();
-          //     Get.snackbar("Error", "Something went wrong");
-          //   }
-          // });
+          await OrderService().postOrder(order).then((value) async {
+            if (value == 200) {
+              await OrderService().wipeCart(cartController.docId!);
+              Get.back();
+              Get.offAndToNamed(
+                '/order_success',
+                arguments: order.orderId,
+              );
+            } else {
+              Get.back();
+              Get.snackbar("Error", "Something went wrong");
+            }
+          });
         } else {
           Get.back();
           Get.snackbar("Error", "You cancel the payment");
@@ -410,22 +412,21 @@ class CheckoutController extends GetxController {
           homeAddress: address.homeAddress,
         ),
       );
-      Get.log(order.toString());
-      // TODO : restore this
-      // await OrderService().postOrder(order).then((value) async {
-      //   await OrderService().wipeCart(cartController.docId!);
-      //   Get.back();
-      //   if (value == 200) {
-      //     Get.offNamedUntil(
-      //       '/order_success',
-      //       (route) => route.settings.name == '/navhub',
-      //       arguments: order.orderId,
-      //     );
-      //   } else {
-      //     Get.back();
-      //     Get.snackbar("Error", "Something went wrong");
-      //   }
-      // });
+
+      await OrderService().postOrder(order).then((value) async {
+        await OrderService().wipeCart(cartController.docId!);
+        Get.back();
+        if (value == 200) {
+          Get.offNamedUntil(
+            '/order_success',
+            (route) => route.settings.name == '/navhub',
+            arguments: order.orderId,
+          );
+        } else {
+          Get.back();
+          Get.snackbar("Error", "Something went wrong");
+        }
+      });
     } else {
       //Online Bank Delivery
       Get.toNamed('/vnpay')!.then((value) async {
@@ -475,21 +476,20 @@ class CheckoutController extends GetxController {
                 vnpTransactionNo: vnpTransactionNo,
                 vnpPayDate: vnpPayDate,
               ));
-          Get.log(order.toString());
-          // TODO : restore this
-          // await OrderService().postOrder(order).then((value) async {
-          //   await OrderService().wipeCart(cartController.docId!);
-          //   Get.back();
-          //   if (value == 200) {
-          //     Get.offAndToNamed(
-          //       '/order_success',
-          //       arguments: order.orderId,
-          //     );
-          //   } else {
-          //     Get.back();
-          //     Get.snackbar("Error", "Something went wrong");
-          //   }
-          // });
+
+          await OrderService().postOrder(order).then((value) async {
+            await OrderService().wipeCart(cartController.docId!);
+            Get.back();
+            if (value == 200) {
+              Get.offAndToNamed(
+                '/order_success',
+                arguments: order.orderId,
+              );
+            } else {
+              Get.back();
+              Get.snackbar("Error", "Something went wrong");
+            }
+          });
         } else {
           Get.back();
           Get.snackbar("Error", "You cancel the payment");

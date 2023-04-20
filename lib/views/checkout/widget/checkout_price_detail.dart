@@ -98,14 +98,14 @@ class PriceDetail extends GetView<CheckoutController> {
                               controller.debouncer.call(() {
                                 if (controller.formKey.currentState!
                                     .validate()) {
-                                  controller.calculateUsedPoint(p0);
+                                  controller.calculateUsedPoint();
                                 }
                               });
                             },
                             validator: (p0) => p0!.isEmpty
                                 ? 'Không được để trống'
                                 : p0.isNumericOnly
-                                    ? controller.validatePoint(p0)
+                                    ? controller.validatePoint()
                                     : 'Điểm nhập không hợp lệ',
                           ).animate().slideX(begin: 1, delay: 50.ms)
                         : Container(),
