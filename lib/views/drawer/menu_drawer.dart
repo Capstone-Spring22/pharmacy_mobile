@@ -3,6 +3,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
+import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/user_controller.dart';
 import 'package:pharmacy_mobile/models/detail_user.dart';
 import 'package:pharmacy_mobile/models/pharmacy_user.dart';
@@ -61,11 +62,11 @@ class MenuDrawer extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               const Divider(color: Colors.white70),
-              // MenuItem(
-              //   text: 'Thông báo',
-              //   icon: Icons.notifications_outlined,
-              //   onClicked: () => Get.toNamed('/signup'),
-              // ),
+              MenuItem(
+                text: 'Thông báo',
+                icon: Icons.notifications_outlined,
+                onClicked: () => userController.logout(),
+              ),
               OpenContainer(
                 closedBuilder: (context, action) {
                   return const MenuItem(

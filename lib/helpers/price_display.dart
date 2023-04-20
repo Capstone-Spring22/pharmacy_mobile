@@ -47,7 +47,7 @@ List<Widget> displayPrice(num price, num priceAfterDiscount, String unit) {
         ),
         padding: const EdgeInsets.all(5),
         child: AutoSizeText(
-          "-${(priceAfterDiscount * 100 / price).round()}%",
+          "-${100 - (priceAfterDiscount * 100 / price).round()}%",
           style: detailPrice.copyWith(
             color: Colors.white,
             fontSize: 15,

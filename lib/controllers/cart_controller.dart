@@ -174,7 +174,6 @@ class CartController extends GetxController {
     double total = 0.0;
     for (var item in listCart) {
       total += item.priceTotal!;
-      // total += item.priceTotal! * item.quantity!;
     }
     return total;
   }
@@ -182,7 +181,7 @@ class CartController extends GetxController {
   double calculateTotalNonDiscount() {
     double total = 0.0;
     for (var item in listCart) {
-      total += item.price! * item.quantity!;
+      total += item.priceAfterDiscount! * item.quantity!;
     }
     return total;
   }

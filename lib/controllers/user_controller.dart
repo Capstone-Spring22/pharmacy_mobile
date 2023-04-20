@@ -5,6 +5,7 @@ import 'package:get/get.dart' hide Response;
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/models/detail_user.dart';
 import 'package:pharmacy_mobile/models/pharmacy_user.dart';
+import 'package:pharmacy_mobile/services/order_service.dart';
 import 'package:pharmacy_mobile/services/user_service.dart';
 
 class UserController extends GetxController {
@@ -12,6 +13,8 @@ class UserController extends GetxController {
 
   Rx<PharmacyUser?> user = null.obs;
   Rx<DetailUser?> detailUser = null.obs;
+
+  int point = 0;
 
   RxBool isLoggedIn = false.obs;
 
@@ -39,7 +42,8 @@ class UserController extends GetxController {
               await UserService().getUserDetail(user.value!.id!);
           if (userDetailRes is DetailUser) {
             detailUser = userDetailRes.obs;
-
+            point = await OrderService()
+                .getCustomerPoint(detailUser.value!.phoneNo!);
             detailUser.refresh();
           }
           options = Options(
@@ -50,7 +54,7 @@ class UserController extends GetxController {
         } else {
           Get.log(Get.previousRoute);
           Get.log("Current Route: ${Get.currentRoute}");
-          if (Get.currentRoute == '/signin') {
+          if (Get.currentRoute == '/signin' || Get.currentRoute == '/intro') {
             Get.defaultDialog(
                 title: "Tài khoản không tồn tại",
                 middleText: "Di chuyển đến trang đăng kí?",
@@ -84,6 +88,7 @@ class UserController extends GetxController {
 
   Future refeshUser() async {
     detailUser.value = await UserService().getUserDetail(user.value!.id!);
+    point = await OrderService().getCustomerPoint(detailUser.value!.phoneNo!);
   }
 
   String formatPhoneNumber(String phoneNumber) {
@@ -99,6 +104,7 @@ class UserController extends GetxController {
           .post("${api}Member/Customer/Login", data: {"firebaseToken": token});
       Get.log(res.statusCode.toString());
     } on DioError catch (e) {
+      Get.log("Error login token: ${e.response}");
       if (e.response!.statusCode == 404) {
         return;
       }

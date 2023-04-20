@@ -34,10 +34,8 @@ class ChatController extends GetxController {
 
   _fetchChat() async {
     while (userController.user.value is! PharmacyUser) {
-      Get.log("wait for user");
-      await Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 500));
     }
-    Get.log("Fetch Chat");
     chats.bindStream(chatStream(userController.user.value!.id!));
     ever(userController.user, (u) {
       chats.bindStream(chatStream(userController.user.value!.id!));

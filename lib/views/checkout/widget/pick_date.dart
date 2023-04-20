@@ -22,38 +22,41 @@ class _PickDateState extends State<PickDate> {
   @override
   void initState() {
     super.initState();
+
     _loadData();
   }
 
   _loadData() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    data = await ProductService().pickDate();
-
-    if (mounted) {
+    try {
       setState(() {
-        _isLoading = false;
+        _isLoading = true;
       });
-    }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        try {
-          int selectedDateIndex = data.indexWhere((element) =>
-              element['dateTime'] ==
-              Get.find<CheckoutController>().selectDate.value);
-          if (selectedDateIndex != -1) {
-            scrollController.animateTo(
-              selectedDateIndex * Get.height * .04,
-              curve: Curves.easeOut,
-              duration: const Duration(milliseconds: 300),
-            );
-          }
-        } catch (e) {}
+      data = await ProductService().pickDate();
+
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          try {
+            int selectedDateIndex = data.indexWhere((element) =>
+                element['dateTime'] ==
+                Get.find<CheckoutController>().selectDate.value);
+            if (selectedDateIndex != -1) {
+              scrollController.animateTo(
+                selectedDateIndex * Get.height * .04,
+                curve: Curves.easeOut,
+                duration: const Duration(milliseconds: 300),
+              );
+            }
+          } catch (e) {}
+        });
       });
-    });
+    } catch (e) {}
   }
 
   @override

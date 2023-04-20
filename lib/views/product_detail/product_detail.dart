@@ -5,13 +5,10 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
-import 'package:pharmacy_mobile/constrains/theme.dart';
 import 'package:pharmacy_mobile/controllers/app_controller.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
 import 'package:pharmacy_mobile/helpers/price_display.dart';
-import 'package:pharmacy_mobile/main.dart';
 import 'package:pharmacy_mobile/models/product.dart';
-import 'package:pharmacy_mobile/models/product_detail.dart';
 import 'package:pharmacy_mobile/views/drawer/cart_drawer.dart';
 import 'package:pharmacy_mobile/views/drawer/menu_drawer.dart';
 import 'package:pharmacy_mobile/views/home/widgets/cart_btn.dart';
@@ -147,7 +144,6 @@ class ProductDetailScreen extends GetView<AppController> {
                                           decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(20),
-                                              // border: Border.all(color: context.theme.primaryColor),
                                               color: Colors.white,
                                               boxShadow: const [
                                                 BoxShadow(
@@ -183,8 +179,8 @@ class ProductDetailScreen extends GetView<AppController> {
                               for (int i = 0;
                                   i <
                                       descriptionWidgets(
-                                              detail.descriptionModels!)
-                                          .length;
+                                        detail.descriptionModels!,
+                                      ).length;
                                   i++)
                                 descriptionWidgets(detail.descriptionModels!)[i]
                                     .animate()
@@ -278,34 +274,6 @@ class ProductDetailScreen extends GetView<AppController> {
             child: const Text("Cần có toa thuốc, liên hệ nhà thuốc"),
           ),
         )
-    ];
-  }
-
-  List infoWidgetDetail(BuildContext context, PharmacyDetail detail) {
-    return [
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: AutoSizeText(
-          detail.name!,
-          maxLines: 3,
-          style: context.textTheme.labelLarge!.copyWith(fontSize: 24),
-        ),
-      ),
-      SizedBox(
-        height: Get.height * .08,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Expanded(
-              child: Text(
-                "${detail.price!.convertCurrentcy()}/${detail.unitName}",
-                textAlign: TextAlign.center,
-                style: detailPrice.copyWith(color: Colors.blue),
-              ),
-            ),
-          ],
-        ),
-      ),
     ];
   }
 }

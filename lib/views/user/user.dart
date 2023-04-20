@@ -80,21 +80,28 @@ class UserScreen extends GetView<UserController> {
   }
 
   List<Widget> _buildUserCard(BuildContext context) {
+    final user = controller.user.value!;
+    final userDetail = controller.detailUser.value!;
     return [
       InfoCard(
         icon: Icons.phone,
-        text: controller.user.value!.phoneNo.toString(),
+        text: user.phoneNo.toString(),
         color: const Color(0xff8d7aee),
       ),
       InfoCard(
         icon: Icons.email,
-        text: controller.user.value!.email.toString(),
+        text: user.email.toString(),
         color: const Color(0xfff468b7),
       ),
       InfoCard(
         icon: Icons.cake,
-        text: controller.detailUser.value!.dob!.convertToDate,
+        text: userDetail.dob!.convertToDate,
         color: const Color(0xffffc85b),
+      ),
+      InfoCard(
+        icon: Icons.shopify_outlined,
+        text: "${userController.point} Điểm mua hàng",
+        color: const Color.fromARGB(255, 17, 228, 123),
       ),
       GestureDetector(
         onTap: () => Get.toNamed('/order_history'),

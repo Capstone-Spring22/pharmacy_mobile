@@ -2,8 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
+import 'package:pharmacy_mobile/main.dart';
 import 'package:pharmacy_mobile/models/detail_user.dart';
 import 'package:pharmacy_mobile/models/order.dart';
 import 'package:pharmacy_mobile/views/checkout/checkout.dart';
@@ -20,6 +22,7 @@ class CheckoutController extends GetxController {
   final addressCtl = TextEditingController();
   final emailCtl = TextEditingController();
   final noteCtl = TextEditingController();
+  final pointCtl = TextEditingController();
 
   Rx<ScrollController?> scrollController = null.obs;
 
@@ -28,6 +31,9 @@ class CheckoutController extends GetxController {
   RxString selectTime = "".obs;
 
   RxBool activeBtn = true.obs;
+
+  RxBool usePoint = false.obs;
+  Rx<num> reducePrice = 0.obs;
 
   RxInt paymentType = 0.obs;
   //0 - Cash
@@ -40,6 +46,11 @@ class CheckoutController extends GetxController {
   void rowView() => isCollase.value = true;
   void colView() => isCollase.value = false;
 
+  final formKey = GlobalKey<FormState>();
+  final debouncer = Debouncer(delay: 300.milliseconds);
+
+  num shipping = 25000;
+
   double linearInterpolationTop() {
     return 0.8 * (panelHeight.value - 0.1);
   }
@@ -47,6 +58,8 @@ class CheckoutController extends GetxController {
   void setPanelHeight(double d) {
     panelHeight.value = d;
   }
+
+  RxInt pointUsed = 0.obs;
 
   RxBool loading = false.obs;
 
@@ -112,6 +125,55 @@ class CheckoutController extends GetxController {
     super.onInit();
   }
 
+  String? validatePoint(String input) {
+    int point = 0;
+    try {
+      point = int.parse(input);
+    } catch (e) {}
+
+    final userPoint = userController.point;
+
+    if (point > userPoint) {
+      return "Số điểm không đủ, tối đa ${userController.point} điểm";
+    } else if (point > cartController.calculateTotalNonDiscount()) {
+      return "Số điểm không được lớn hơn tổng tiền";
+    }
+    return null;
+  }
+
+  void calculateUsedPoint(String input) {
+    final point = userController.point;
+
+    final total = cartController.calculateTotalNonDiscount();
+
+    if (validatePoint(input) == null) {
+      if (input.isNumericOnly) {
+        try {
+          pointUsed.value = int.parse(input);
+        } catch (e) {
+          Get.log('calc Used point: $e - $input');
+        }
+      } else {
+        Get.log('NaN: $input');
+      }
+
+      reducePrice.value = pointUsed.value * 1000;
+    } else {
+      reducePrice.value = 0;
+    }
+  }
+
+  String calcTotal() {
+    num total = cartController.calculateTotalNonDiscount();
+    if (usePoint.value) {
+      total -= reducePrice.value;
+    }
+    if (checkoutType.value == 0) {
+      total += shipping;
+    }
+    return total.convertCurrentcy();
+  }
+
   void setBtnActive(DetailUser u) async {
     loading.value = true;
     final uAddress = u.customerAddressList
@@ -136,6 +198,11 @@ class CheckoutController extends GetxController {
 
   void toggleOrderType(int? index) {
     checkoutType.value = index!;
+    if (index == 0) {
+      shipping = 25000;
+    } else {
+      shipping = 0;
+    }
   }
 
   void togglePaymentType(int? index) {
@@ -165,16 +232,19 @@ class CheckoutController extends GetxController {
     );
 
     if (paymentType.value == 0) {
+      // Cash Pickup
       final order = Order(
         orderId: await OrderService().getOrderId(),
         orderTypeId: type,
-        usedPoint: 0,
+        usedPoint: pointUsed.value,
         payType: 1,
         isPaid: false,
-        discountPrice: cartController.calculateTotal(),
+        discountPrice: pointUsed.value * 1000,
         subTotalPrice: cartController.calculateTotalNonDiscount(),
         shippingPrice: 0,
-        totalPrice: cartController.calculateTotal(),
+        totalPrice: cartController.calculateTotalNonDiscount() -
+            (usePoint.value ? reducePrice.value : 0) +
+            (checkoutType.value == 0 ? shipping : 0),
         products: listProducts,
         vouchers: [],
         note: noteCtl.text,
@@ -191,20 +261,23 @@ class CheckoutController extends GetxController {
         siteId: selectSite.value,
       );
 
-      await OrderService().postOrder(order).then((value) async {
-        if (value == 200) {
-          await OrderService().wipeCart(cartController.docId!);
-          Get.back();
-          Get.offAndToNamed(
-            '/order_success',
-            arguments: order.orderId,
-          );
-        } else {
-          Get.back();
-          Get.snackbar("Error", "Something went wrong");
-        }
-      });
+      Get.log(order.toString());
+      // TODO : restore this
+      // await OrderService().postOrder(order).then((value) async {
+      //   if (value == 200) {
+      //     await OrderService().wipeCart(cartController.docId!);
+      //     Get.back();
+      //     Get.offAndToNamed(
+      //       '/order_success',
+      //       arguments: order.orderId,
+      //     );
+      //   } else {
+      //     Get.back();
+      //     Get.snackbar("Error", "Something went wrong");
+      //   }
+      // });
     } else {
+      // Online Bank Pickup
       Get.toNamed('/vnpay')!.then((value) async {
         Get.log("Data from previous Screen: $value");
         if (value != null) {
@@ -226,13 +299,15 @@ class CheckoutController extends GetxController {
           final order = Order(
               orderId: await OrderService().getOrderId(),
               orderTypeId: type,
-              usedPoint: 0,
+              usedPoint: pointUsed.value,
               payType: 2,
               isPaid: true,
-              discountPrice: cartController.calculateTotal(),
+              discountPrice: pointUsed.value * 1000,
               subTotalPrice: cartController.calculateTotalNonDiscount(),
               shippingPrice: 0,
-              totalPrice: cartController.calculateTotal(),
+              totalPrice: cartController.calculateTotalNonDiscount() -
+                  (usePoint.value ? reducePrice.value : 0) +
+                  (checkoutType.value == 0 ? shipping : 0),
               products: listProducts,
               vouchers: [],
               note: noteCtl.text,
@@ -252,19 +327,21 @@ class CheckoutController extends GetxController {
                 vnpPayDate: vnpPayDate,
               ));
 
-          await OrderService().postOrder(order).then((value) async {
-            if (value == 200) {
-              await OrderService().wipeCart(cartController.docId!);
-              Get.back();
-              Get.offAndToNamed(
-                '/order_success',
-                arguments: order.orderId,
-              );
-            } else {
-              Get.back();
-              Get.snackbar("Error", "Something went wrong");
-            }
-          });
+          Get.log(order.toString());
+          // TODO : restore this
+          // await OrderService().postOrder(order).then((value) async {
+          //   if (value == 200) {
+          //     await OrderService().wipeCart(cartController.docId!);
+          //     Get.back();
+          //     Get.offAndToNamed(
+          //       '/order_success',
+          //       arguments: order.orderId,
+          //     );
+          //   } else {
+          //     Get.back();
+          //     Get.snackbar("Error", "Something went wrong");
+          //   }
+          // });
         } else {
           Get.back();
           Get.snackbar("Error", "You cancel the payment");
@@ -299,8 +376,6 @@ class CheckoutController extends GetxController {
     final address = detailUser!.customerAddressList!
         .singleWhere((element) => element.isMainAddress == true);
 
-    num shipping = 25000;
-
     Get.dialog(
       const Center(
         child: LoadingWidget(),
@@ -308,16 +383,19 @@ class CheckoutController extends GetxController {
     );
 
     if (paymentType.value == 0) {
+      //Cash Delivery
       final order = Order(
         orderId: await OrderService().getOrderId(),
         orderTypeId: type,
-        usedPoint: 0,
+        usedPoint: pointUsed.value,
         payType: 1,
         isPaid: false,
-        discountPrice: cartController.calculateTotal(),
+        discountPrice: pointUsed.value * 1000,
         subTotalPrice: cartController.calculateTotalNonDiscount(),
         shippingPrice: shipping,
-        totalPrice: cartController.calculateTotal() + shipping,
+        totalPrice: cartController.calculateTotalNonDiscount() -
+            (usePoint.value ? reducePrice.value : 0) +
+            (checkoutType.value == 0 ? shipping : 0),
         products: listProducts,
         vouchers: [],
         note: noteCtl.text,
@@ -332,22 +410,24 @@ class CheckoutController extends GetxController {
           homeAddress: address.homeAddress,
         ),
       );
-
-      await OrderService().postOrder(order).then((value) async {
-        await OrderService().wipeCart(cartController.docId!);
-        Get.back();
-        if (value == 200) {
-          Get.offNamedUntil(
-            '/order_success',
-            (route) => route.settings.name == '/navhub',
-            arguments: order.orderId,
-          );
-        } else {
-          Get.back();
-          Get.snackbar("Error", "Something went wrong");
-        }
-      });
+      Get.log(order.toString());
+      // TODO : restore this
+      // await OrderService().postOrder(order).then((value) async {
+      //   await OrderService().wipeCart(cartController.docId!);
+      //   Get.back();
+      //   if (value == 200) {
+      //     Get.offNamedUntil(
+      //       '/order_success',
+      //       (route) => route.settings.name == '/navhub',
+      //       arguments: order.orderId,
+      //     );
+      //   } else {
+      //     Get.back();
+      //     Get.snackbar("Error", "Something went wrong");
+      //   }
+      // });
     } else {
+      //Online Bank Delivery
       Get.toNamed('/vnpay')!.then((value) async {
         Get.log("Data from previous Screen: $value");
         if (value != null) {
@@ -369,13 +449,15 @@ class CheckoutController extends GetxController {
           final order = Order(
               orderId: await OrderService().getOrderId(),
               orderTypeId: type,
-              usedPoint: 0,
+              usedPoint: pointUsed.value,
               payType: 2,
               isPaid: true,
-              discountPrice: cartController.calculateTotal(),
+              discountPrice: pointUsed.value * 1000,
               subTotalPrice: cartController.calculateTotalNonDiscount(),
               shippingPrice: shipping,
-              totalPrice: cartController.calculateTotal() + shipping,
+              totalPrice: cartController.calculateTotalNonDiscount() -
+                  (usePoint.value ? reducePrice.value : 0) +
+                  (checkoutType.value == 0 ? shipping : 0),
               products: listProducts,
               vouchers: [],
               note: noteCtl.text,
@@ -393,20 +475,21 @@ class CheckoutController extends GetxController {
                 vnpTransactionNo: vnpTransactionNo,
                 vnpPayDate: vnpPayDate,
               ));
-
-          await OrderService().postOrder(order).then((value) async {
-            await OrderService().wipeCart(cartController.docId!);
-            Get.back();
-            if (value == 200) {
-              Get.offAndToNamed(
-                '/order_success',
-                arguments: order.orderId,
-              );
-            } else {
-              Get.back();
-              Get.snackbar("Error", "Something went wrong");
-            }
-          });
+          Get.log(order.toString());
+          // TODO : restore this
+          // await OrderService().postOrder(order).then((value) async {
+          //   await OrderService().wipeCart(cartController.docId!);
+          //   Get.back();
+          //   if (value == 200) {
+          //     Get.offAndToNamed(
+          //       '/order_success',
+          //       arguments: order.orderId,
+          //     );
+          //   } else {
+          //     Get.back();
+          //     Get.snackbar("Error", "Something went wrong");
+          //   }
+          // });
         } else {
           Get.back();
           Get.snackbar("Error", "You cancel the payment");

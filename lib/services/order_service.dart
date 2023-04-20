@@ -97,10 +97,23 @@ class OrderService {
         'DistrictID': districtId,
         'IsDelivery': true,
       });
-      Get.log('data: ${res.data}');
       return res.data['totalRecord'] as num;
     } catch (e) {
       Get.log("Error: $e");
+    }
+    return 0;
+  }
+
+  Future<int> getCustomerPoint(String phone) async {
+    final dio = appController.dio;
+    final api = dotenv.env['API_URL']!;
+    try {
+      var res = await dio.get(
+        '${api}CustomerPoint/$phone/CustomerAvailablePoint',
+      );
+      return res.data;
+    } on DioError catch (e) {
+      Get.log("Error get customer point: ${e.response.toString()}");
     }
     return 0;
   }

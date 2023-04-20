@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable, unused_field
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,7 +7,6 @@ import 'package:pharmacy_mobile/constrains/controller.dart';
 
 import 'package:pharmacy_mobile/controllers/checkout_controller.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
-import 'package:pharmacy_mobile/main.dart';
 import 'package:pharmacy_mobile/views/checkout/widget/checkout_panel.dart';
 import 'package:pharmacy_mobile/views/checkout/widget/list_checkout.dart';
 
@@ -23,8 +23,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   double _top = 0;
   DraggableScrollableController draggableScrollableController =
       DraggableScrollableController();
-
-  bool vl = false;
 
   @override
   void dispose() {
@@ -94,48 +92,70 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             top: Get.height * .82,
             child: Obx(() {
               String txt =
-                  "Tổng cộng ${cartController.calculateTotal().convertCurrentcy()} + 25.000₫ Phí ship";
-              if (checkoutController.checkoutType.value != 0) {
-                txt =
-                    "Tổng cộng ${cartController.calculateTotal().convertCurrentcy()}";
-              }
+                  'Tổng tiền ${checkoutController.calcTotal()}, đặt hàng';
               return FilledButton(
-                onPressed: checkoutController.activeBtn.isFalse
-                    ? null
-                    : () {
-                        if (checkoutController.isCollase.value) {
-                          if (checkoutController
-                                  .scrollController.value!.position.pixels ==
-                              checkoutController.scrollController.value!
-                                  .position.maxScrollExtent) {
-                            checkoutController.createOrder();
-                          } else {
-                            checkoutController.scrollController.value
-                                ?.animateTo(
-                              checkoutController.scrollController.value!
-                                  .position.maxScrollExtent,
-                              duration: const Duration(milliseconds: 200),
-                              curve: Curves.easeOut,
-                            );
-                          }
-                        } else {
-                          checkoutController.isCollase.value = true;
-                          draggableScrollableController.animateTo(
-                            .9,
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.linear,
-                          );
-                        }
-                      },
-                child: checkoutController.loading.value
-                    ? const LoadingWidget(
-                        color: Colors.white,
-                      )
-                    : checkoutController.activeBtn.isTrue
-                        ? Text(txt)
-                        : checkoutController.checkoutType.value != 0
-                            ? const Text("Chọn chi nhánh nhận hàng")
-                            : const Text("Khu vực này chưa được hỗ trợ"),
+                onPressed: checkoutController.isCollase.isFalse
+                    ? () {
+                        checkoutController.isCollase.value = true;
+                        draggableScrollableController.animateTo(
+                          .9,
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.linear,
+                        );
+                      }
+                    : checkoutController.activeBtn.isFalse
+                        ? null
+                        : () {
+                            if (checkoutController.isCollase.value) {
+                              if (checkoutController.scrollController.value!
+                                      .position.pixels ==
+                                  checkoutController.scrollController.value!
+                                      .position.maxScrollExtent) {
+                                if (checkoutController.usePoint.isTrue) {
+                                  Get.log(
+                                    'check use point validate: ${checkoutController.formKey.currentState!.validate()}',
+                                  );
+                                  if (checkoutController.formKey.currentState!
+                                      .validate()) {
+                                    checkoutController.createOrder();
+                                  }
+                                } else {
+                                  checkoutController.createOrder();
+                                }
+                              } else {
+                                checkoutController.scrollController.value
+                                    ?.animateTo(
+                                  checkoutController.scrollController.value!
+                                      .position.maxScrollExtent,
+                                  duration: const Duration(milliseconds: 200),
+                                  curve: Curves.easeOut,
+                                );
+                              }
+                            } else {
+                              checkoutController.isCollase.value = true;
+                              draggableScrollableController.animateTo(
+                                .9,
+                                duration: const Duration(milliseconds: 500),
+                                curve: Curves.linear,
+                              );
+                            }
+                          },
+                child: checkoutController.isCollase.isFalse
+                    ? const Text("Nhập thông tin cho đơn hàng")
+                    : checkoutController.loading.value
+                        ? const LoadingWidget(
+                            color: Colors.white,
+                          )
+                        : checkoutController.activeBtn.isTrue
+                            ? AutoSizeText(
+                                txt,
+                                maxLines: 1,
+                              )
+                            : checkoutController.checkoutType.value != 0
+                                ? const Text("Chọn chi nhánh nhận hàng")
+                                : const Text(
+                                    "Khu vực của bạn chưa được hỗ trợ",
+                                  ),
               );
             }),
           )

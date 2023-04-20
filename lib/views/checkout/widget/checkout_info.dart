@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/controllers/checkout_controller.dart';
 import 'package:pharmacy_mobile/views/checkout/widget/check_product_avail.dart';
+import 'package:pharmacy_mobile/views/checkout/widget/checkout_price_detail.dart';
 import 'package:pharmacy_mobile/views/checkout/widget/toggle_checkout.dart';
 import 'package:pharmacy_mobile/views/user/widget/address_card.dart';
 import 'package:pharmacy_mobile/widgets/input.dart';
@@ -50,28 +51,6 @@ class UserCheckoutInfo extends StatelessWidget {
             onTap: checkoutCtrl.listTextField[index].fn,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
-              // child: Row(
-              //   children: [
-              //     Icon(
-              //       checkoutCtrl.listTextField[index].icon,
-              //       color: context.theme.primaryColor,zz
-              //     ),
-              //     Expanded(
-              //       child: Input(
-              //         enabled: checkoutCtrl
-              //                 .listTextField[
-              //                     checkoutCtrl.listTextField.indexOf(element)]
-              //                 .fn ==
-              //             null,
-              //         inputController:
-              //             checkoutCtrl.listTextField[index].txtCtrl,
-              //         title: checkoutCtrl.listTextField[index].label,
-              //         inputType: checkoutCtrl.listTextField[index].type,
-              //       ),
-              //     ),
-              //   ],
-              // ),
-
               child: ListTile(
                 leading: Container(
                   padding: const EdgeInsets.all(10),
@@ -102,6 +81,7 @@ class UserCheckoutInfo extends StatelessWidget {
             ),
           );
         }),
+        const PriceDetail(),
         Column(
           children: const [
             Padding(
