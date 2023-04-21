@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
-import 'package:pharmacy_mobile/controllers/app_controller.dart';
 import 'package:pharmacy_mobile/controllers/vn_pay.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -17,6 +16,9 @@ class VNPayScreen extends StatefulWidget {
 class _VNPayScreenState extends State<VNPayScreen> {
   late WebViewController controller;
   bool isLoaded = false;
+
+  final String id = Get.arguments['id'];
+  final num price = Get.arguments['price'];
 
   @override
   void initState() {
@@ -41,7 +43,7 @@ class _VNPayScreenState extends State<VNPayScreen> {
           future: appController.getIpAddress(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return LoadingWidget();
+              return const LoadingWidget();
             } else {
               String ip = snapshot.data!;
               String tmnCode = dotenv.env['VNPAY_tmnCode']!;
@@ -50,8 +52,8 @@ class _VNPayScreenState extends State<VNPayScreen> {
               final genPayment = VNPAYFlutter.instance.generatePaymentUrl(
                 version: '2.0.1',
                 tmnCode: tmnCode,
-                txnRef: AppController().generateRefBill(),
-                amount: cartController.calculateTotal() + 10000,
+                txnRef: id,
+                amount: price.toDouble(),
                 returnUrl: url,
                 ipAdress: ip,
                 vnpayHashKey: hash,

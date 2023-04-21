@@ -283,7 +283,15 @@ class CheckoutController extends GetxController {
       });
     } else {
       // Online Bank Pickup
-      Get.toNamed('/vnpay')!.then((value) async {
+      String id = await OrderService().getOrderId();
+
+      Get.toNamed('/vnpay', arguments: {
+        'id': id,
+        'price': cartController.calculateTotalNonDiscount() -
+            (usePoint.value ? reducePrice.value : 0) +
+            (checkoutType.value == 0 ? shipping : 0),
+      })!
+          .then((value) async {
         Get.log("Data from previous Screen: $value");
         if (value != null) {
           Uri uri = Uri.parse(value.toString());
@@ -302,7 +310,7 @@ class CheckoutController extends GetxController {
           String vnpSecureHash = uri.queryParameters['vnp_SecureHash']!;
 
           final order = Order(
-              orderId: await OrderService().getOrderId(),
+              orderId: id,
               orderTypeId: type,
               usedPoint: pointUsed.value,
               payType: 2,
@@ -432,7 +440,14 @@ class CheckoutController extends GetxController {
       });
     } else {
       //Online Bank Delivery
-      Get.toNamed('/vnpay')!.then((value) async {
+      String id = await OrderService().getOrderId();
+      Get.toNamed('/vnpay', arguments: {
+        'id': id,
+        'price': cartController.calculateTotalNonDiscount() -
+            (usePoint.value ? reducePrice.value : 0) +
+            (checkoutType.value == 0 ? shipping : 0),
+      })!
+          .then((value) async {
         Get.log("Data from previous Screen: $value");
         if (value != null) {
           Uri uri = Uri.parse(value.toString());
@@ -451,7 +466,7 @@ class CheckoutController extends GetxController {
           String vnpSecureHash = uri.queryParameters['vnp_SecureHash']!;
 
           final order = Order(
-              orderId: await OrderService().getOrderId(),
+              orderId: id,
               orderTypeId: type,
               usedPoint: pointUsed.value,
               payType: 2,
