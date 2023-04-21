@@ -93,8 +93,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(
       appBar: PharmacyAppBar(
         leftWidget: PharmacyBackButton(fn: () {
-          SignupController controller = Get.find();
-          controller.codeSent.value = false;
+          try {
+            SignupController controller = Get.find();
+            controller.codeSent.value = false;
+          } catch (e) {}
         }),
         midText: "Đăng kí",
         rightWidget: Container(),
@@ -285,7 +287,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 title: "Địa chỉ",
                                 inputController: addressCtl,
                                 enabled: false,
-                                maxLines: null,
                               ),
                             ),
                           ],

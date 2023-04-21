@@ -270,6 +270,7 @@ class CheckoutController extends GetxController {
       await OrderService().postOrder(order).then((value) async {
         if (value == 200) {
           await OrderService().wipeCart(cartController.docId!);
+          cartController.connectToCloudCart(true);
           Get.back();
           Get.offAndToNamed(
             '/order_success',
@@ -334,6 +335,7 @@ class CheckoutController extends GetxController {
           await OrderService().postOrder(order).then((value) async {
             if (value == 200) {
               await OrderService().wipeCart(cartController.docId!);
+              cartController.connectToCloudCart(true);
               Get.back();
               Get.offAndToNamed(
                 '/order_success',
@@ -415,6 +417,7 @@ class CheckoutController extends GetxController {
 
       await OrderService().postOrder(order).then((value) async {
         await OrderService().wipeCart(cartController.docId!);
+        cartController.connectToCloudCart(true);
         Get.back();
         if (value == 200) {
           Get.offNamedUntil(
@@ -479,6 +482,7 @@ class CheckoutController extends GetxController {
 
           await OrderService().postOrder(order).then((value) async {
             await OrderService().wipeCart(cartController.docId!);
+            cartController.connectToCloudCart(true);
             Get.back();
             if (value == 200) {
               Get.offAndToNamed(

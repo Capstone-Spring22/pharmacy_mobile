@@ -220,7 +220,7 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
     );
   }
 
-  DropdownButton2<dynamic> dropdownBox({
+  DropdownButtonHideUnderline dropdownBox({
     List<DropdownMenuItem<dynamic>>? items,
     dynamic value,
     TextEditingController? searchController,
@@ -230,39 +230,41 @@ class _AddressSelectionScreenState extends State<AddressSelectionScreen> {
     Widget? hint,
     Widget? disableHint,
   }) {
-    return DropdownButton2(
-      isExpanded: true,
-      disabledHint: disableHint,
-      items: items,
-      value: value,
-      hint: hint,
-      searchController: searchController,
-      searchInnerWidget: searchInnerWidget,
-      searchInnerWidgetHeight: 100,
-      searchMatchFn: searchMatchFn,
-      onChanged: onChanged,
-      iconSize: 14,
-      buttonHeight: 50,
-      buttonWidth: Get.width * .8,
-      buttonPadding: const EdgeInsets.only(left: 14, right: 14),
-      buttonDecoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-          color: Colors.black26,
+    return DropdownButtonHideUnderline(
+      child: DropdownButton2(
+        isExpanded: true,
+        disabledHint: disableHint,
+        items: items,
+        value: value,
+        hint: hint,
+        searchController: searchController,
+        searchInnerWidget: searchInnerWidget,
+        searchInnerWidgetHeight: 100,
+        searchMatchFn: searchMatchFn,
+        onChanged: onChanged,
+        iconSize: 14,
+        buttonHeight: 50,
+        buttonWidth: Get.width * .8,
+        buttonPadding: const EdgeInsets.only(left: 14, right: 14),
+        buttonDecoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: Colors.black26,
+          ),
         ),
+        itemHeight: 40,
+        itemPadding: const EdgeInsets.only(left: 14, right: 14),
+        dropdownMaxHeight: Get.height * .5,
+        dropdownWidth: Get.width * .8,
+        dropdownPadding: null,
+        dropdownDecoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14),
+        ),
+        scrollbarRadius: const Radius.circular(40),
+        scrollbarThickness: 6,
+        scrollbarAlwaysShow: true,
+        offset: const Offset(-10, 0),
       ),
-      itemHeight: 40,
-      itemPadding: const EdgeInsets.only(left: 14, right: 14),
-      dropdownMaxHeight: Get.height * .5,
-      dropdownWidth: Get.width * .8,
-      dropdownPadding: null,
-      dropdownDecoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(14),
-      ),
-      scrollbarRadius: const Radius.circular(40),
-      scrollbarThickness: 6,
-      scrollbarAlwaysShow: true,
-      offset: const Offset(-10, 0),
     );
   }
 }

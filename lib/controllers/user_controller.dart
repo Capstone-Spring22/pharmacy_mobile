@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:pharmacy_mobile/constrains/controller.dart';
+import 'package:pharmacy_mobile/helpers/snack.dart';
 import 'package:pharmacy_mobile/models/detail_user.dart';
 import 'package:pharmacy_mobile/models/pharmacy_user.dart';
 import 'package:pharmacy_mobile/services/order_service.dart';
@@ -51,25 +52,28 @@ class UserController extends GetxController {
               'Authorization': 'Bearer ${userController.user.value!.token}'
             },
           );
+
+          showSnack('Thông báo', 'Đăng nhập thành công', SnackType.success);
         } else {
           Get.log(Get.previousRoute);
           Get.log("Current Route: ${Get.currentRoute}");
           if (Get.currentRoute == '/signin' || Get.currentRoute == '/intro') {
             Get.defaultDialog(
-                title: "Tài khoản không tồn tại",
-                middleText: "Di chuyển đến trang đăng kí?",
-                onConfirm: () {
-                  Get.offNamed('/signup', arguments: {
-                    'token': firebaseToken,
-                  });
-                },
-                textConfirm: 'Đăng kí',
-                onCancel: () {
-                  appController.setPage(0);
-                  appController.drawerKey.currentState!.closeDrawer();
-                  Get.offNamedUntil('/navhub', (route) => route.isFirst);
-                },
-                textCancel: "Hủy");
+              title: "Tài khoản không tồn tại",
+              middleText: "Di chuyển đến trang đăng kí?",
+              onConfirm: () {
+                Get.offNamed('/signup', arguments: {
+                  'token': firebaseToken,
+                });
+              },
+              textConfirm: 'Đăng kí',
+              onCancel: () {
+                appController.setPage(0);
+                appController.drawerKey.currentState!.closeDrawer();
+                Get.offNamedUntil('/navhub', (route) => route.isFirst);
+              },
+              textCancel: "Hủy",
+            );
           }
         }
       } else {

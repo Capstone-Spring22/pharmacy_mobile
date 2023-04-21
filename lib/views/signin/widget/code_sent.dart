@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:pharmacy_mobile/constrains/controller.dart';
 
 import '../../../services/firebase_phone.dart';
 
@@ -20,7 +19,7 @@ class CodeSent extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Text(
-              "SMS với mã bảo mật OTP đã được gửi",
+              "SMS với mã bảo mật đã được gửi",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 20),
             ),
