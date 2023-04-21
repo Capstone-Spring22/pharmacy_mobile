@@ -5,11 +5,11 @@ import 'package:pharmacy_mobile/views/user/widget/info_card.dart';
 void main() {
   testWidgets('MyWidget has a title and message', (tester) async {
     // Create the widget by telling the tester to build it.
-    await tester.pumpWidget(const MaterialApp(
+    await tester.pumpWidget(MaterialApp(
       home: Material(
         child: InfoCard(
           text: "test",
-          color: Colors.blue,
+          color: Colors.blue.shade800,
           icon: Icons.home,
         ),
       ),
