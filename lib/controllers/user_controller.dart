@@ -57,7 +57,9 @@ class UserController extends GetxController {
         } else {
           Get.log(Get.previousRoute);
           Get.log("Current Route: ${Get.currentRoute}");
-          if (Get.currentRoute == '/signin' || Get.currentRoute == '/intro') {
+          if (Get.currentRoute == '/signin' ||
+              Get.currentRoute == '/intro' ||
+              Get.currentRoute == '/navhub') {
             Get.defaultDialog(
               title: "Tài khoản không tồn tại",
               middleText: "Di chuyển đến trang đăng kí?",
