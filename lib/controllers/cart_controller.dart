@@ -7,6 +7,7 @@ import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/user_controller.dart';
 import 'package:pharmacy_mobile/models/cart.dart';
 import 'package:pharmacy_mobile/services/cart_service.dart';
+import 'package:pharmacy_mobile/views/order_detail/models/order_history_detail.dart';
 
 extension groupCartItems on List<CartItem> {
   List<List<CartItem>> groupProductsByName() {
@@ -26,6 +27,32 @@ extension groupCartItems on List<CartItem> {
           groupedProducts.add([cartItem]);
         } else {
           groupedProducts.last.add(cartItem);
+        }
+      }
+    } catch (e) {}
+
+    return groupedProducts;
+  }
+}
+
+extension groupDetailList on List<OrderProducts> {
+  List<List<OrderProducts>> groupProductsByName() {
+    List<List<OrderProducts>> groupedProducts = [];
+    String currentName = '';
+
+    var tempList = this;
+
+    try {
+      tempList.sort((a, b) => a.productName!.compareTo(b.productName!));
+    } catch (e) {}
+
+    try {
+      for (var item in tempList) {
+        if (item.productName != currentName) {
+          currentName = item.productName!;
+          groupedProducts.add([item]);
+        } else {
+          groupedProducts.last.add(item);
         }
       }
     } catch (e) {}

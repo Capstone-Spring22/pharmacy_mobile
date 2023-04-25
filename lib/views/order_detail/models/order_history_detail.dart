@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class OrderHistoryDetail {
   String? id;
   String? pharmacistId;
@@ -175,6 +176,11 @@ class OrderProducts {
       data['orderBatches'] = orderBatches!.map((v) => v.toJson()).toList();
     }
     return data;
+  }
+
+  @override
+  String toString() {
+    return 'OrderProducts(id: $id, productId: $productId, imageUrl: $imageUrl, productName: $productName, isBatches: $isBatches, unitName: $unitName, quantity: $quantity, originalPrice: $originalPrice, discountPrice: $discountPrice, priceTotal: $priceTotal, productNoteFromPharmacist: $productNoteFromPharmacist, orderBatches: $orderBatches)';
   }
 }
 

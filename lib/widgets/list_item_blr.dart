@@ -26,7 +26,7 @@ class ListItemBuilder extends StatelessWidget {
                   ]),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
+                      return const Center(
                           child: LoadingWidget(
                         size: 60,
                       ));
@@ -57,8 +57,9 @@ class ListItemBuilder extends StatelessWidget {
                                       fn: () => Get.toNamed(
                                         '/product_detail',
                                         preventDuplicates: false,
-                                        arguments:
-                                            listHotItems[hotItemIndex].id,
+                                        arguments: [
+                                          listHotItems[hotItemIndex].id
+                                        ],
                                       ),
                                       product: listHotItems[hotItemIndex],
                                     ),
@@ -85,8 +86,9 @@ class ListItemBuilder extends StatelessWidget {
                                       fn: () => Get.toNamed(
                                         '/product_detail',
                                         preventDuplicates: false,
-                                        arguments:
-                                            listFastSell[fastSellingIndex].id,
+                                        arguments: [
+                                          listFastSell[fastSellingIndex].id
+                                        ],
                                       ),
                                       product: listFastSell[fastSellingIndex],
                                     ),
@@ -125,9 +127,11 @@ class ListItemBuilder extends StatelessWidget {
                                                 fn: () => Get.toNamed(
                                                   '/product_detail',
                                                   preventDuplicates: false,
-                                                  arguments: listCateProduct[
-                                                          productIndex]
-                                                      .id,
+                                                  arguments: [
+                                                    listCateProduct[
+                                                            productIndex]
+                                                        .id
+                                                  ],
                                                 ),
                                                 product: listCateProduct[
                                                     productIndex],
@@ -150,7 +154,7 @@ class ListItemBuilder extends StatelessWidget {
                     }
                   },
                 )
-              : LoadingWidget(size: 50),
+              : const LoadingWidget(size: 50),
         );
       },
     );

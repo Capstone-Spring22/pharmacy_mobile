@@ -117,4 +117,26 @@ class OrderService {
     }
     return 0;
   }
+
+  Future cancelOrder(String orderId, String reason) async {
+    final dio = appController.dio;
+    final api = dotenv.env['API_URL']!;
+    try {
+      var ip = await appController.getIpAddress();
+      var res = await dio.put(
+        '${api}Order/CancelOrder',
+        options: userController.options,
+        data: {
+          "orderId": orderId,
+          "reason": reason,
+          "ipAddress": ip,
+        },
+      );
+
+      Get.log('Cancel order: ${res.data}');
+      return res.statusCode;
+    } on DioError catch (e) {
+      Get.log('Cancel order Error: ${e.response!.toString()}');
+    }
+  }
 }

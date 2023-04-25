@@ -44,7 +44,7 @@ class SearchItem extends StatelessWidget {
         onTap: () => Get.toNamed(
           '/product_detail',
           preventDuplicates: false,
-          arguments: item.id,
+          arguments: [item.id],
         ),
       ),
     );

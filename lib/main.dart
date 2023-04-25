@@ -83,6 +83,7 @@ void main() async {
   //   return true;
   // };
   await GetStorage.init();
+  await initializeDateFormatting('vi_VN', null);
   FirebaseFirestore.instance.settings.persistenceEnabled;
   await AndroidAlarmManager.initialize();
   await dotenv.load(fileName: "dotenv");

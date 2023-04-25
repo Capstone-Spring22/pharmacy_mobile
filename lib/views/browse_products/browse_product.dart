@@ -117,7 +117,7 @@ class _BrowseProductScreenState extends State<BrowseProductScreen>
             child: child,
           ),
           child: isLoadingMain
-              ? Center(
+              ? const Center(
                   child: LoadingWidget(
                     size: 60,
                   ),
@@ -179,7 +179,7 @@ class _BrowseProductScreenState extends State<BrowseProductScreen>
                       DetailContent(
                         title: "Danh mục con",
                         content: isLoadingSub
-                            ? LoadingWidget(
+                            ? const LoadingWidget(
                                 size: 60,
                               )
                             : subCategories.isEmpty
@@ -251,7 +251,7 @@ class _BrowseProductScreenState extends State<BrowseProductScreen>
                               haveDivider: false,
                               title: "Sản phẩm",
                               content: isLoadingProducts
-                                  ? LoadingWidget(
+                                  ? const LoadingWidget(
                                       size: 60,
                                     )
                                   : SizedBox(
@@ -269,7 +269,7 @@ class _BrowseProductScreenState extends State<BrowseProductScreen>
                                                     fn: () => Get.toNamed(
                                                       '/product_detail',
                                                       preventDuplicates: false,
-                                                      arguments: product.id,
+                                                      arguments: [product.id],
                                                     ),
                                                     product: product,
                                                   ),

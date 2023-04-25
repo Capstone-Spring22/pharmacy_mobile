@@ -49,18 +49,20 @@ class CartItemListView extends GetView<CartController> {
                 child: GestureDetector(
                   onTap: () => Get.toNamed(
                     '/product_detail',
-                    arguments: item[0].productId,
+                    arguments: [item[0].productId],
                     preventDuplicates: false,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(10),
                     child: Column(
                       children: [
-                        if (item[0].productImageUrl == null) LoadingWidget(),
+                        if (item[0].productImageUrl == null)
+                          const LoadingWidget(),
                         if (item[0].productImageUrl != null)
                           CachedNetworkImage(
                             imageUrl: item[0].productImageUrl!,
-                            placeholder: (context, url) => LoadingWidget(),
+                            placeholder: (context, url) =>
+                                const LoadingWidget(),
                             errorWidget: (context, url, error) =>
                                 const Icon(Icons.error),
                           ),

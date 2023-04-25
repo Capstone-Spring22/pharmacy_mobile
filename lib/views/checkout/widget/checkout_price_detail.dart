@@ -91,7 +91,7 @@ class PriceDetail extends GetView<CheckoutController> {
                             inputController: controller.pointCtl,
                             horiPadding: 0,
                             inputType: TextInputType.number,
-                            title: 'Nhập điểm sử dụng (1 điểm - 1000 đ)',
+                            title: 'Nhập điểm sử dụng (1 điểm = 1000 đ)',
                             isFormField: true,
                             onChanged: (p0) {
                               controller.debouncer.cancel();

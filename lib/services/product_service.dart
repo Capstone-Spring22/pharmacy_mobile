@@ -153,7 +153,11 @@ class ProductService {
       '${api}Product',
       queryParameters: {'pageIndex': 1, 'pageItems': 1, 'productName': name},
     );
-    return PharmacyProduct.fromJson(response.data['items'][0]);
+    try {
+      return PharmacyProduct.fromJson(response.data['items'][0]);
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<List<PharmacyProduct>> getListProductByName(String name) async {

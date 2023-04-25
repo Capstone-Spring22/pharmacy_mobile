@@ -30,11 +30,12 @@ class ProductDetailScreen extends GetView<AppController> {
 
   @override
   Widget build(BuildContext context) {
-    String pid = '';
+    List<String?> pid = [];
     try {
-      pid = Get.arguments;
-      Get.log(pid);
-    } catch (e) {}
+      pid.addAll(Get.arguments);
+    } catch (e) {
+      Get.log(e.toString());
+    }
     GlobalKey<ScaffoldState> drawerKey = GlobalKey();
     return FutureBuilder(
         future: productController.getProductById(pid),
@@ -95,7 +96,7 @@ class ProductDetailScreen extends GetView<AppController> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     FutureBuilder(
-                      future: ProductService().getProductDetail(pid),
+                      future: ProductService().getProductDetail(pid[0]!),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {

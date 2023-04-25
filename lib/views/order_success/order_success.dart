@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:pharmacy_mobile/widgets/appbar.dart';
 
 class OrderSuccessScreen extends StatelessWidget {
   const OrderSuccessScreen({super.key});
@@ -9,10 +10,14 @@ class OrderSuccessScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     String id = Get.arguments;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Order Success"),
-        centerTitle: true,
-        automaticallyImplyLeading: false,
+      appBar: PharmacyAppBar(
+        leftWidget: Container(
+          height: 50,
+        ),
+        midText: "Đặt hàng thành công",
+        rightWidget: Container(
+          height: 50,
+        ),
       ),
       body: Center(
         child: Column(

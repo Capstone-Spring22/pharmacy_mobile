@@ -9,6 +9,8 @@ import 'package:pharmacy_mobile/controllers/checkout_controller.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
 import 'package:pharmacy_mobile/views/checkout/widget/checkout_panel.dart';
 import 'package:pharmacy_mobile/views/checkout/widget/list_checkout.dart';
+import 'package:pharmacy_mobile/widgets/appbar.dart';
+import 'package:pharmacy_mobile/widgets/back_button.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
@@ -43,8 +45,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     checkoutController.setBtnActive(userController.detailUser.value!);
     checkoutController.isCollase.value = false;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Thanh toán"),
+      appBar: PharmacyAppBar(
+        leftWidget: const PharmacyBackButton(),
+        midText: "Thanh Toán",
+        rightWidget: Container(
+          height: 50,
+        ),
       ),
       body: Stack(
         children: [

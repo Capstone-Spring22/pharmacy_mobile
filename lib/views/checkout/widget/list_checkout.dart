@@ -57,7 +57,7 @@ class ListCheckout extends StatelessWidget {
                         return GestureDetector(
                           onTap: () => Get.toNamed(
                             '/product_detail',
-                            arguments: item[0].productId,
+                            arguments: [item[0].productId],
                             preventDuplicates: false,
                           ),
                           child: Padding(
@@ -105,21 +105,21 @@ class ListCheckout extends StatelessWidget {
                                         ),
                                         child: Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                                 "Số lượng: ${e.quantity} ${extractUname(e.productId!)!}"),
-                                            const Spacer(),
                                             Align(
                                               alignment: Alignment.centerLeft,
                                               child: Text(
-                                                "Giá: ${e.priceAfterDiscount!.convertCurrentcy()}",
+                                                e.priceAfterDiscount!
+                                                    .convertCurrentcy(),
                                               ),
                                             ),
-                                            Expanded(
-                                              flex: 3,
-                                              child: Container(),
-                                            ),
+                                            // Expanded(
+                                            //   flex: 3,
+                                            //   child: Container(),
+                                            // ),
                                           ],
                                         ),
                                       ),

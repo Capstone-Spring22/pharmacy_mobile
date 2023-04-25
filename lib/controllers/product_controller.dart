@@ -50,14 +50,27 @@ class ProductController extends GetxController {
   //   }
   // }
 
-  Future<PharmacyProduct?> getProductById(String id) async {
-    try {
-      return products.firstWhere((element) => element.id == id);
-    } catch (e) {
-      var p = await ProductService().getProductByName(id);
-      if (p != null) {
-        products.addIf(!products.contains(p), p);
-        return p;
+  Future<PharmacyProduct?> getProductById(List<String?> ids) async {
+    // try {
+    //   return products.firstWhere((element) => element.id == id);
+    // } catch (e) {
+    //   var p = await ProductService().getProductByName(id);
+    //   if (p != null) {
+    //     products.addIf(!products.contains(p), p);
+    //     return p;
+    //   }
+    // }
+    // return null;
+
+    for (String? id in ids) {
+      try {
+        return products.firstWhere((element) => element.id == id);
+      } catch (e) {
+        var p = await ProductService().getProductByName(id!);
+        if (p != null) {
+          products.addIf(!products.contains(p), p);
+          return p;
+        }
       }
     }
     return null;

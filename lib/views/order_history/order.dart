@@ -82,7 +82,7 @@ class _OrderScreenState extends State<OrderScreen> {
               : Expanded(
                   child: RenderList(
                       scrollController: _scrollController, list: list)),
-          if (isLoading) LoadingWidget(),
+          if (isLoading) const LoadingWidget(),
         ],
       )),
     );
@@ -148,7 +148,7 @@ class RenderList extends StatelessWidget {
                     future: OrderService().getOrderHistoryDetail(item.id!),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return LoadingWidget();
+                        return const LoadingWidget();
                       } else {
                         final detail =
                             OrderHistoryDetail.fromJson(snapshot.data);
