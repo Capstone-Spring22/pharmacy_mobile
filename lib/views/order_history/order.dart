@@ -178,7 +178,7 @@ class RenderList extends StatelessWidget {
                               ),
                             ],
                           );
-                        } else {
+                        } else if (detail.orderDelivery != null) {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -202,6 +202,28 @@ class RenderList extends StatelessWidget {
                                 "${detail.orderDelivery!.fullyAddress}",
                                 maxLines: 2,
                               ),
+                            ],
+                          );
+                        } else {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              AutoSizeText(
+                                "Loại đơn: ${item.orderTypeName}",
+                                style: context.textTheme.bodyMedium,
+                                maxLines: 1,
+                              ),
+                              AutoSizeText(
+                                "Ngày mua: $formattedDate - $formattedTime",
+                                style: context.textTheme.bodyMedium,
+                                maxLines: 1,
+                              ),
+                              AutoSizeText(
+                                'Tổng tiền ${item.totalPrice!.convertCurrentcy()}',
+                              ),
+                              Text(
+                                  "Mua tại cửa hàng: ${productController.listSite.singleWhere((element) => element.id == detail.siteId).fullyAddress}"),
                             ],
                           );
                         }

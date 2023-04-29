@@ -259,6 +259,7 @@ class OrderDelivery {
   String? fullyAddress;
   num? shippingFee;
   String? addressId;
+  String? estimatedDeliveryTime;
 
   OrderDelivery(
       {this.cityId,
@@ -267,7 +268,8 @@ class OrderDelivery {
       this.homeNumber,
       this.fullyAddress,
       this.shippingFee,
-      this.addressId});
+      this.addressId,
+      this.estimatedDeliveryTime});
 
   OrderDelivery.fromJson(Map<String, dynamic> json) {
     cityId = json['cityId'];
@@ -277,6 +279,7 @@ class OrderDelivery {
     fullyAddress = json['fullyAddress'];
     shippingFee = json['shippingFee'];
     addressId = json['addressId'];
+    estimatedDeliveryTime = json['estimatedDeliveryTime'];
   }
 
   Map<String, dynamic> toJson() {
@@ -288,6 +291,7 @@ class OrderDelivery {
     data['fullyAddress'] = fullyAddress;
     data['shippingFee'] = shippingFee;
     data['addressId'] = addressId;
+    data['estimatedDeliveryTime'] = estimatedDeliveryTime;
     return data;
   }
 }

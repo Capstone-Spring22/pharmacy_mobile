@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:pharmacy_mobile/constrains/controller.dart';
+import 'package:pharmacy_mobile/models/progress_history.dart';
 import 'package:pharmacy_mobile/views/order_history/models/order_history.dart';
 
 import '../models/order.dart';
@@ -138,5 +139,27 @@ class OrderService {
     } on DioError catch (e) {
       Get.log('Cancel order Error: ${e.response!.toString()}');
     }
+  }
+
+  Future<List<OrderProgressHistory>> orderProgressHistory(String id) async {
+    final dio = appController.dio;
+    final api = dotenv.env['API_URL']!;
+    try {
+      var res = await dio.get(
+        '${api}Order/OrderExecutionHistory/$id',
+        options: userController.options,
+      );
+
+      final List<OrderProgressHistory> list = [];
+
+      for (final item in res.data) {
+        list.add(OrderProgressHistory.fromJson(item));
+      }
+
+      return list;
+    } on DioError catch (e) {
+      Get.log('Order progress history error: ${e.response!.toString()}');
+    }
+    return [];
   }
 }
