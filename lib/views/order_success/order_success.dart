@@ -52,11 +52,13 @@ class OrderSuccessScreen extends StatelessWidget {
               width: Get.width * .7,
               height: Get.height * .05,
               child: FilledButton(
-                onPressed: () => Get.offNamedUntil(
-                  '/order_detail',
-                  ModalRoute.withName('/navhub'),
-                  arguments: id,
-                ),
+                onPressed: () {
+                  Get.offNamedUntil(
+                    '/order_detail',
+                    ModalRoute.withName('/navhub'),
+                    arguments: id,
+                  );
+                },
                 child: const Text("Xem đơn hàng"),
               ),
             ),
