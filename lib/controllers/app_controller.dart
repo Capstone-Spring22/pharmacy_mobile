@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
@@ -106,14 +104,5 @@ class AppController extends GetxController {
 
       return "";
     }
-  }
-
-  String generateRefBill() {
-    final now = DateTime.now();
-    final randomNumberString =
-        '${now.year}${now.month}${now.day}${now.hour}${now.minute}${now.second}';
-    final randomNumber = int.parse(randomNumberString);
-    final random = Random(randomNumber);
-    return random.nextInt(99999).toString();
   }
 }

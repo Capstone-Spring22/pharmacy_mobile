@@ -10,7 +10,6 @@ import 'package:pharmacy_mobile/models/pharmacy_user.dart';
 import 'package:pharmacy_mobile/views/camera/camera.dart';
 import 'package:pharmacy_mobile/views/home/widgets/cart_btn.dart';
 import 'package:pharmacy_mobile/views/home/widgets/drawer_btn.dart';
-import 'package:pharmacy_mobile/views/home/widgets/option_row.dart';
 import 'package:pharmacy_mobile/views/home/widgets/scroll_to_top.dart';
 import 'package:pharmacy_mobile/widgets/appbar.dart';
 import 'package:pharmacy_mobile/widgets/list_item_blr.dart';
@@ -50,7 +49,7 @@ class HomeScreen extends StatelessWidget {
               }),
             )
           ],
-          headerExpandedHeight: 0.5,
+          headerExpandedHeight: 0.3,
           title: Image.asset(
             'assets/icons/icon.png',
             height: Get.height * .07,
@@ -100,10 +99,10 @@ class HomeScreen extends StatelessWidget {
           },
         ),
         const SearchScreen(),
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: 15),
-          child: OptionButtonRow(),
-        ),
+        // const Padding(
+        //   padding: EdgeInsets.symmetric(vertical: 15),
+        //   child: OptionButtonRow(),
+        // ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

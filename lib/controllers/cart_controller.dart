@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
 import 'package:pharmacy_mobile/constrains/controller.dart';
 import 'package:pharmacy_mobile/controllers/user_controller.dart';
+import 'package:pharmacy_mobile/helpers/snack.dart';
 import 'package:pharmacy_mobile/models/cart.dart';
 import 'package:pharmacy_mobile/services/cart_service.dart';
 import 'package:pharmacy_mobile/views/order_detail/models/order_history_detail.dart';
@@ -167,6 +168,11 @@ class CartController extends GetxController {
       debouncer.call(() => CartService().postCart(addMap));
       // CartService().postCart(addMap);
     } else {
+      showSnack(
+        'Thông báo',
+        'Đã xoá 1 sản phẩm khỏi giỏ hàng',
+        SnackType.success,
+      );
       removeFromMockLocal(productId);
       CartService().removeCart(productId, docId!);
     }

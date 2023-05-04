@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:pharmacy_mobile/constrains/theme.dart';
 import 'package:pharmacy_mobile/controllers/cart_controller.dart';
 import 'package:pharmacy_mobile/helpers/loading.dart';
+import 'package:pharmacy_mobile/helpers/snack.dart';
 import 'package:pharmacy_mobile/main.dart';
 import 'package:pharmacy_mobile/models/cart.dart';
 import 'package:pharmacy_mobile/models/product.dart';
@@ -74,13 +75,13 @@ class _ProductTileState extends State<ProductTile>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            if (widget.product.imageModel == null) LoadingWidget(),
+            if (widget.product.imageModel == null) const LoadingWidget(),
             if (widget.product.imageModel != null)
               CachedNetworkImage(
                 height: Get.height * .15,
                 width: Get.width * .4,
                 imageUrl: widget.product.imageModel!.imageURL!,
-                placeholder: (context, url) => LoadingWidget(),
+                placeholder: (context, url) => const LoadingWidget(),
                 errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             Text(
@@ -162,12 +163,19 @@ class _BuyButtonState extends State<BuyButton> {
             child: isInCart
                 ? QuantityControl(widget.id)
                 : FilledButton(
-                    onPressed: () => controller.addToCart(CartItem(
-                      productId: widget.id,
-                      quantity: 1,
-                      price: widget.priceAfterDiscount,
-                      unitName: widget.unitName,
-                    )),
+                    onPressed: () {
+                      showSnack(
+                        'Thông báo',
+                        'Đã thêm 1 sản phẩm vào giỏ',
+                        SnackType.success,
+                      );
+                      controller.addToCart(CartItem(
+                        productId: widget.id,
+                        quantity: 1,
+                        price: widget.priceAfterDiscount,
+                        unitName: widget.unitName,
+                      ));
+                    },
                     child: const Text("Thêm vào giỏ"),
                   ),
           );

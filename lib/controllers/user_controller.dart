@@ -18,6 +18,7 @@ class UserController extends GetxController {
   int point = 0;
 
   RxBool isLoggedIn = false.obs;
+  bool isShowSnackForLogin = false;
 
   Options? options;
 
@@ -52,8 +53,10 @@ class UserController extends GetxController {
               'Authorization': 'Bearer ${userController.user.value!.token}'
             },
           );
-
-          showSnack('Thông báo', 'Đăng nhập thành công', SnackType.success);
+          if (!isShowSnackForLogin) {
+            isShowSnackForLogin = true;
+            showSnack('Thông báo', 'Đăng nhập thành công', SnackType.success);
+          }
         } else {
           Get.log(Get.previousRoute);
           Get.log("Current Route: ${Get.currentRoute}");
